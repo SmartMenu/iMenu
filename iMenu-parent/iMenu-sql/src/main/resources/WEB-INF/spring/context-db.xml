@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p"
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+	
+	<context:property-placeholder location="classpath:jdbc-sqlserver.properties"/>
+	
+	 <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
+	 
+	<bean id="dataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+    	<property name="driverClassName" value="${jdbc.driverClassName}" />  
+		<property name="url" value="${jdbc.url}" />  
+	    <property name="username" value="${jdbc.username}" />  
+	    <property name="password" value="${jdbc.password}" />  
+	</bean>  
+	
+	<!-- scope默认是 prototype:getBean()一次创建一个实例-->  
+    <bean id="printProperty" class="com.smartmenu.common.PrintProperty" scope="singleton">
+    	<property name="seq" value="${print.seq}"/>
+    	<property name="folder" value="${print.folder}"/>
+    </bean>  
+
+    <context:annotation-config />
+
+	<!-- @Components -->
+    <context:component-scan base-package="com.smartmenu.db" />
+    <context:component-scan base-package="com.smartmenu.common" />  
+</beans>

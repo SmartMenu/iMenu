@@ -10,4 +10,5 @@ public class ReturnMsgCode {
 	public static final String LACK_OF_INFO="LACK_OF_INFO";
 	public static final String PRINT_ERROR="PRINT_ERROR";
 	public static final String TABLE_OCCUPIED="TABLE_OCCUPIED";
+	public static final String ACCESS_LIMITED="ACCESS_LIMITED";
 }

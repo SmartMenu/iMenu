@@ -12,6 +12,19 @@
 		<param-value>/WEB-INF/spring/context-root.xml</param-value>
 	</context-param>
   
+  <filter>
+    	<filter-name>AccessControlFilter</filter-name>
+    	<filter-class>com.smartmenu.filters.AccessControlFilter</filter-class>
+    	<init-param>
+    		<param-name>maxClients</param-name>
+    		<param-value>20</param-value>
+    	</init-param>
+  	</filter>
+  	<filter-mapping>
+    	<filter-name>AccessControlFilter</filter-name>
+    	<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+  
   <!-- Sticks to UTF-8 character encoding for all requests -->
 	<filter>
 		<filter-name>SetCharacterEncoding</filter-name>
@@ -29,7 +42,7 @@
 		<filter-name>SetCharacterEncoding</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-  
+    
    <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>

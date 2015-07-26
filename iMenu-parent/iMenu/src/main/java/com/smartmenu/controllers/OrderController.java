@@ -25,11 +25,11 @@ public class OrderController {
 	
 	@RequestMapping(value = "/getOrder", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
-    String doGetOrder(HttpServletResponse resp, @RequestParam String shopId,
-            @RequestParam String tableId, @RequestParam String callback) throws IOException
+    String doGetOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, @RequestParam String posid,
+            @RequestParam String tableid, @RequestParam String callback) throws IOException
     {
 		System.out.println("/getOrder: call order handler");
-		JSONObject json = orderService.getOldOrder(shopId, tableId);
+		JSONObject json = orderService.getOldOrder(shopid, posid, tableid);
 		System.out.println("/getOrder: handler finished");
 		return callback+"("+json.toString()+")";
     }
@@ -37,7 +37,7 @@ public class OrderController {
 	
 	@RequestMapping(value = "/makeNewOrder", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
-    String makeNewOrder(HttpServletResponse resp, @RequestParam String data,
+    String makeNewOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
     {
 		JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
@@ -49,10 +49,10 @@ public class OrderController {
 	//append to exist order 
 	@RequestMapping(value = "/addToOrder", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
-    String updateOrder(HttpServletResponse resp, @RequestParam String data,
+    String updateOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
     {
-		JSONObject json = JSONObject.fromObject(data);
+		JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
 		System.out.println("/addToOrder: call order handler deal the request");
 		JSONObject jRet=orderService.addToOrder(json);
 		System.out.println("/addToOrder: handler finished");
@@ -62,10 +62,10 @@ public class OrderController {
 	//delete item from an exist order
 	@RequestMapping(value = "/deleteFromOrder", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
-    String deleteFromOrder(HttpServletResponse resp, @RequestParam String data,
+    String deleteFromOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
     {
-		JSONObject json = JSONObject.fromObject(data);
+		JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
 		System.out.println("/deleteFromOrder: call order handler deal the request");
 		JSONObject jRet=orderService.deleteFromOrder(json);
 		System.out.println("/deleteFromOrder: handler finished");
@@ -74,22 +74,26 @@ public class OrderController {
 	
 	@RequestMapping(value = "/changeCover", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
-    String changeCover(HttpServletResponse resp, @RequestParam String shopid, @RequestParam String orderno, @RequestParam int cover,
+    String changeCover(HttpServletResponse resp, @RequestParam String mac, 
+    		@RequestParam String shopid, @RequestParam String posid,
+    		@RequestParam String orderno, @RequestParam int cover,
     		@RequestParam String callback) throws IOException
     {
 		System.out.println("/changeCover: call order handler deal the request");
-		JSONObject jRet=orderService.dealChangeCover(shopid, orderno, cover);
+		JSONObject jRet=orderService.dealChangeCover(shopid, posid, orderno, cover);
 		System.out.println("/changeCover: handler finished");
 		return callback+"("+jRet.toString()+")";
     }
 	
 	@RequestMapping(value = "/changeTable", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
-    String changeTable(HttpServletResponse resp, @RequestParam String shopid, @RequestParam String orderno,@RequestParam String checkno, @RequestParam String newTable,
-    		 @RequestParam String oldTable, @RequestParam String callback) throws IOException
+    String changeTable(HttpServletResponse resp, @RequestParam String mac, 
+    		@RequestParam String shopid, @RequestParam String posid,
+    		@RequestParam String orderno, @RequestParam String newtable,
+    		 @RequestParam String oldtable, @RequestParam String callback) throws IOException
     {
 		System.out.println("/changeTable: call order handler deal the request");
-		JSONObject jRet=orderService.dealChangeTable(shopid, orderno, checkno, newTable, oldTable);
+		JSONObject jRet=orderService.dealChangeTable(shopid, posid, orderno, newtable, oldtable);
 		System.out.println("/changeTable: handler finished");
 		return callback+"("+jRet.toString()+")";
     }
@@ -97,11 +101,12 @@ public class OrderController {
 	
 	@RequestMapping(value = "/printOrder", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
-    String printOrder(HttpServletResponse resp, @RequestParam String shopid, @RequestParam String orderno, @RequestParam String checkno,
-    		@RequestParam String callback) throws IOException
+    String printOrder(HttpServletResponse resp, @RequestParam String mac, 
+    		@RequestParam String shopid, @RequestParam String posid,
+    		@RequestParam String orderno, @RequestParam String callback) throws IOException
     {
 		System.out.println("/printOrder: call order handler deal the request");
-		JSONObject jRet=orderService.dealReqPrintOrder(shopid, orderno, checkno);
+		JSONObject jRet=orderService.dealReqPrintOrder(shopid, posid, orderno);
 		System.out.println("/printOrder: handler finished");
 		return callback+"("+jRet.toString()+")";
     }

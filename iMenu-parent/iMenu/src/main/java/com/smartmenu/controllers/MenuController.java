@@ -43,4 +43,5 @@ public class MenuController {
 		System.out.println("/getSoldoutInfo: deal with request completed");
 		return callback+"("+json.toString()+")";
     }
+	
 }

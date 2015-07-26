@@ -25,6 +25,7 @@ import com.smartmenu.menu.modifier.ModifierContainer;
 import com.smartmenu.menu.modifier.ModifierDetail;
 import com.smartmenu.menu.setter.SetterContainer;
 import com.smartmenu.menu.setter.SetterDetail;
+import com.smartmenu.utils.ReturnMsgCode;
 
 @Service
 public class MenuService {
@@ -257,20 +258,21 @@ public class MenuService {
 		int status=0;
 		if(itemStates==null){
 			status=1;
-			msg = "DB_ERROR";
-		}else if (itemStates.length==0){
-			status=0;
-			msg = "ITEMSTATE_IS_NULL";
-		}else{
-			status=0;
-			msg = "SUCCESS";
-		}
-		if(status==1){
+			msg = ReturnMsgCode.DATA_ERROR;
 			json.put("status", status);
 			json.put("msg", msg);
 			return json;
+		}else if (itemStates.length==0){
+			status=0;
+			msg = ReturnMsgCode.DATA_IS_NULL;
+			json.put("status", status);
+			json.put("msg", msg);
+			return json;
+		}else{
+			status=0;
+			msg = ReturnMsgCode.SUCCESS;
 		}
-		
+				
 		for(ItemState itemState: itemStates){
 			JSONObject jIS = new JSONObject();
 			jIS.put("item-id", itemState.getItemId());

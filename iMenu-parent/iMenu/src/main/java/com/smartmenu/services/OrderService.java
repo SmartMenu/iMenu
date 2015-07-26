@@ -47,7 +47,8 @@ public class OrderService {
 			
 			String result = dbOrder.addNewOrder(order, lsOrderDetail);
 			if(result.equals("SUCCESS")){
-				boolean bl = printer.printListForKitchen(order);
+				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getPosId(), order.getTranNo());
+				boolean bl = printer.printListForKitchen(newOrder);
 				if(bl){
 					System.out.println("SUCCESS");
 					status=0;
@@ -61,7 +62,7 @@ public class OrderService {
 			}else{
 				status=1;
 				System.out.println(result);
-				msg = ReturnMsgCode.MAKE_ORDER_FAILED;
+				msg = ReturnMsgCode.DATA_ERROR;
 			}
 			
 		}
@@ -69,26 +70,24 @@ public class OrderService {
 		json.put("msg", msg);
 		return json;
 	}
-	public JSONObject getOldOrder(String shopId, String tableId){
+	public JSONObject getOldOrder(String shopId, String posId, String tableId){
 		JSONObject json=new JSONObject();
-		JSONArray jaMsg=new JSONArray();
+		//JSONArray jaMsg=new JSONArray();
 		JSONObject jData=new JSONObject();
 		int status=0;
-		Order order=dbOrder.getExistOrder(shopId, tableId);
+		Order order=dbOrder.getExistOrder(shopId, posId, tableId);
 		if(order==null){
-			status=1;
-			jaMsg.add("NO_EXIST_ORDER");
+			status=0;
 			json.put("status", status);
-			json.put("msg", jaMsg);
+			json.put("msg", ReturnMsgCode.DATA_IS_NULL);
 			json.put("data", jData);
 			return json;
 		}
-		OrderDetail[] orderDetails=dbOrder.getOrderDetail(shopId, order.getTranNo());
+		OrderDetail[] orderDetails=dbOrder.getOrderDetail(shopId, posId, order.getTranNo());
 		if(orderDetails==null || orderDetails.length==0){
-			status=1;
-			jaMsg.add("NO_EXIST_ORDER_DETAILS");
+			status=0;
 			json.put("status", status);
-			json.put("msg", jaMsg);
+			json.put("msg", ReturnMsgCode.DATA_IS_NULL);
 			json.put("data", jData);
 			return json;
 		}
@@ -110,9 +109,8 @@ public class OrderService {
 			jaDetails.add(jDetail);
 		}
 		jData.put("details", jaDetails);
-		jaMsg.add("SUCCESS");
 		json.put("status", status);
-		json.put("msg", jaMsg);
+		json.put("msg", ReturnMsgCode.SUCCESS);
 		json.put("data", jData);
 		return json;
 	}
@@ -133,7 +131,8 @@ public class OrderService {
 		}else{
 			String result = dbOrder.appendExistOrder(order, lsNewOrderDetail);
 			if(result.equals("SUCCESS")){
-				boolean bl = printer.printListForKitchen(order);
+				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getPosId(), order.getTranNo());
+				boolean bl = printer.printListForKitchen(newOrder);
 				if(bl){
 					System.out.println("SUCCESS");
 					status=0;
@@ -147,7 +146,7 @@ public class OrderService {
 			}else{
 				status=1;
 				System.out.println(result);
-				msg = ReturnMsgCode.MAKE_ORDER_FAILED;
+				msg = ReturnMsgCode.DATA_ERROR;
 			}
 			
 		}
@@ -172,7 +171,8 @@ public class OrderService {
 		}else{
 			String result = dbOrder.deleteFromExistOrder(order, lsDeleteOrderDetail);
 			if(result.equals("SUCCESS")){
-				boolean bl = printer.printListForKitchen(order);
+				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getPosId(), order.getTranNo());
+				boolean bl = printer.printListForKitchen(newOrder);
 				if(bl){
 					System.out.println("SUCCESS");
 					status=0;
@@ -186,7 +186,7 @@ public class OrderService {
 			}else{
 				status=1;
 				System.out.println(result);
-				msg = ReturnMsgCode.MAKE_ORDER_FAILED;
+				msg = ReturnMsgCode.DATA_ERROR;
 			}
 			
 		}
@@ -250,7 +250,7 @@ public class OrderService {
 		}else
 			order.setCheckNo(null);		
 		
-		if(jOrder.containsKey("cover")||jOrder.getString("cover")!=""){
+		if(jOrder.containsKey("cover")&&jOrder.getString("cover")!=""){
 			int cover = jOrder.getInt("cover");
 			order.setCover(cover);
 		}
@@ -384,7 +384,10 @@ public class OrderService {
 			orderDetail.setPrice(new BigDecimal(json.getString("price")));
 			orderDetail.setSubtype(json.getInt("subtype"));
 			orderDetail.setTotalAmount(new BigDecimal(json.getString("total-amount")));
-			orderDetail.setDiscAble(json.getInt("discount-able"));
+			if(json.containsKey("discount-able"))
+				orderDetail.setDiscAble(json.getInt("discount-able"));
+			else
+				orderDetail.setDiscAble(0);
 			//"discount":{"id":"","disc-type":,"rate":,"desc":"","desc2":""},"discount-amount":,
 			if(json.containsKey("discount")){
 				JSONObject jDisc=json.getJSONObject("discount");
@@ -401,14 +404,20 @@ public class OrderService {
 				}
 			}else
 				orderDetail.setDiscount(null);
-			String discAmount=json.getString("discount-amount");
-			if(discAmount==null||discAmount.trim().length()==0){
-				System.out.println("Discount amount can't be null.");
-				status=1;
-			}else{
-				orderDetail.setDiscAmount(new BigDecimal(discAmount));
-			}
-			orderDetail.setDiscAble(json.getInt("service-charge-able"));
+			if(json.containsKey("discount-amount")){
+				String discAmount=json.getString("discount-amount");
+				if(discAmount==null||discAmount.trim().length()==0){
+					System.out.println("Discount amount can't be null.");
+					status=1;
+				}else{
+					orderDetail.setDiscAmount(new BigDecimal(discAmount));
+				}
+			}else
+				orderDetail.setDiscAmount(new BigDecimal(0));
+			if(json.containsKey("service-charge-able"))
+				orderDetail.setSvchgAble(json.getInt("service-charge-able"));
+			else
+				orderDetail.setSvchgAble(0);
 			if(json.containsKey("service-charge")){
 				JSONObject svchg=json.getJSONObject("service-charge");
 				if(svchg==null || svchg.isEmpty()||svchg.isNullObject()){
@@ -425,12 +434,16 @@ public class OrderService {
 				}
 			}else
 				orderDetail.setServiceCharge(null);
-			String svchgAmount=json.getString("service-charge-amount");
-			if(svchgAmount==null||svchgAmount.trim().length()==0){
-				System.out.println("service charge amount can be null.");
-				status=1;
+			if(json.containsKey("service-charge-amount")){
+				String svchgAmount=json.getString("service-charge-amount");
+				if(svchgAmount==null||svchgAmount.trim().length()==0){
+					System.out.println("service charge amount can be null.");
+					status=1;
+				}else{
+					orderDetail.setSvchgAmount(new BigDecimal(svchgAmount));
+				}
 			}else{
-				orderDetail.setSvchgAmount(new BigDecimal(svchgAmount));
+				orderDetail.setSvchgAmount(new BigDecimal(0));				
 			}
 			//pay-amount:,cat-id:,desc:,desc2:,unit:,take-away:
 			String payAmount=json.getString("pay-amount");
@@ -466,55 +479,59 @@ public class OrderService {
 			return ls;
 	}
 	
-	public JSONObject dealChangeCover(String shopId, String orderno, int cover){
+	public JSONObject dealChangeCover(String shopId, String posId, String orderno, int cover){
 		JSONObject json = new JSONObject();
-		JSONArray jaMsg = new JSONArray();
+		String msg;
 		int status = 0;	
-		String result = dbOrder.modifyCoverNumber(shopId, orderno, cover);
+		String result = dbOrder.modifyCoverNumber(shopId, posId, orderno, cover);
 		if (result.equals("SUCCESS")) {
 			status = 0;
-			jaMsg.add(result);
+			msg = ReturnMsgCode.SUCCESS;
 		} else {
 			status = 1;
-			jaMsg.add(result);
+			msg = ReturnMsgCode.DATA_ERROR;
 		}
 		json.put("status", status);
-		json.put("msg", jaMsg);
+		json.put("msg", msg);
 		return json;
 	}
 	
-	public JSONObject dealChangeTable(String shopId, String orderNo, String checkNo, String newTableNo, String oldTableNo){
+	public JSONObject dealChangeTable(String shopId, String posId, String orderNo, String newTableNo, String oldTableNo){
 		JSONObject json = new JSONObject();
-		JSONArray jaMsg = new JSONArray();
+		String msg;
 		int status = 0;
-		String result = dbOrder.changeTable(shopId, orderNo, newTableNo,
+		String result = dbOrder.changeTable(shopId, posId, orderNo, newTableNo,
 				oldTableNo);
 		if (result.equals("SUCCESS")) {
 			status = 0;
-			jaMsg.add(result);
-		} else {
+			msg = ReturnMsgCode.SUCCESS;
+		} else if(result.equals("TABLE_OCCUPIED")){
 			status = 1;
-			jaMsg.add(result);
+			msg = ReturnMsgCode.TABLE_OCCUPIED;
+		}
+		else {
+			status = 1;
+			msg = ReturnMsgCode.DATA_ERROR;
 		}
 		json.put("status", status);
-		json.put("msg", jaMsg);
+		json.put("msg", msg);
 		return json;
 	}
-	public JSONObject dealReqPrintOrder(String shopId, String orderNo, String checkNo) {
+	public JSONObject dealReqPrintOrder(String shopId, String posId, String orderNo) {
 		JSONObject json = new JSONObject();
-		JSONArray jaMsg = new JSONArray();
+		String msg;
 		int status = 0;	
-		Order order = dbOrder.getOrder(orderNo, checkNo);
+		Order order = dbOrder.getExistOrder(shopId, posId, orderNo);
 		boolean result = printer.printListForCustomer(order);
 		if(result){
 			status = 0;
-			jaMsg.add("SUCCESS");
+			msg = ReturnMsgCode.SUCCESS;
 		}else{
 			status = 1;
-			jaMsg.add("PRINT_ERROR");
+			msg = ReturnMsgCode.PRINT_ERROR;
 		}
 		json.put("status", status);
-		json.put("msg", jaMsg);
+		json.put("msg", msg);
 		return json;
 	}
 	

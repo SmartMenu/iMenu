@@ -9,5 +9,5 @@ public class ReturnMsgCode {
 	public static final String SUCCESS="SUCCESS";
 	public static final String LACK_OF_INFO="LACK_OF_INFO";
 	public static final String PRINT_ERROR="PRINT_ERROR";
-	public static final String MAKE_ORDER_FAILED="MAKE_ORDER_FAILED";
+	public static final String TABLE_OCCUPIED="TABLE_OCCUPIED";
 }

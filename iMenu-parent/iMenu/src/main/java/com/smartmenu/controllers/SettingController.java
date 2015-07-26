@@ -58,8 +58,20 @@ public class SettingController {
     		@RequestParam String tableid, @RequestParam String callback) throws IOException
     {
 		System.out.println("/getTaxInfo: call setting handler deal the request");
-		JSONObject json = settingService.dealServiceChargeReq(tableid, shopid);
+		JSONObject json = settingService.dealTaxReq(tableid, shopid);
 		System.out.println("/getTaxInfo: handle finished");
 		return callback+"("+json.toString()+")";
     }
+	
+	@RequestMapping(value = "/getDiscounts", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+    public @ResponseBody
+    String getDiscounts(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, 
+    		 @RequestParam String callback) throws IOException
+    {
+		System.out.println("/getDiscounts: call setting handler deal the request");
+		JSONObject json = settingService.dealDiscounts(shopid);
+		System.out.println("/getDiscounts: handle finished");
+		return callback+"("+json.toString()+")";
+    }
+	
 }

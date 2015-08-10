@@ -11,4 +11,5 @@ public class ReturnMsgCode {
 	public static final String PRINT_ERROR="PRINT_ERROR";
 	public static final String TABLE_OCCUPIED="TABLE_OCCUPIED";
 	public static final String ACCESS_LIMITED="ACCESS_LIMITED";
+	public static final String LICENSE_INVALID="LICENSE_INVALID";
 }

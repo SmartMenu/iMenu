@@ -17,9 +17,9 @@
 		</dependency>
 		<!-- Database -->
 		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
+			<groupId>com.microsoft</groupId>
 			<artifactId>sqljdbc4</artifactId>
-			<version>4.0</version>
+			<version>3.0</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

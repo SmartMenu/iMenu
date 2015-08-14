@@ -2,7 +2,6 @@ package com.smartmenu.filters;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONObject;
 
 import com.smartmenu.utils.ReturnMsgCode;
+import com.smartmenu.utils.SmartCheck;
 
 /**
  * Servlet Filter implementation class AccessControlFilter
@@ -24,6 +24,9 @@ import com.smartmenu.utils.ReturnMsgCode;
 public class AccessControlFilter implements Filter {
 	private static List<String> lsMacs = new ArrayList<String>();
 	private int maxClients;
+	private long firstUseTime;
+	private long endUseTime;
+	private boolean checkLicenseFlag=false;
     public int getMaxClients() {
 		return maxClients;
 	}
@@ -50,7 +53,15 @@ public class AccessControlFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
+		long currTime=System.currentTimeMillis();
+		if(!this.checkLicenseFlag || currTime<this.firstUseTime || currTime>this.endUseTime){
+			JSONObject json = new JSONObject();
+			json.put("status", 1);
+			json.put("msg", ReturnMsgCode.LICENSE_INVALID);
+			String callbak=request.getParameter("callback");
+			response.getWriter().write(callbak+"("+json.toString()+")");
+			return;
+		}
 		HttpServletRequest httpRequest = (HttpServletRequest)request;  
         String url = httpRequest.getRequestURI();  
         String mac = request.getParameter("mac");
@@ -114,8 +125,13 @@ public class AccessControlFilter implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
-		maxClients = Integer.parseInt(fConfig.getInitParameter("maxClients"));
+		//maxClients = Integer.parseInt(fConfig.getInitParameter("maxClients"));
+		SmartCheck checker = SmartCheck.getInstanse();
+		checker.takedownFirstUseTime(System.currentTimeMillis());
+		this.firstUseTime = checker.getFirstUseTime();
+		this.checkLicenseFlag = checker.checkLicense();
+		this.endUseTime = checker.getEndtime();
+		this.maxClients = checker.getConnector();
 	}
 
 }

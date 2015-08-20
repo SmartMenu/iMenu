@@ -18,6 +18,7 @@ public class BasicItem {
 	private BigDecimal itemPrice;
 	private BigDecimal itemSetPrice;
 	private String unit;
+	private int discountable;
 	
 	public BasicItem(){	
 	}
@@ -34,6 +35,7 @@ public class BasicItem {
 		itemPrice = item.getItemPrice();
 		itemSetPrice = item.getItemSetPrice();
 		unit = item.getUnit();
+		discountable = item.getDiscountable();
 	}
 	
 	public String getItemId() {
@@ -102,6 +104,15 @@ public class BasicItem {
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
+	
+	public int getDiscountable() {
+		return discountable;
+	}
+
+	public void setDiscountable(int discountable) {
+		this.discountable = discountable;
+	}
+
 	public JSONObject toJson(){
 		JSONObject json = new JSONObject();
 		json.put("item-id", itemId);
@@ -110,6 +121,7 @@ public class BasicItem {
 		json.put("plu-no", pluNo);
 		json.put("price", itemPrice);
 		json.put("item-pic", itemPic==null?" ": itemPic);
+		json.put("disc", discountable);
 		return json;
 	}
 	

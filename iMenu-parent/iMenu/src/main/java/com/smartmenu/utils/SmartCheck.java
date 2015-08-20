@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -39,20 +40,22 @@ public class SmartCheck {
 		return checker;
 	}
 	//record first use time
-	public void takedownFirstUseTime(long time){
+	public void takedownFirstUse(long time,String licenseID){
 		URL path = SmartCheck.class.getResource("/");
 		File file = new File(path.getPath()+fTime);
-		if(!file.exists()){
-			try {
-				file.createNewFile();
-				FileWriter fileWritter = new FileWriter(file,true);
-	             BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-	             bufferWritter.write(time+"");
-	             bufferWritter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		if(file.exists()){
+			file.delete();
 		}
+		try {
+			file.createNewFile();
+			FileWriter fileWritter = new FileWriter(file,true);
+             BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+             bufferWritter.write(time+","+licenseID);
+             bufferWritter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	//get first use time
 	public long getFirstUseTime(){
@@ -62,8 +65,10 @@ public class SmartCheck {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(file));
 				String line = br.readLine();
-				if(line != null)
-					return Long.parseLong(line);
+				if(line != null&&line.contains(",")){
+					String strTime = line.split(",")[0].trim();
+					return Long.parseLong(strTime);
+				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -71,6 +76,24 @@ public class SmartCheck {
 			}
 		}
 		return -1;
+	}
+	public String getLicenseID(){
+		URL path = SmartCheck.class.getResource("/");
+		File file = new File(path.getPath()+fTime);
+		if(file.exists()){
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String line = br.readLine();
+				if(line != null&&line.contains(","))
+					return line.split(",")[1];
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+		
 	}
 	//check license, return max connections
 	public boolean checkLicense(){
@@ -81,19 +104,23 @@ public class SmartCheck {
 		String[] data = publicDecrypt(key, input);
 		if(data == null)
 			return false;
-		if(!data[0].equals("null")){
+		String oldLicenseID = this.getLicenseID();
+		if(oldLicenseID==null||!oldLicenseID.equals(data[0])){
+			this.takedownFirstUse(System.currentTimeMillis(),data[0]);
+		}
+		if(!data[1].equals("null")){
 			String localMac = getLocalMac();
-			if(!localMac.equalsIgnoreCase(data[0]))
+			if(!localMac.equalsIgnoreCase(data[1]))
 				return false;
 		}
-		this.connector = Integer.parseInt(data[2]); 
+		this.connector = Integer.parseInt(data[3]); 
 		long firstTime = getFirstUseTime();
 		if(firstTime == -1){
 			return false;
 		}
 		Calendar caEnd = Calendar.getInstance();
 		caEnd.setTimeInMillis(firstTime);
-		caEnd.add(Calendar.MONTH, Integer.parseInt(data[3]));
+		caEnd.add(Calendar.MONTH, Integer.parseInt(data[4]));
 		this.endtime = caEnd.getTimeInMillis();
 		long currentTime = System.currentTimeMillis();
 		if(currentTime<firstTime|| currentTime>caEnd.getTimeInMillis()){
@@ -178,37 +205,39 @@ public class SmartCheck {
 	private String[] publicDecrypt(Key key, byte[] data){
 		try{
 			int formatFlag = 0;
-			String result[] = new String[4];
+			String result[] = new String[5];
 			Cipher cipher=Cipher.getInstance("RSA");  
 	        cipher.init(Cipher.DECRYPT_MODE, key);
 	        String temp = new String(cipher.doFinal(data),"UTF-8");
 	        if(temp.contains("&")){
 	        	String strs[] = temp.split("&");
 	        	
-	        	if(strs.length == 4){
-	        		if(strs[0].contains("mac")&&strs[0].contains("="))
+	        	if(strs.length == 5){
+	        		if(strs[0].contains("licenseID")&&strs[0].contains("="))
 	        			result[0] = strs[0].split("=")[1];
-	        		else
-	        			formatFlag = -1;
-	        		if(strs[1].contains("shop")&&strs[1].contains("="))
+	        		if(strs[1].contains("mac")&&strs[1].contains("="))
 	        			result[1] = strs[1].split("=")[1];
 	        		else
 	        			formatFlag = -1;
-	        		if(strs[2].contains("connector")&&strs[2].contains("=")){
-	        			String strConn = strs[2].split("=")[1];
+	        		if(strs[2].contains("shop")&&strs[2].contains("="))
+	        			result[2] = strs[2].split("=")[1];
+	        		else
+	        			formatFlag = -1;
+	        		if(strs[3].contains("connector")&&strs[3].contains("=")){
+	        			String strConn = strs[3].split("=")[1];
 	        			try{
 	        				int iTmp = Integer.parseInt(strConn);
-	        				result[2] = strConn;
+	        				result[3] = strConn;
 	        			}catch(Exception e){
 	        				formatFlag = -1;	        				
 	        			}
 	        		}else
 	        			formatFlag = -1;
-	        		if(strs[3].contains("month")&&strs[3].contains("=")){
-	        			String strMonth = strs[3].split("=")[1];
+	        		if(strs[4].contains("month")&&strs[4].contains("=")){
+	        			String strMonth = strs[4].split("=")[1];
 	        			try{
 	        				int iTmp = Integer.parseInt(strMonth);
-	        				result[3] = strMonth;
+	        				result[4] = strMonth;
 	        			}catch(Exception e){
 	        				formatFlag = -1;
 	        			}

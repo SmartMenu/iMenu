@@ -14,6 +14,7 @@ public class Item {
 	private BigDecimal itemPrice;
 	private BigDecimal itemSetPrice;
 	private String unit;
+	private int discountable;
 	
 	private int isModifier;
 	private String modifierId;
@@ -91,6 +92,12 @@ public class Item {
 		this.unit = unit;
 	}
 	
+	public int getDiscountable() {
+		return discountable;
+	}
+	public void setDiscountable(int discountable) {
+		this.discountable = discountable;
+	}
 	public String getPluNo() {
 		return pluNo;
 	}

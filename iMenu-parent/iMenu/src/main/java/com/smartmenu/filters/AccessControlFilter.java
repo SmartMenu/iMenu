@@ -99,26 +99,7 @@ public class AccessControlFilter implements Filter {
 	        // pass the request along the filter chain
 			chain.doFilter(request, response);
         }
-        
-//		long currTime=System.currentTimeMillis();
-//		Calendar ca = Calendar.getInstance();
-//		ca.set(Calendar.YEAR, 2016);
-//		ca.set(Calendar.MONTH, 1);
-//		ca.set(Calendar.DAY_OF_MONTH, 1);
-//		ca.set(Calendar.HOUR_OF_DAY, 0);
-//		ca.set(Calendar.MINUTE, 0);
-//		ca.set(Calendar.SECOND, 01);
-//		if(currTime<ca.getTimeInMillis()){
-//		
-//            // pass the request along the filter chain
-//			chain.doFilter(request, response);
-//		}else{
-//			JSONObject json = new JSONObject();
-//			json.put("status", 1);
-//			json.put("msg", ReturnMsgCode.ACCESS_LIMITED);
-//			String callbak=request.getParameter("callback");
-//			response.getWriter().write(callbak+"("+json.toString()+")");
-//		}
+       
 	}
 
 	/**
@@ -127,9 +108,8 @@ public class AccessControlFilter implements Filter {
 	public void init(FilterConfig fConfig) throws ServletException {
 		//maxClients = Integer.parseInt(fConfig.getInitParameter("maxClients"));
 		SmartCheck checker = SmartCheck.getInstanse();
-		checker.takedownFirstUseTime(System.currentTimeMillis());
-		this.firstUseTime = checker.getFirstUseTime();
 		this.checkLicenseFlag = checker.checkLicense();
+		this.firstUseTime = checker.getFirstUseTime();
 		this.endUseTime = checker.getEndtime();
 		this.maxClients = checker.getConnector();
 	}

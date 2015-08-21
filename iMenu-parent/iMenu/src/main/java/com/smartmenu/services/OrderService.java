@@ -138,6 +138,7 @@ public class OrderService {
 					System.out.println("SUCCESS");
 					status=0;
 					msg = ReturnMsgCode.SUCCESS;
+					json.put("tran_no", newOrder.getTranNo());
 				}else{
 					System.out.println("Printer list for kitchen failed.");
 					status = 1;
@@ -522,7 +523,7 @@ public class OrderService {
 		JSONObject json = new JSONObject();
 		String msg;
 		int status = 0;	
-		Order order = dbOrder.getExistOrder(shopId, posId, orderNo);
+		Order order = dbOrder.getOrder(shopId, posId, orderNo);
 		boolean result = printer.printListForCustomer(order);
 		if(result){
 			status = 0;

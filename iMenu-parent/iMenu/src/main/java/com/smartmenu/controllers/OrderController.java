@@ -29,7 +29,7 @@ public class OrderController {
             @RequestParam String tableid, @RequestParam String callback) throws IOException
     {
 		System.out.println("/getOrder: call order handler");
-		JSONObject json = orderService.getOldOrder(shopid, posid, tableid);
+		JSONObject json = orderService.getOldOrder(shopid, tableid);
 		System.out.println("/getOrder: handler finished");
 		return callback+"("+json.toString()+")";
     }
@@ -80,7 +80,7 @@ public class OrderController {
     		@RequestParam String callback) throws IOException
     {
 		System.out.println("/changeCover: call order handler deal the request");
-		JSONObject jRet=orderService.dealChangeCover(shopid, posid, orderno, cover);
+		JSONObject jRet=orderService.dealChangeCover(shopid, orderno, cover);
 		System.out.println("/changeCover: handler finished");
 		return callback+"("+jRet.toString()+")";
     }
@@ -93,7 +93,7 @@ public class OrderController {
     		 @RequestParam String oldtable, @RequestParam String callback) throws IOException
     {
 		System.out.println("/changeTable: call order handler deal the request");
-		JSONObject jRet=orderService.dealChangeTable(shopid, posid, orderno, newtable, oldtable);
+		JSONObject jRet=orderService.dealChangeTable(shopid, orderno, newtable, oldtable);
 		System.out.println("/changeTable: handler finished");
 		return callback+"("+jRet.toString()+")";
     }
@@ -106,7 +106,7 @@ public class OrderController {
     		@RequestParam String orderno, @RequestParam String callback) throws IOException
     {
 		System.out.println("/printOrder: call order handler deal the request");
-		JSONObject jRet=orderService.dealReqPrintOrder(shopid, posid, orderno);
+		JSONObject jRet=orderService.dealReqPrintOrder(shopid, orderno);
 		System.out.println("/printOrder: handler finished");
 		return callback+"("+jRet.toString()+")";
     }

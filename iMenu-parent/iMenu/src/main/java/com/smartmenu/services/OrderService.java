@@ -47,7 +47,7 @@ public class OrderService {
 			
 			String result = dbOrder.addNewOrder(order, lsOrderDetail);
 			if(result.equals("SUCCESS")){
-				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getPosId(), order.getTranNo());
+				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getTranNo());
 				boolean bl = printer.printListForKitchen(newOrder);
 				if(bl){
 					System.out.println("SUCCESS");
@@ -71,12 +71,12 @@ public class OrderService {
 		json.put("msg", msg);
 		return json;
 	}
-	public JSONObject getOldOrder(String shopId, String posId, String tableId){
+	public JSONObject getOldOrder(String shopId, String tableId){
 		JSONObject json=new JSONObject();
 		//JSONArray jaMsg=new JSONArray();
 		JSONObject jData=new JSONObject();
 		int status=0;
-		Order order=dbOrder.getExistOrder(shopId, posId, tableId);
+		Order order=dbOrder.getExistOrder(shopId, tableId);
 		if(order==null){
 			status=0;
 			json.put("status", status);
@@ -84,7 +84,7 @@ public class OrderService {
 			json.put("data", jData);
 			return json;
 		}
-		OrderDetail[] orderDetails=dbOrder.getOrderDetail(shopId, posId, order.getTranNo());
+		OrderDetail[] orderDetails=dbOrder.getOrderDetail(shopId, order.getTranNo());
 		if(orderDetails==null || orderDetails.length==0){
 			status=0;
 			json.put("status", status);
@@ -132,7 +132,7 @@ public class OrderService {
 		}else{
 			String result = dbOrder.appendExistOrder(order, lsNewOrderDetail);
 			if(result.equals("SUCCESS")){
-				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getPosId(), order.getTranNo());
+				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getTranNo());
 				boolean bl = printer.printListForKitchen(newOrder);
 				if(bl){
 					System.out.println("SUCCESS");
@@ -173,7 +173,7 @@ public class OrderService {
 		}else{
 			String result = dbOrder.deleteFromExistOrder(order, lsDeleteOrderDetail);
 			if(result.equals("SUCCESS")){
-				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getPosId(), order.getTranNo());
+				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getTranNo());
 				boolean bl = printer.printListForKitchen(newOrder);
 				if(bl){
 					System.out.println("SUCCESS");
@@ -481,11 +481,11 @@ public class OrderService {
 			return ls;
 	}
 	
-	public JSONObject dealChangeCover(String shopId, String posId, String orderno, int cover){
+	public JSONObject dealChangeCover(String shopId, String orderno, int cover){
 		JSONObject json = new JSONObject();
 		String msg;
 		int status = 0;	
-		String result = dbOrder.modifyCoverNumber(shopId, posId, orderno, cover);
+		String result = dbOrder.modifyCoverNumber(shopId, orderno, cover);
 		if (result.equals("SUCCESS")) {
 			status = 0;
 			msg = ReturnMsgCode.SUCCESS;
@@ -498,11 +498,11 @@ public class OrderService {
 		return json;
 	}
 	
-	public JSONObject dealChangeTable(String shopId, String posId, String orderNo, String newTableNo, String oldTableNo){
+	public JSONObject dealChangeTable(String shopId, String orderNo, String newTableNo, String oldTableNo){
 		JSONObject json = new JSONObject();
 		String msg;
 		int status = 0;
-		String result = dbOrder.changeTable(shopId, posId, orderNo, newTableNo,
+		String result = dbOrder.changeTable(shopId, orderNo, newTableNo,
 				oldTableNo);
 		if (result.equals("SUCCESS")) {
 			status = 0;
@@ -519,11 +519,11 @@ public class OrderService {
 		json.put("msg", msg);
 		return json;
 	}
-	public JSONObject dealReqPrintOrder(String shopId, String posId, String orderNo) {
+	public JSONObject dealReqPrintOrder(String shopId, String orderNo) {
 		JSONObject json = new JSONObject();
 		String msg;
 		int status = 0;	
-		Order order = dbOrder.getOrder(shopId, posId, orderNo);
+		Order order = dbOrder.getOrder(shopId, orderNo);
 		boolean result = printer.printListForCustomer(order);
 		if(result){
 			status = 0;

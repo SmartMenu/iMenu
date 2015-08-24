@@ -16,6 +16,9 @@ public class OrderDetail {
 	private int svchgAble;
 	private ServiceCharge serviceCharge;
 	private BigDecimal svchgAmount;
+	private int taxAble;
+	private Tax taxInfo;
+	private BigDecimal taxAmount;
 	private BigDecimal payAmount;
 	private int seqNo;
 	private String catId;
@@ -98,6 +101,25 @@ public class OrderDetail {
 	}
 	public void setSvchgAmount(BigDecimal svchgAmount) {
 		this.svchgAmount = svchgAmount;
+	}
+	
+	public int getTaxAble() {
+		return taxAble;
+	}
+	public void setTaxAble(int taxAble) {
+		this.taxAble = taxAble;
+	}
+	public Tax getTaxInfo() {
+		return taxInfo;
+	}
+	public void setTaxInfo(Tax taxInfo) {
+		this.taxInfo = taxInfo;
+	}
+	public BigDecimal getTaxAmount() {
+		return taxAmount;
+	}
+	public void setTaxAmount(BigDecimal taxAmount) {
+		this.taxAmount = taxAmount;
 	}
 	public BigDecimal getPayAmount() {
 		return payAmount;

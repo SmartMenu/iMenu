@@ -409,10 +409,13 @@ public class DBOrder{
 		if(svchg!=null){
 			map.put("svchg_rate", svchg.getValue().toPlainString());
 		}
-		//map.put("taxable", value);
-		//map.put("tax_id", value);
-		map.put("tax_rate", "0");
-		map.put("tax_amount", "0");
+		map.put("taxable", detail.getTaxAble()+"");
+		Tax tax = detail.getTaxInfo();
+		if(tax!=null){
+			map.put("tax_id", "'"+tax.getTaxId()+"'");
+			map.put("tax_rate", tax.getTaxValue().toPlainString());
+		}
+		map.put("tax_amount", detail.getTaxAmount().toPlainString());
 		map.put("net_amount", detail.getPayAmount().toPlainString());
 		map.put("order_by", "'"+order.getUserId()+"'");
 		map.put("order_shop", "'"+order.getShopId()+"'");
@@ -609,7 +612,11 @@ public class DBOrder{
 	} 
 	public OrderDetail[] getOrderDetail(String shopId, String tranNo){
 		String sql="  select a.code as item_id, a.seqno, case when a.ivoid_qty is null then a.qty else a.qty-a.ivoid_qty end as qty, " + 
-				    " a.price, a.desc1 as name, a.desc2 as name2, a.cat_id,b.desc1 as cat_name, b.desc2 as cat_name2 " +
+				    " a.price, " + 
+				    " case when a.discountable is null then 0 else a.discountable end as disc_able, " +
+				    " case when a.svchargeable is null then 0 else a.svchargeable end as svchg_able, " + 
+				    " case when a.taxable is null then 0 else a.taxable end as tax_able, " + 
+				    " a.desc1 as name, a.desc2 as name2, a.cat_id,b.desc1 as cat_name, b.desc2 as cat_name2 " +
 					" from dbo.sales_details a, dbo.category b " +
 					" where a.cat_id=b.cat_id and "	+ 
 					" shop_id='"+shopId+"' and tran_no='"+tranNo+"' and ivoid_status<>1;";
@@ -632,6 +639,9 @@ public class DBOrder{
 					detail.setDesc(rs.getString("name"));
 					detail.setDesc2(rs.getString("name2"));
 					detail.setSeqNo(rs.getInt("seqno"));
+					detail.setDiscAble(rs.getInt("disc_able"));
+					detail.setSvchgAble(rs.getInt("svchg_able"));
+					detail.setTaxAble(rs.getInt("tax_able"));
 					ls.add(detail);
 				}
 				if(ls==null || ls.size()==0)	

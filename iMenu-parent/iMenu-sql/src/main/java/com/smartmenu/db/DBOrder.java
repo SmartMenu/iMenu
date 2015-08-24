@@ -34,7 +34,7 @@ public class DBOrder{
 	private DBCommonUtil dbCommonUtil;
 	
 	//tranNo, checkNo
-	private synchronized String[] generateTranNoAndCheckNo(Connection conn, String shopId, String posId){
+	private synchronized String[] generateTranNoAndCheckNo(Connection conn, String shopId){
 		
 		//String sql="select id, seq, prefix, suffix, [length] from [dbo].[tranno] with (HOLDLOCK, TABLOCK) " +
 		//			" where shop_id='"+shopId+"' and (pos_id='"+posId+"' or pos_id='') and (id='SALESTRANNO' or id='CHECKNO' or id='SLIPNO') order by pos_id desc;";
@@ -93,7 +93,7 @@ public class DBOrder{
 		}
 	}
 
-	private boolean updateTranNoSettings(Connection conn, String shopId, String posId){
+	private boolean updateTranNoSettings(Connection conn, String shopId){
 		String sql="update [dbo].[tranno] set seq=seq+1 "+
 				" where shop_id='"+shopId+"' and (id='IMENUCHECKNO' or id='IMENUSALESTRANNO');";
 		System.out.println("UpdateTranNoSetting: "+ sql);
@@ -111,9 +111,9 @@ public class DBOrder{
 		try {
 			conn = dataSource.getConnection();
 			conn.setAutoCommit(false);
-			String[] strNos = this.generateTranNoAndCheckNo(conn, order.getShopId(), order.getPosId());
+			String[] strNos = this.generateTranNoAndCheckNo(conn, order.getShopId());
 			if(strNos!=null){
-				updateTranNoSettings(conn, order.getShopId(), order.getPosId());
+				updateTranNoSettings(conn, order.getShopId());
 				String tranNo = strNos[0];
 				order.setTranNo(tranNo);
 				order.setCheckNo(strNos[1]);
@@ -218,7 +218,7 @@ public class DBOrder{
 					+ " lastorder_by='"+order.getUserId()+"', "
 					+ "capture_systype=1, capture_systime=GETDATE(), capture_reproc_req=1, capture_reproc_status=0 ";
 			
-			updateSql += " where tran_no='"+order.getTranNo()+"' and shop_id='"+order.getShopId()+"' and pos_id='"+order.getPosId()+"'";
+			updateSql += " where tran_no='"+order.getTranNo()+"' and shop_id='"+order.getShopId()+"'";
 			System.out.println("Update order: " + updateSql);
 			int count=dbCommonUtil.execute(conn, updateSql);
 			if(count==-1){
@@ -227,7 +227,7 @@ public class DBOrder{
 				resultMsg="UPDATE_ORDER_FAILED";
 			}else{
 				//insert details
-			   Order newOrder = this.getOrder(conn, order.getShopId(), order.getPosId(), order.getTranNo());
+			   Order newOrder = this.getOrder(conn, order.getShopId(), order.getTranNo());
 			   StringBuffer detailsSql = new StringBuffer();
 			   for(OrderDetail orderDetail: lsNewOrderDetail){
 				   Map<String,String> detailProperty = this.buildOrderDetailProperty(newOrder, orderDetail);
@@ -499,10 +499,10 @@ public class DBOrder{
 	//
 	private static final String orderProperty=" shop_id, pos_id, tran_type, tran_no, check_no, tran_date, check_date, table_no, section_id," +
 	                                          "svchg_amount, tax_amount,disc_amount,subtotal_amount,total_amount " ;
-	public Order getExistOrder(String shopId, String posId, String tableId){
+	public Order getExistOrder(String shopId, String tableId){
 		String sql="select top 1 " + orderProperty +
 				   " from dbo.sales_header " +
-				   " where shop_id='"+shopId+"' and pos_id='" + posId + "' and table_no='"+tableId+"' and settled=0 order by tran_date desc;";
+				   " where shop_id='"+shopId+"' and table_no='"+tableId+"' and settled=0 order by tran_date desc;";
 		System.out.println("GetExistOrder: " + sql);
 		Order[] orders = queryOrders(sql);
 		
@@ -512,8 +512,8 @@ public class DBOrder{
 			return orders[0];
 		
 	}
-	public Order getOrder(String shopId, String posId, String tranNo){
-		String sql="select " + orderProperty + " from dbo.sales_header where tran_no='"+tranNo+"' and shop_id='"+shopId+"' and pos_id='"+posId+"'";
+	public Order getOrder(String shopId, String tranNo){
+		String sql="select " + orderProperty + " from dbo.sales_header where tran_no='"+tranNo+"' and shop_id='"+shopId+"'";
 		System.out.println("Get Order by TranNO: " + sql);
 		Order[] orders = queryOrders(sql);
 		
@@ -522,8 +522,8 @@ public class DBOrder{
 		else
 			return orders[0];
 	}
-	public Order getOrder(Connection conn, String shopId, String posId, String tranNo){
-		String sql="select " + orderProperty + " from dbo.sales_header where tran_no='"+tranNo+"' and shop_id='"+shopId+"' and pos_id='"+posId+"'";
+	public Order getOrder(Connection conn, String shopId, String tranNo){
+		String sql="select " + orderProperty + " from dbo.sales_header where tran_no='"+tranNo+"' and shop_id='"+shopId+"'";
 		System.out.println("Get Order by TranNO: " + sql);
 		Order[] orders = queryOrders(conn, sql);
 		
@@ -607,11 +607,11 @@ public class DBOrder{
 		else
 			return lsResult.toArray(new Order[]{});
 	} 
-	public OrderDetail[] getOrderDetail(String shopId, String posId, String tranNo){
+	public OrderDetail[] getOrderDetail(String shopId, String tranNo){
 		String sql="  select a.code as item_id, a.seqno, a.qty, a.price, a.desc1 as name, a.desc2 as name2, a.cat_id,b.desc1 as cat_name, b.desc2 as cat_name2 " +
 					" from dbo.sales_details a, dbo.category b " +
 					" where a.cat_id=b.cat_id and "	+ 
-					" shop_id='"+shopId+"' and pos_id='" + posId + "' and tran_no='"+tranNo+"' and ivoid_status<>1;";
+					" shop_id='"+shopId+"' and tran_no='"+tranNo+"' and ivoid_status<>1;";
 		System.out.println("Exist order details: " + sql);
 		List<Object> lsResult = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
@@ -669,11 +669,11 @@ public class DBOrder{
 	
 	private int modifyTableStatus(Connection conn, Order order){
 		String tableId=order.getTableId();
-		String sql = "select * from [dbo].[table_status] where table_id='"+tableId+"' and (operation_status=130 or operation_status=131);";
+		String sql = "select * from [dbo].[table_status] where shop_id='" + order.getShopId() + "' and table_id='"+tableId+"' and (operation_status=130 or operation_status=131);";
 		boolean flag=dbCommonUtil.checkExist(conn, sql);
 		if(flag)
 			return -1;
-		String tsSql="delete from [dbo].[table_status] where table_id='"+tableId+"';"; 
+		String tsSql="delete from [dbo].[table_status] where shop_id='" + order.getShopId() + "' and table_id='"+tableId+"';"; 
 		dbCommonUtil.execute(conn, tsSql);
 		tsSql=this.buildInsertSql("[dbo].[table_status]", this.buildTableStatusProperty(order));
 		int ts_count=dbCommonUtil.execute(conn, tsSql);
@@ -684,14 +684,14 @@ public class DBOrder{
 	}
 	
 	//update cover number of details
-	public String modifyCoverNumber(String shopId, String posId, String tranNo, int newCoverNumber){
+	public String modifyCoverNumber(String shopId, String tranNo, int newCoverNumber){
 		String resultMsg="";
 		Connection conn = null;
 		try {
 			conn = dataSource.getConnection();
 			conn.setAutoCommit(false);
 			String sql = "update dbo.sales_header set cover=" + newCoverNumber + 
-					    " where shop_id='" + shopId + "' and pos_id='"+posId+"' and tran_no='" + tranNo + "' and tran_type=0";
+					    " where shop_id='" + shopId + "' and tran_no='" + tranNo + "' and tran_type=0";
 			System.out.println("Modify Cover in sales_header SQL: " + sql);
 			int result = dbCommonUtil.execute(conn, sql);
 			String sql2 = "update dbo.table_status set cover=" + newCoverNumber + 
@@ -737,7 +737,7 @@ public class DBOrder{
 	}
 
 	//change table 
-	public String changeTable(String shopId, String posId, String orderNo, String newTableNo,
+	public String changeTable(String shopId, String orderNo, String newTableNo,
 			String oldTableNo) {
 		
 		String resultMsg="";
@@ -751,6 +751,7 @@ public class DBOrder{
 					+ " and shop_id='" + shopId + "'"
 					+ " and operation_status<>0 "
 					+ " and DATEDIFF(DD, status_time, GETDATE())=0";
+			System.out.println("Query Table Status: " + querySql);
 			boolean blExist = dbCommonUtil.checkExist(conn, querySql);
 			if(blExist){
 				resultMsg = "TABLE_OCCUPIED";
@@ -758,9 +759,10 @@ public class DBOrder{
 			}else{// when the table is empty, do next.
 				// 1. delete the new table's information from table_status
 				String deleteSql = "delete from dbo.table_status where table_id='" + newTableNo	+ "' "
-						+ " and shop_id='" + shopId + "'"
-						+ " and operation_status=0 "
-						+ " and DATEDIFF(DD, status_time, GETDATE())=0;";
+						+ " and shop_id='" + shopId + "';";
+						//+ " and operation_status=0 "
+						//+ " and DATEDIFF(DD, status_time, GETDATE())=0;";
+				System.out.println("Delete Table Information: " + deleteSql);
 				dbCommonUtil.execute(conn, deleteSql);
 				// 2. update the record of old table to new table
 				String updateSql = "update dbo.table_status set table_id='"	+ newTableNo + "', "
@@ -771,16 +773,18 @@ public class DBOrder{
 						+ " and shop_id='" + shopId + "'"
 						+ " and DATEDIFF(DD, status_time, GETDATE())=0 "
 						+ " and operation_status<>0";
+				System.out.println("Change Table: " + updateSql);
 				int result = dbCommonUtil.execute(conn, updateSql);
 				String updateSql_header = "update dbo.sales_header set table_no='" + newTableNo + "' "
 						+ " where tran_no='" + orderNo + "' " 
 						+ " and shop_id='" + shopId + "' "
-					    + " and pos_id='" + posId + "' and tran_type=0;";
+					    + " and tran_type=0;";
+				System.out.println("Update Sales Header: " + updateSql_header);
 				int result1 = dbCommonUtil.execute(conn, updateSql_header);
 				String updateSql_detail = "update dbo.sales_details set source_table='" + newTableNo + "' "
 						+ " where shop_id='" + shopId + "' "
-						+ " and pos_id='"+posId+"' "
 						+ " and tran_no='" + orderNo + "' and tran_type=0 and det_type=0";
+				System.out.println("Update Sales Details: " + updateSql_detail);
 				int result2 = dbCommonUtil.execute(conn, updateSql_detail);
 				if (result == 1 && result1 == 1 && result2 >= 1) {
 					System.out
@@ -827,9 +831,9 @@ public class DBOrder{
 		return resultMsg;
 	}
 	//
-	private int getMaxSeqNoOfOrderDetails(Connection conn, String shopId, String posId, String transNo){
+	private int getMaxSeqNoOfOrderDetails(Connection conn, String shopId, String transNo){
 		String sql = "select max(seqno) as seqno from dbo.sales_details where shop_id='"+shopId+"' "
-				  + " and pos_id='"+posId+"' and tran_no='" + transNo + "'";
+				  + " and tran_no='" + transNo + "'";
 		
 		List<Object> lsResult = dbCommonUtil.query(conn, sql, new ParseResultSetInterface(){
 
@@ -875,7 +879,7 @@ public class DBOrder{
 			if(order.getReasonDesc2() != null)
 				updateSql += ", void_reason_desc2='" + order.getReasonDesc2() + "' ";
 
-			updateSql += " where tran_no='"+order.getTranNo()+"' and shop_id='"+order.getShopId()+"' and pos_id='"+order.getPosId()+"'";
+			updateSql += " where tran_no='"+order.getTranNo()+"' and shop_id='"+order.getShopId()+"'";
 			System.out.println("Update order: " + updateSql);
 			int count=dbCommonUtil.execute(conn, updateSql);
 			if(count==-1){
@@ -884,7 +888,7 @@ public class DBOrder{
 				return "UPDATE_ORDER_FAILED";
 			}
 			//#02. update delete info to existing items
-		    Order newOrder = this.getOrder(conn, order.getShopId(), order.getPosId(), order.getTranNo());
+		    Order newOrder = this.getOrder(conn, order.getShopId(), order.getTranNo());
 		    StringBuffer updateDetailSql = new StringBuffer();
 		    for(OrderDetail orderDetail: lsDeleteOrderDetail){
 			   String tmp = "update dbo.sales_details set ivoid_status=2, ivoid_qty="+
@@ -909,7 +913,7 @@ public class DBOrder{
 			     return "UPDATE_DETAILS_FAILED";
 		    }
 		    //#03. add delete items info to sales_detail
-		    int seqno = this.getMaxSeqNoOfOrderDetails(conn, order.getShopId(), order.getPosId(), order.getTranNo());
+		    int seqno = this.getMaxSeqNoOfOrderDetails(conn, order.getShopId(), order.getTranNo());
 		    StringBuffer insertDeleteDetails = new StringBuffer();
 		    for(OrderDetail orderDetail: lsDeleteOrderDetail){
 			   Map<String,String> detailProperty = this.buildOrderDetailProperty(newOrder, orderDetail);

@@ -107,6 +107,9 @@ public class OrderService {
 			jDetail.put("cat-id", orderDetail.getCatId());
 			jDetail.put("cat-name", orderDetail.getCatName());
 			jDetail.put("cat-name2", orderDetail.getCatName2());
+			jDetail.put("disc-able", orderDetail.getDiscAble());
+			jDetail.put("svchg-able", orderDetail.getSvchgAble());
+			jDetail.put("tax-able", orderDetail.getTaxAble());
 			jaDetails.add(jDetail);
 		}
 		jData.put("details", jaDetails);
@@ -364,6 +367,8 @@ public class OrderService {
             discount:{"id":"","disc-type":,"rate":,"desc":"","desc2":""},discount-amount:,
 			service-charge-able:,
 			service-charge:{"id":,"desc":"","desc2":"","value":, "type":},service-charge-amount:,
+			tax-able:,
+			tax:{"id":,"value":}, tax-amount:
 			pay-amount:,cat-id:,desc:,desc2:,unit:,take-away:,
 			delete-reason: {reason-code:, reason-desc:, reason-desc2}}]
  * */
@@ -409,8 +414,7 @@ public class OrderService {
 			if(json.containsKey("discount-amount")){
 				String discAmount=json.getString("discount-amount");
 				if(discAmount==null||discAmount.trim().length()==0){
-					System.out.println("Discount amount can't be null.");
-					status=1;
+					orderDetail.setDiscAmount(new BigDecimal(0));
 				}else{
 					orderDetail.setDiscAmount(new BigDecimal(discAmount));
 				}
@@ -439,14 +443,41 @@ public class OrderService {
 			if(json.containsKey("service-charge-amount")){
 				String svchgAmount=json.getString("service-charge-amount");
 				if(svchgAmount==null||svchgAmount.trim().length()==0){
-					System.out.println("service charge amount can be null.");
-					status=1;
+					orderDetail.setSvchgAmount(new BigDecimal(0));		
 				}else{
 					orderDetail.setSvchgAmount(new BigDecimal(svchgAmount));
 				}
 			}else{
 				orderDetail.setSvchgAmount(new BigDecimal(0));				
 			}
+			if(json.containsKey("tax-able"))
+				orderDetail.setTaxAble(json.getInt("tax-able"));
+			else
+				orderDetail.setTaxAble(0);
+			if(json.containsKey("tax")){
+				JSONObject taxJson = json.getJSONObject("tax");
+				if(taxJson==null || taxJson.isEmpty()||taxJson.isNullObject())
+					orderDetail.setTaxInfo(null);
+				else{
+					//tax:{"id":,"desc":"","desc2":"","value":, "type":}, tax-amount:
+					Tax tax = new Tax();
+					tax.setTaxId(taxJson.getString("id"));
+					//tax.setTaxDesc(taxJson.getString("desc"));
+					//tax.setTaxDesc2(taxJson.getString("desc2"));
+					//tax.setTaxType(taxJson.getInt("type"));
+					tax.setTaxValue(new BigDecimal(taxJson.getString("value")));
+					orderDetail.setTaxInfo(tax);
+				}
+			}else
+				orderDetail.setTaxInfo(null);
+			if(json.containsKey("tax-amount")){
+				String taxAmountStr = json.getString("tax-amount");
+				if(taxAmountStr==null||taxAmountStr.trim().length()==0){
+					orderDetail.setTaxAmount(new BigDecimal(0));
+				}else
+					orderDetail.setTaxAmount(new BigDecimal(taxAmountStr));
+			}else
+				orderDetail.setTaxAmount(new BigDecimal(0));
 			//pay-amount:,cat-id:,desc:,desc2:,unit:,take-away:
 			String payAmount=json.getString("pay-amount");
 			if(payAmount==null||payAmount.trim().length()==0){

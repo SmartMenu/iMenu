@@ -409,10 +409,13 @@ public class DBOrder{
 		if(svchg!=null){
 			map.put("svchg_rate", svchg.getValue().toPlainString());
 		}
-		//map.put("taxable", value);
-		//map.put("tax_id", value);
-		map.put("tax_rate", "0");
-		map.put("tax_amount", "0");
+		map.put("taxable", detail.getTaxAble()+"");
+		Tax tax = detail.getTaxInfo();
+		if(tax!=null){
+			map.put("tax_id", "'"+tax.getTaxId()+"'");
+			map.put("tax_rate", tax.getTaxValue().toPlainString());
+		}
+		map.put("tax_amount", detail.getTaxAmount().toPlainString());
 		map.put("net_amount", detail.getPayAmount().toPlainString());
 		map.put("order_by", "'"+order.getUserId()+"'");
 		map.put("order_shop", "'"+order.getShopId()+"'");
@@ -502,7 +505,7 @@ public class DBOrder{
 	public Order getExistOrder(String shopId, String tableId){
 		String sql="select top 1 " + orderProperty +
 				   " from dbo.sales_header " +
-				   " where shop_id='"+shopId+"' and table_no='"+tableId+"' and settled=0 order by tran_date desc;";
+				   " where shop_id='"+shopId+"' and table_no='"+tableId+"' and settled=0 and void_status=0 order by tran_date desc;";
 		System.out.println("GetExistOrder: " + sql);
 		Order[] orders = queryOrders(sql);
 		
@@ -608,7 +611,12 @@ public class DBOrder{
 			return lsResult.toArray(new Order[]{});
 	} 
 	public OrderDetail[] getOrderDetail(String shopId, String tranNo){
-		String sql="  select a.code as item_id, a.seqno, a.qty, a.price, a.desc1 as name, a.desc2 as name2, a.cat_id,b.desc1 as cat_name, b.desc2 as cat_name2 " +
+		String sql="  select a.code as item_id, a.seqno, case when a.ivoid_qty is null then a.qty else a.qty-a.ivoid_qty end as qty, " + 
+				    " a.price, " + 
+				    " case when a.discountable is null then 0 else a.discountable end as disc_able, " +
+				    " case when a.svchargeable is null then 0 else a.svchargeable end as svchg_able, " + 
+				    " case when a.taxable is null then 0 else a.taxable end as tax_able, " + 
+				    " a.desc1 as name, a.desc2 as name2, a.cat_id,b.desc1 as cat_name, b.desc2 as cat_name2 " +
 					" from dbo.sales_details a, dbo.category b " +
 					" where a.cat_id=b.cat_id and "	+ 
 					" shop_id='"+shopId+"' and tran_no='"+tranNo+"' and ivoid_status<>1;";
@@ -619,6 +627,8 @@ public class DBOrder{
 			public List<Object> parseResult(ResultSet rs) throws SQLException {
 				List<Object> ls=new ArrayList<Object>();
 				while(rs.next()){
+					if(rs.getInt("qty") == 0)
+						continue;
 					OrderDetail detail = new OrderDetail();
 					detail.setCatId(rs.getString("cat_id"));
 					detail.setCatName(rs.getString("cat_name"));
@@ -629,6 +639,9 @@ public class DBOrder{
 					detail.setDesc(rs.getString("name"));
 					detail.setDesc2(rs.getString("name2"));
 					detail.setSeqNo(rs.getInt("seqno"));
+					detail.setDiscAble(rs.getInt("disc_able"));
+					detail.setSvchgAble(rs.getInt("svchg_able"));
+					detail.setTaxAble(rs.getInt("tax_able"));
 					ls.add(detail);
 				}
 				if(ls==null || ls.size()==0)	
@@ -777,13 +790,12 @@ public class DBOrder{
 				int result = dbCommonUtil.execute(conn, updateSql);
 				String updateSql_header = "update dbo.sales_header set table_no='" + newTableNo + "' "
 						+ " where tran_no='" + orderNo + "' " 
-						+ " and shop_id='" + shopId + "' "
-					    + " and tran_type=0;";
+						+ " and shop_id='" + shopId + "' ;";
 				System.out.println("Update Sales Header: " + updateSql_header);
 				int result1 = dbCommonUtil.execute(conn, updateSql_header);
 				String updateSql_detail = "update dbo.sales_details set source_table='" + newTableNo + "' "
 						+ " where shop_id='" + shopId + "' "
-						+ " and tran_no='" + orderNo + "' and tran_type=0 and det_type=0";
+						+ " and tran_no='" + orderNo + "'";
 				System.out.println("Update Sales Details: " + updateSql_detail);
 				int result2 = dbCommonUtil.execute(conn, updateSql_detail);
 				if (result == 1 && result1 == 1 && result2 >= 1) {
@@ -894,12 +906,11 @@ public class DBOrder{
 			   String tmp = "update dbo.sales_details set ivoid_status=2, ivoid_qty="+
 		                     orderDetail.getQty()+", ivoid_amount="+orderDetail.getTotalAmount()+
 		                     ", ivoid_total="+orderDetail.getPayAmount()+
-		                     ", qty=qty-"+orderDetail.getQty()+
-		                     ", amount=amount-"+orderDetail.getTotalAmount()+
-		                     ", total_amount=total_amount-"+orderDetail.getPayAmount()+
+		                     //", qty=qty-"+orderDetail.getQty()+
+		                     //", amount=amount-"+orderDetail.getTotalAmount()+
+		                     //", total_amount=total_amount-"+orderDetail.getPayAmount()+
 		                     ", modify_date=GETDATE(), modify_by='"+order.getUserId()+"'"+
 		                     " where shop_id='"+order.getShopId()+"' "
-		                     + " and pos_id='"+order.getPosId()+"' "
 		                     + " and tran_no='"+order.getTranNo()+"' "
 		                     + " and code='" + orderDetail.getItemId() + "' "
 		                     + " and seqno="+orderDetail.getSeqNo()+";";

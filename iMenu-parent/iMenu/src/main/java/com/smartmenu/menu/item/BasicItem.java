@@ -19,6 +19,7 @@ public class BasicItem {
 	private BigDecimal itemSetPrice;
 	private String unit;
 	private int discountable;
+	private int svchgAble;
 	
 	public BasicItem(){	
 	}
@@ -36,6 +37,7 @@ public class BasicItem {
 		itemSetPrice = item.getItemSetPrice();
 		unit = item.getUnit();
 		discountable = item.getDiscountable();
+		svchgAble = item.getSvchgAble();
 	}
 	
 	public String getItemId() {
@@ -112,6 +114,14 @@ public class BasicItem {
 	public void setDiscountable(int discountable) {
 		this.discountable = discountable;
 	}
+    
+	public int getSvchgAble() {
+		return svchgAble;
+	}
+
+	public void setSvchgAble(int svchgAble) {
+		this.svchgAble = svchgAble;
+	}
 
 	public JSONObject toJson(){
 		JSONObject json = new JSONObject();
@@ -121,7 +131,8 @@ public class BasicItem {
 		json.put("plu-no", pluNo);
 		json.put("price", itemPrice);
 		json.put("item-pic", itemPic==null?" ": itemPic);
-		json.put("disc", discountable);
+		json.put("disc-able", discountable);
+		json.put("svchg-allow", svchgAble);
 		return json;
 	}
 	

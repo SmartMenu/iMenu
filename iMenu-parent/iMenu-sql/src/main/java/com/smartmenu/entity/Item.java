@@ -15,10 +15,13 @@ public class Item {
 	private BigDecimal itemSetPrice;
 	private String unit;
 	private int discountable;
+	private int svchgAble;
 	
 	private int isModifier;
 	private String modifierId;
 	private String setId;
+	
+	
 	
 	private Category category;
 	
@@ -97,6 +100,13 @@ public class Item {
 	}
 	public void setDiscountable(int discountable) {
 		this.discountable = discountable;
+	}
+	
+	public int getSvchgAble() {
+		return svchgAble;
+	}
+	public void setSvchgAble(int svchgAble) {
+		this.svchgAble = svchgAble;
 	}
 	public String getPluNo() {
 		return pluNo;

@@ -40,7 +40,8 @@ public class OrderController {
     String makeNewOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
     {
-		JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
+		//JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
+		JSONObject json = JSONObject.fromObject(data);
 		System.out.println("/makeNewOrder: call order handler deal the request");
 		JSONObject jRet=orderService.makeNewOrder(json);
 		System.out.println("/makeNewOrder: handle finished");
@@ -52,7 +53,8 @@ public class OrderController {
     String updateOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
     {
-		JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
+		//JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
+		JSONObject json = JSONObject.fromObject(data);
 		System.out.println("/addToOrder: call order handler deal the request");
 		JSONObject jRet=orderService.addToOrder(json);
 		System.out.println("/addToOrder: handler finished");
@@ -65,7 +67,8 @@ public class OrderController {
     String deleteFromOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
     {
-		JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
+		//JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
+		JSONObject json = JSONObject.fromObject(data);
 		System.out.println("/deleteFromOrder: call order handler deal the request");
 		JSONObject jRet=orderService.deleteFromOrder(json);
 		System.out.println("/deleteFromOrder: handler finished");

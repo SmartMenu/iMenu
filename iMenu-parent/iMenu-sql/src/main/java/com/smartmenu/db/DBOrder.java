@@ -416,7 +416,7 @@ public class DBOrder{
 			map.put("tax_rate", tax.getTaxValue().toPlainString());
 		}
 		map.put("tax_amount", detail.getTaxAmount().toPlainString());
-		map.put("net_amount", detail.getPayAmount().toPlainString());
+		map.put("net_amount", detail.getTotalAmount().toPlainString());  //
 		map.put("order_by", "'"+order.getUserId()+"'");
 		map.put("order_shop", "'"+order.getShopId()+"'");
 		map.put("order_pos", "'"+order.getPosId()+"'");

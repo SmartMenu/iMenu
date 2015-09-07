@@ -409,6 +409,7 @@ public class DBOrder{
 		if(svchg!=null){
 			map.put("svchg_rate", svchg.getValue().toPlainString());
 		}
+		map.put("svchg_amount", detail.getSvchgAmount().toPlainString());
 		map.put("taxable", detail.getTaxAble()+"");
 		Tax tax = detail.getTaxInfo();
 		if(tax!=null){

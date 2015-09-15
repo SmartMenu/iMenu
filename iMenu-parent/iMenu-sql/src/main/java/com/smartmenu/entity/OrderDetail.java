@@ -9,6 +9,9 @@ public class OrderDetail {
 	private int qty;
 	private BigDecimal price;
 	private int subtype;
+	private int isModifier;
+	private int linkRow;
+	private BigDecimal modifierValue;
 	private BigDecimal totalAmount;
 	private int discAble;
 	private Discount discount;
@@ -58,6 +61,25 @@ public class OrderDetail {
 	}
 	public void setSubtype(int subtype) {
 		this.subtype = subtype;
+	}
+	
+	public int getIsModifier() {
+		return isModifier;
+	}
+	public void setIsModifier(int isModifier) {
+		this.isModifier = isModifier;
+	}
+	public int getLinkRow() {
+		return linkRow;
+	}
+	public void setLinkRow(int linkRow) {
+		this.linkRow = linkRow;
+	}
+	public BigDecimal getModifierValue() {
+		return modifierValue;
+	}
+	public void setModifierValue(BigDecimal modifierValue) {
+		this.modifierValue = modifierValue;
 	}
 	public BigDecimal getTotalAmount() {
 		return totalAmount;

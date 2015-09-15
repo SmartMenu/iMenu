@@ -109,6 +109,10 @@ public class OrderService {
 			jDetail.put("disc-able", orderDetail.getDiscAble());
 			jDetail.put("svchg-able", orderDetail.getSvchgAble());
 			jDetail.put("tax-able", orderDetail.getTaxAble());
+			jDetail.put("subtype", orderDetail.getSubtype());
+			jDetail.put("is-modifier", orderDetail.getIsModifier());
+			jDetail.put("link-row", orderDetail.getLinkRow());
+			jDetail.put("modifier-value", orderDetail.getModifierValue());
 			jaDetails.add(jDetail);
 		}
 		jData.put("details", jaDetails);
@@ -361,7 +365,7 @@ public class OrderService {
 			return order;
 	}
 /*
- * "details":[{"item-id":,"seq":,"qty":,"price":,"subtype":, total-amount:,discount-able:,
+ * "details":[{"item-id":,"seq":,"qty":,"price":,"subtype":, "is-modifier":,"link-row":,"modifier-value":,total-amount:,discount-able:,
             discount:{"id":"","disc-type":,"rate":,"desc":"","desc2":""},discount-amount:,
 			service-charge-able:,
 			service-charge:{"id":,"desc":"","desc2":"","value":, "type":},service-charge-amount:,
@@ -388,6 +392,9 @@ public class OrderService {
 			orderDetail.setQty(json.getInt("qty"));
 			orderDetail.setPrice(new BigDecimal(json.getString("price")));
 			orderDetail.setSubtype(json.getInt("subtype"));
+			orderDetail.setIsModifier(json.getInt("is-modifier"));
+			orderDetail.setLinkRow(json.getInt("link-row"));
+			orderDetail.setModifierValue(new BigDecimal(json.getString("modifier-value")));
 			orderDetail.setTotalAmount(new BigDecimal(json.getString("total-amount")));
 			if(json.containsKey("discount-able"))
 				orderDetail.setDiscAble(json.getInt("discount-able"));

@@ -373,8 +373,8 @@ public class DBOrder{
 		map.put("tran_date", "'"+sdf.format(order.getTranDate())+"'");
 		map.put("det_type", "0");
 		map.put("seqno", ""+detail.getSeqNo()+"");
-		map.put("subtype",""+detail.getSubtype()); ///////////////////////////
-		//map.put("link_row","");
+		map.put("subtype",""+detail.getSubtype()); //////////////////////////
+		map.put("link_row",""+detail.getLinkRow());
 		map.put("shift_no", "0");
 		//map.put("[close]", "0");
 		map.put("start_id", "' '");
@@ -421,7 +421,7 @@ public class DBOrder{
 		map.put("order_by", "'"+order.getUserId()+"'");
 		map.put("order_shop", "'"+order.getShopId()+"'");
 		map.put("order_pos", "'"+order.getPosId()+"'");
-		//map.put("is_modifier", value);
+		map.put("is_modifier", ""+detail.getIsModifier());
 		map.put("cost", "0");
 		//map.put("stock_code", value);
 		map.put("total_cost", "0");
@@ -451,7 +451,10 @@ public class DBOrder{
 		map.put("modifier1_value","0");
 		map.put("modifier1_op","0");
 		map.put("modifier2_id","''");
-		map.put("modifier2_value","0");
+		if(detail.getModifierValue() == null)
+			map.put("modifier2_value", "0");
+		else
+			map.put("modifier2_value",detail.getModifierValue().toPlainString());
 		map.put("modifier2_op","0");
 		map.put("rush","0");
 		map.put("pantry","0");
@@ -617,10 +620,10 @@ public class DBOrder{
 				    " case when a.discountable is null then 0 else a.discountable end as disc_able, " +
 				    " case when a.svchargeable is null then 0 else a.svchargeable end as svchg_able, " + 
 				    " case when a.taxable is null then 0 else a.taxable end as tax_able, " + 
-				    " a.desc1 as name, a.desc2 as name2, a.cat_id,b.desc1 as cat_name, b.desc2 as cat_name2 " +
+				    " a.desc1 as name, a.desc2 as name2, a.cat_id,b.desc1 as cat_name, b.desc2 as cat_name2, subtype, is_modifier, link_row, modifier2_value " +
 					" from dbo.sales_details a, dbo.category b " +
 					" where a.cat_id=b.cat_id and "	+ 
-					" shop_id='"+shopId+"' and tran_no='"+tranNo+"' and ivoid_status<>1;";
+					" shop_id='"+shopId+"' and tran_no='"+tranNo+"' and ivoid_status<>1 order by a.seqno;";
 		System.out.println("Exist order details: " + sql);
 		List<Object> lsResult = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
@@ -643,6 +646,10 @@ public class DBOrder{
 					detail.setDiscAble(rs.getInt("disc_able"));
 					detail.setSvchgAble(rs.getInt("svchg_able"));
 					detail.setTaxAble(rs.getInt("tax_able"));
+					detail.setSubtype(rs.getInt("subtype"));
+					detail.setIsModifier(rs.getInt("is_modifier"));
+					detail.setLinkRow(rs.getInt("link_row"));
+					detail.setModifierValue(rs.getBigDecimal("modifier2_value"));
 					ls.add(detail);
 				}
 				if(ls==null || ls.size()==0)	

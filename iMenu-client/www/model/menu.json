@@ -1,0 +1,929 @@
+[
+  {
+    "lookup-id": "01",
+    "lookup-name": "PORK",
+    "lookup-name2": "豬類",
+    "lookup-type": 2,
+    "items": [
+      {
+        "item-id": "101",
+        "item-name": "Assorted Pork",
+        "item_name2": "豬豬盛盆",
+        "item-seq": 1,
+        "price": 298,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "101.jpg"
+      },
+      {
+        "item-id": "102",
+        "item-name": "6 Flavors Set",
+        "item_name2": "六味小豬豬",
+        "item-seq": 2,
+        "price": 238,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "102.jpg"
+      },
+      {
+        "item-id": "103",
+        "item-name": "3 Flavors Set",
+        "item_name2": "三味小豬豬",
+        "item-seq": 3,
+        "price": 138,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "103.jpg"
+      },
+      {
+        "item-id": "104",
+        "item-name": "Pork Belly",
+        "item_name2": "原味豬腩肉",
+        "item-seq": 4,
+        "price": 98,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "104.jpg"
+      },
+      {
+        "item-id": "105",
+        "item-name": "Pork Skin in Korean Style",
+        "item_name2": "韓版豬皮(配黃豆粉)",
+        "item-seq": 5,
+        "price": 88,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "105.jpg"
+      },
+      {
+        "item-id": "106",
+        "item-name": "Pork Loin",
+        "item_name2": "原味梅豚肉",
+        "item-seq": 6,
+        "price": 88,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "106.jpg"
+      },
+      {
+        "item-id": "107",
+        "item-name": "Pork Jowl",
+        "item_name2": "味噌豬頸肉",
+        "item-seq": 7,
+        "price": 118,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "107.jpg"
+      },
+      {
+        "item-id": "108",
+        "item-name": "Pig's Intestines",
+        "item_name2": "香草豬大腸(配柚子蜜)",
+        "item-seq": 8,
+        "price": 98,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "108.jpg"
+      },
+      {
+        "item-id": "109",
+        "item-name": "Pork Ribs",
+        "item_name2": "豬排骨",
+        "item-seq": 9,
+        "price": 138,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "109.jpg"
+      },
+      {
+        "item-id": "110",
+        "item-name": "Kurobuta Pork",
+        "item_name2": "原味黑豚肉",
+        "item-seq": 10,
+        "price": 138,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "110.jpg"
+      },
+      {
+        "item-id": "111",
+        "item-name": "Pork Ribs with Cheese",
+        "item_name2": "芝士豬排骨",
+        "item-seq": 11,
+        "price": 158,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "111.jpg"
+      },
+      {
+        "item-id": "112",
+        "item-name": "Pork Jowl with Cheese",
+        "item_name2": "芝士豬頸肉",
+        "item-seq": 12,
+        "price": 138,
+        "cat-id": "01",
+        "cat-name": "豬類",
+        "cat-name2": "豬類",
+        "item-pic": "112.jpg"
+      },
+      {
+        "item-id": "0S1",
+        "item-name": "Set Menu A",
+        "item_name2": "套餐 A",
+        "item-seq": 13,
+        "price": 98,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": " "
+      }
+    ]
+  },
+  {
+    "lookup-id": "02",
+    "lookup-name": "BEEF",
+    "lookup-name2": "牛類",
+    "lookup-type": 2,
+    "items": [
+      {
+        "item-id": "201",
+        "item-name": "Assorted Beef",
+        "item_name2": "牛牛盛盆",
+        "item-seq": 1,
+        "price": 298,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "201.jpg"
+      },
+      {
+        "item-id": "202",
+        "item-name": "Australian Wagyu Beef",
+        "item_name2": "澳洲和牛(配檸檬)",
+        "item-seq": 2,
+        "price": 268,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "202.jpg"
+      },
+      {
+        "item-id": "203",
+        "item-name": "Beef Ribs",
+        "item_name2": "原味牛肋骨",
+        "item-seq": 3,
+        "price": 148,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "203.jpg"
+      },
+      {
+        "item-id": "204",
+        "item-name": "Rib Eye",
+        "item_name2": "牛肉眼",
+        "item-seq": 4,
+        "price": 138,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "204.jpg"
+      },
+      {
+        "item-id": "205",
+        "item-name": "SnowFlake Beef",
+        "item_name2": "雪花牛肉",
+        "item-seq": 5,
+        "price": 188,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "205.jpg"
+      },
+      {
+        "item-id": "206",
+        "item-name": "Beef Tongue Strips",
+        "item_name2": "牛舌條(配檸檬)",
+        "item-seq": 6,
+        "price": 98,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "206.jpg"
+      },
+      {
+        "item-id": "207",
+        "item-name": "Ox Trips",
+        "item_name2": "牛胃(配柚子蜜)",
+        "item-seq": 7,
+        "price": 138,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "207.jpg"
+      },
+      {
+        "item-id": "208",
+        "item-name": "Korean Spicy Ox Intestine",
+        "item_name2": "辛辣牛小腸(配柚子蜜)",
+        "item-seq": 8,
+        "price": 98,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "208.jpg"
+      },
+      {
+        "item-id": "209",
+        "item-name": "Diced Beef",
+        "item_name2": "蒜鹽一口牛",
+        "item-seq": 9,
+        "price": 98,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "209.jpg"
+      },
+      {
+        "item-id": "210",
+        "item-name": "Hamburger Beef with Cheese",
+        "item_name2": "芝士牛肉漢堡",
+        "item-seq": 10,
+        "price": 148,
+        "cat-id": "02",
+        "cat-name": "牛類",
+        "cat-name2": "牛類",
+        "item-pic": "210.jpg"
+      }
+    ]
+  },
+  {
+    "lookup-id": "03",
+    "lookup-name": "禽類",
+    "lookup-name2": "禽類",
+    "lookup-type": 3,
+    "items": [
+      {
+        "item-id": "301",
+        "item-name": "Herb Flavor Chicken Thigh",
+        "item_name2": "香草雞腿肉",
+        "item-seq": 1,
+        "price": 88,
+        "cat-id": "03",
+        "cat-name": "禽類",
+        "cat-name2": "禽類",
+        "item-pic": "301.jpg"
+      },
+      {
+        "item-id": "302",
+        "item-name": "Chicken Wings 4pc",
+        "item_name2": "雞羽肉 4pc",
+        "item-seq": 2,
+        "price": 58,
+        "cat-id": "03",
+        "cat-name": "禽類",
+        "cat-name2": "禽類",
+        "item-pic": "302.jpg"
+      },
+      {
+        "item-id": "303",
+        "item-name": "Chicken Kidney",
+        "item_name2": "雞腎(配柚子蜜)",
+        "item-seq": 3,
+        "price": 88,
+        "cat-id": "03",
+        "cat-name": "禽類",
+        "cat-name2": "禽類",
+        "item-pic": "303.jpg"
+      },
+      {
+        "item-id": "304",
+        "item-name": "Chicken Skin 3pc",
+        "item_name2": "雞皮(配檸檬) 3pc",
+        "item-seq": 4,
+        "price": 48,
+        "cat-id": "03",
+        "cat-name": "禽類",
+        "cat-name2": "禽類",
+        "item-pic": "304.jpg"
+      },
+      {
+        "item-id": "305",
+        "item-name": "Spicy Chicken Feet",
+        "item_name2": "辣味鳳爪",
+        "item-seq": 5,
+        "price": 88,
+        "cat-id": "03",
+        "cat-name": "禽類",
+        "cat-name2": "禽類",
+        "item-pic": "305.jpg"
+      }
+    ]
+  },
+  {
+    "lookup-id": "05",
+    "lookup-name": "海鮮類",
+    "lookup-name2": "海鮮類",
+    "lookup-type": 3,
+    "items": [
+      {
+        "item-id": "501",
+        "item-name": "Seafood Platter",
+        "item_name2": "海鮮盛盤",
+        "item-seq": 1,
+        "price": 338,
+        "cat-id": "05",
+        "cat-name": "海鮮類",
+        "cat-name2": "海鮮類",
+        "item-pic": "501.jpg"
+      },
+      {
+        "item-id": "502",
+        "item-name": "Abalone 2pc",
+        "item_name2": "鮮鮑魚(配芥末沙茶醬) 2pc",
+        "item-seq": 2,
+        "price": 88,
+        "cat-id": "05",
+        "cat-name": "海鮮類",
+        "cat-name2": "海鮮類",
+        "item-pic": "502.jpg"
+      },
+      {
+        "item-id": "503",
+        "item-name": "8 Inches Tiger Prawn 2pc",
+        "item_name2": "8吋虎蝦(配檸檬) 2pc",
+        "item-seq": 3,
+        "price": 128,
+        "cat-id": "05",
+        "cat-name": "海鮮類",
+        "cat-name2": "海鮮類",
+        "item-pic": "503.jpg"
+      },
+      {
+        "item-id": "504",
+        "item-name": "Scallop 4pc",
+        "item_name2": "深水帶子(配檸檬) 4pc",
+        "item-seq": 4,
+        "price": 138,
+        "cat-id": "05",
+        "cat-name": "海鮮類",
+        "cat-name2": "海鮮類",
+        "item-pic": "504.jpg"
+      },
+      {
+        "item-id": "505",
+        "item-name": "Squid 2pc",
+        "item_name2": "魷魚 2pc",
+        "item-seq": 5,
+        "price": 88,
+        "cat-id": "05",
+        "cat-name": "海鮮類",
+        "cat-name2": "海鮮類",
+        "item-pic": "505.jpg"
+      },
+      {
+        "item-id": "506",
+        "item-name": "Mackerel Fillet",
+        "item_name2": "鯖魚柳(配檸檬)",
+        "item-seq": 6,
+        "price": 88,
+        "cat-id": "05",
+        "cat-name": "海鮮類",
+        "cat-name2": "海鮮類",
+        "item-pic": "506.jpg"
+      },
+      {
+        "item-id": "507",
+        "item-name": "Flounder",
+        "item_name2": "比目魚(配檸檬 芥末沙茶醬)",
+        "item-seq": 7,
+        "price": 108,
+        "cat-id": "05",
+        "cat-name": "海鮮類",
+        "cat-name2": "海鮮類",
+        "item-pic": "507.jpg"
+      },
+      {
+        "item-id": "508",
+        "item-name": "Oyster 4pc",
+        "item_name2": "廣烏蠔(配牛油) 4pc",
+        "item-seq": 8,
+        "price": 48,
+        "cat-id": "05",
+        "cat-name": "海鮮類",
+        "cat-name2": "海鮮類",
+        "item-pic": "508.jpg"
+      }
+    ]
+  },
+  {
+    "lookup-id": "06",
+    "lookup-name": "田園蔬菜",
+    "lookup-name2": "田園蔬菜",
+    "lookup-type": 3,
+    "items": [
+      {
+        "item-id": "602",
+        "item-name": "Assorted Mushroom",
+        "item_name2": "野菌盛盒",
+        "item-seq": 2,
+        "price": 78,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "602.jpg"
+      },
+      {
+        "item-id": "602",
+        "item-name": "Assorted Mushroom",
+        "item_name2": "野菌盛盒",
+        "item-seq": 2,
+        "price": 78,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "602.jpg"
+      },
+      {
+        "item-id": "603",
+        "item-name": "Pumpkin 6pc",
+        "item_name2": "南瓜 6pc",
+        "item-seq": 3,
+        "price": 22,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "603.jpg"
+      },
+      {
+        "item-id": "604",
+        "item-name": "Eggplant 6pc",
+        "item_name2": "茄子 6pc",
+        "item-seq": 4,
+        "price": 22,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "604.jpg"
+      },
+      {
+        "item-id": "605",
+        "item-name": "Courgette 6pc",
+        "item_name2": "翠玉瓜 6pc",
+        "item-seq": 5,
+        "price": 22,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "605.jpg"
+      },
+      {
+        "item-id": "606",
+        "item-name": "Corn 6pc",
+        "item_name2": "栗米 6pc",
+        "item-seq": 6,
+        "price": 22,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "606.jpg"
+      },
+      {
+        "item-id": "607",
+        "item-name": "Fresh Trumpet Mushroom 6pc",
+        "item_name2": "鮮冬菇 6pc",
+        "item-seq": 7,
+        "price": 28,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "607.jpg"
+      },
+      {
+        "item-id": "608",
+        "item-name": "King Trumpet Mushroom 6pc",
+        "item_name2": "雞脾菇 6pc",
+        "item-seq": 8,
+        "price": 28,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "608.jpg"
+      },
+      {
+        "item-id": "609",
+        "item-name": "Enoki Mushroom 6pc",
+        "item_name2": "金針菇 6pc",
+        "item-seq": 9,
+        "price": 28,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "609.jpg"
+      },
+      {
+        "item-id": "610",
+        "item-name": "Fresh White Mushroom 6pc",
+        "item_name2": "鮮白蘑菇 6pc",
+        "item-seq": 10,
+        "price": 38,
+        "cat-id": "06",
+        "cat-name": "田園蔬菜",
+        "cat-name2": "田園蔬菜",
+        "item-pic": "610.jpg"
+      }
+    ]
+  },
+  {
+    "lookup-id": "07",
+    "lookup-name": "韓式料理",
+    "lookup-name2": "韓式料理",
+    "lookup-type": 3,
+    "items": [
+      {
+        "item-id": "701",
+        "item-name": "Cold Noodles",
+        "item_name2": "韓板冷麵",
+        "item-seq": 1,
+        "price": 88,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "701.jpg"
+      },
+      {
+        "item-id": "702",
+        "item-name": "Budae Jigae Noodles",
+        "item_name2": "韓板湯麵",
+        "item-seq": 2,
+        "price": 88,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "702.jpg"
+      },
+      {
+        "item-id": "703",
+        "item-name": "Budae Jigae Chapagetii",
+        "item_name2": "韓板炸醬麵",
+        "item-seq": 3,
+        "price": 68,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "703.jpg"
+      },
+      {
+        "item-id": "704",
+        "item-name": "Budae Jigae Shake Shake Lunch Box",
+        "item_name2": "韓板Shake Shake飯",
+        "item-seq": 4,
+        "price": 68,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "704.jpg"
+      },
+      {
+        "item-id": "705",
+        "item-name": "Korean Ginseng Soup",
+        "item_name2": "人參雞湯",
+        "item-seq": 5,
+        "price": 168,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "705.jpg"
+      },
+      {
+        "item-id": "706",
+        "item-name": "Kimchi Soup",
+        "item_name2": "泡菜豆腐湯",
+        "item-seq": 6,
+        "price": 108,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "706.jpg"
+      },
+      {
+        "item-id": "707",
+        "item-name": "Seafood Kimshi Soup",
+        "item_name2": "海鮮泡菜湯",
+        "item-seq": 7,
+        "price": 128,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "707.jpg"
+      },
+      {
+        "item-id": "708",
+        "item-name": "Tofu Soup",
+        "item_name2": "大醬豆腐湯",
+        "item-seq": 8,
+        "price": 108,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "708.jpg"
+      },
+      {
+        "item-id": "709",
+        "item-name": "Seafood Tofu Soup",
+        "item_name2": "大醬海鮮豆腐湯",
+        "item-seq": 9,
+        "price": 128,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "709.jpg"
+      },
+      {
+        "item-id": "710",
+        "item-name": "Kimchi Pancake",
+        "item_name2": "6吋泡菜煎餅",
+        "item-seq": 10,
+        "price": 48,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "710.jpg"
+      },
+      {
+        "item-id": "711",
+        "item-name": "Seafood Kimchi Pancake",
+        "item_name2": "6吋海鮮泡菜煎餅",
+        "item-seq": 11,
+        "price": 78,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "711.jpg"
+      },
+      {
+        "item-id": "712",
+        "item-name": "Cheese Kimchi Pancake",
+        "item_name2": "6吋芝士泡菜煎餅",
+        "item-seq": 12,
+        "price": 58,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "712.jpg"
+      },
+      {
+        "item-id": "713",
+        "item-name": "Pancake with Cheese,Seafood and Kimchi",
+        "item_name2": "6吋芝士海鮮泡菜煎餅",
+        "item-seq": 13,
+        "price": 88,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "713.jpg"
+      },
+      {
+        "item-id": "714",
+        "item-name": "Rice",
+        "item_name2": "白飯",
+        "item-seq": 14,
+        "price": 12,
+        "cat-id": "07",
+        "cat-name": "韓式料理",
+        "cat-name2": "韓式料理",
+        "item-pic": "714.jpg"
+      }
+    ]
+  },
+  {
+    "lookup-id": "09",
+    "lookup-name": "酒精類",
+    "lookup-name2": "酒精類",
+    "lookup-type": 4,
+    "items": [
+      {
+        "item-id": "1001",
+        "item-name": "Korean Beer",
+        "item_name2": "韓國啤酒",
+        "item-seq": 1,
+        "price": 20,
+        "cat-id": "08",
+        "cat-name": "酒精類",
+        "cat-name2": "酒精類",
+        "item-pic": "1001.jpg"
+      },
+      {
+        "item-id": "1002",
+        "item-name": "Fresh Soju",
+        "item_name2": "真露",
+        "item-seq": 2,
+        "price": 58,
+        "cat-id": "08",
+        "cat-name": "酒精類",
+        "cat-name2": "酒精類",
+        "item-pic": "1002.jpg"
+      },
+      {
+        "item-id": "1003",
+        "item-name": "Chungha",
+        "item_name2": "清河酒",
+        "item-seq": 3,
+        "price": 68,
+        "cat-id": "08",
+        "cat-name": "酒精類",
+        "cat-name2": "酒精類",
+        "item-pic": "1003.jpg"
+      },
+      {
+        "item-id": "1004",
+        "item-name": "Soju",
+        "item_name2": "真露米酒",
+        "item-seq": 4,
+        "price": 138,
+        "cat-id": "08",
+        "cat-name": "酒精類",
+        "cat-name2": "酒精類",
+        "item-pic": "1004.jpg"
+      },
+      {
+        "item-id": "1005",
+        "item-name": "Soju",
+        "item_name2": "真露有氣米酒",
+        "item-seq": 5,
+        "price": 138,
+        "cat-id": "08",
+        "cat-name": "酒精類",
+        "cat-name2": "酒精類",
+        "item-pic": "1005.jpg"
+      },
+      {
+        "item-id": "1006",
+        "item-name": "Sansachun",
+        "item_name2": "山楂酒",
+        "item-seq": 6,
+        "price": 118,
+        "cat-id": "08",
+        "cat-name": "酒精類",
+        "cat-name2": "酒精類",
+        "item-pic": "1006.jpg"
+      }
+    ]
+  },
+  {
+    "lookup-id": "10",
+    "lookup-name": "果汁類",
+    "lookup-name2": "果汁類",
+    "lookup-type": 4,
+    "items": [
+      {
+        "item-id": "1012",
+        "item-name": "Crushed Grape Squash",
+        "item_name2": "粒粒青提子果肉",
+        "item-seq": 1,
+        "price": 15,
+        "cat-id": "09",
+        "cat-name": "果汁類",
+        "cat-name2": "果汁類",
+        "item-pic": "1012.jpg"
+      },
+      {
+        "item-id": "1013",
+        "item-name": "Crushed Pear Squash",
+        "item_name2": "粒粒梨果肉",
+        "item-seq": 2,
+        "price": 15,
+        "cat-id": "09",
+        "cat-name": "果汁類",
+        "cat-name2": "果汁類",
+        "item-pic": "1013.jpg"
+      },
+      {
+        "item-id": "1014",
+        "item-name": "Crushed Peach Squash",
+        "item_name2": "粒粒水蜜桃果肉",
+        "item-seq": 3,
+        "price": 15,
+        "cat-id": "09",
+        "cat-name": "果汁類",
+        "cat-name2": "果汁類",
+        "item-pic": "1014.jpg"
+      }
+    ]
+  },
+  {
+    "lookup-id": "11",
+    "lookup-name": "汽水類",
+    "lookup-name2": "汽水類",
+    "lookup-type": 4,
+    "items": [
+      {
+        "item-id": "1007",
+        "item-name": "Coke",
+        "item_name2": "可樂",
+        "item-seq": 1,
+        "price": 15,
+        "cat-id": "10",
+        "cat-name": "汽水類",
+        "cat-name2": "汽水類",
+        "item-pic": "1007.jpg"
+      },
+      {
+        "item-id": "1008",
+        "item-name": "Sprite",
+        "item_name2": "雪碧",
+        "item-seq": 2,
+        "price": 15,
+        "cat-id": "10",
+        "cat-name": "汽水類",
+        "cat-name2": "汽水類",
+        "item-pic": "1008.jpg"
+      },
+      {
+        "item-id": "1009",
+        "item-name": "Zero",
+        "item_name2": "零系可樂",
+        "item-seq": 3,
+        "price": 15,
+        "cat-id": "10",
+        "cat-name": "汽水類",
+        "cat-name2": "汽水類",
+        "item-pic": "1009.jpg"
+      },
+      {
+        "item-id": "1010",
+        "item-name": "Fanta",
+        "item_name2": "芬達",
+        "item-seq": 4,
+        "price": 15,
+        "cat-id": "10",
+        "cat-name": "汽水類",
+        "cat-name2": "汽水類",
+        "item-pic": "1010.jpg"
+      },
+      {
+        "item-id": "1011",
+        "item-name": "Cream Soda",
+        "item_name2": "玉泉忌廉",
+        "item-seq": 5,
+        "price": 15,
+        "cat-id": "10",
+        "cat-name": "汽水類",
+        "cat-name2": "汽水類",
+        "item-pic": "1011.jpg"
+      },
+      {
+        "item-id": "1015",
+        "item-name": "Distilled Water",
+        "item_name2": "蒸餾水",
+        "item-seq": 6,
+        "price": 15,
+        "cat-id": "10",
+        "cat-name": "汽水類",
+        "cat-name2": "汽水類",
+        "item-pic": "1015.jpg"
+      }
+    ]
+  },
+  {
+    "lookup-id": "12",
+    "lookup-name": "甜品類",
+    "lookup-name2": "甜品類",
+    "lookup-type": 4,
+    "items": [
+      {
+        "item-id": "1101",
+        "item-name": "Iced Pear with Syrup",
+        "item_name2": "韓冰雪梨",
+        "item-seq": 1,
+        "price": 48,
+        "cat-id": "11",
+        "cat-name": "甜品類",
+        "cat-name2": "甜品類",
+        "item-pic": "1101.jpg"
+      },
+      {
+        "item-id": "1102",
+        "item-name": "Iced Apple with Syrup",
+        "item_name2": "韓冰蘋果",
+        "item-seq": 2,
+        "price": 48,
+        "cat-id": "11",
+        "cat-name": "甜品類",
+        "cat-name2": "甜品類",
+        "item-pic": "1102.jpg"
+      }
+    ]
+  }
+]

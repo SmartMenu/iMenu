@@ -1,0 +1,38 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" controllerName="com.h3.prj.imenu.view.Settings"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Dialog id="settingsDlg" horizontalScrolling="false" stretch="true">
+		<content>
+			<List>
+				<InputListItem label="{l10n>/settings/shop_id}">
+					<Label text="{app>/shop_id}" />
+				</InputListItem>
+				<InputListItem label="{l10n>/settings/device_id}">
+					<Label text="{app>/device_id}" />
+				</InputListItem>
+				<InputListItem label="{l10n>/settings/device_mac}">
+					<Input value="{app>/device_mac}" />
+				</InputListItem>
+				<InputListItem label="{l10n>/settings/server_url}">
+					<HBox alignItems="Center" justifyContent="End">
+						<Input value="{app>/server_url}" />
+						<Button text="{l10n>/settings/server_url_test}" press="onTestButtonPressed" />
+					</HBox>
+				</InputListItem>
+				<InputListItem label="{l10n>/settings/app_version}">
+					<Label text="{app>/version}"></Label>
+				</InputListItem>
+				<InputListItem label="{l10n>/settings/app_release_date}">
+					<Label text="{app>/release_date}"></Label>
+				</InputListItem>
+				<InputListItem label="{l10n>/settings/app_time_out}">
+					<Input value="{app>/time_out}" liveChange="onTimeOutChange"/>
+				</InputListItem>
+			</List>
+		</content>
+		<buttons>
+			<Button text="{l10n>/ok}" press="onOKButtonPressed" />
+			<Button text="{l10n>/cancel}" press="onCancelButtonPressed" />
+		</buttons>
+	</Dialog>
+</core:View>

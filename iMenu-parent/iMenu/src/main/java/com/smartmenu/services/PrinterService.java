@@ -19,11 +19,11 @@ public class PrinterService {
 	private PrintProperty printProperty;
 	
 	public boolean printListForKitchen(Order order){
-		return generatePrintFile(order, "02");
+		return generatePrintFile(order, "01");
 	}
 	
 	public boolean printListForCustomer(Order order){
-		return generatePrintFile(order, "01");
+		return generatePrintFile(order, "02");
 	}
 	
 	//fn_code=01 for customer; fn_code=02 for kitchen

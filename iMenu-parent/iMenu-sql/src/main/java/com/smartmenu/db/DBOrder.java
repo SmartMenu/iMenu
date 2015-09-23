@@ -505,7 +505,7 @@ public class DBOrder{
 	}
 	//
 	private static final String orderProperty=" shop_id, pos_id, tran_type, tran_no, check_no, tran_date, check_date, table_no, section_id," +
-	                                          "svchg_amount, tax_amount,disc_amount,subtotal_amount,total_amount " ;
+	                                          "svchg_amount, tax_amount,disc_amount,subtotal_amount,total_amount, lastorder_by " ;
 	public Order getExistOrder(String shopId, String tableId){
 		String sql="select top 1 " + orderProperty +
 				   " from dbo.sales_header " +
@@ -556,12 +556,14 @@ public class DBOrder{
 					order.setCheckNo(rs.getString("check_no"));
 					order.setTranDate(rs.getTimestamp("tran_date"));
 					order.setCheckDate(rs.getTimestamp("check_date"));
+					order.setTableId(rs.getString("table_no"));
 					order.setSectionId(rs.getString("section_id"));
 					order.setSvchgAmount(rs.getBigDecimal("svchg_amount"));
 					order.setTaxAmount(rs.getBigDecimal("tax_amount"));
 					order.setDiscAmount(rs.getBigDecimal("disc_amount"));
 					order.setSubtotalAmount(rs.getBigDecimal("subtotal_amount"));
 					order.setTotalAmount(rs.getBigDecimal("total_amount"));
+					order.setUserId(rs.getString("lastorder_by"));
 					ls.add(order);
 				}
 				if(ls==null || ls.size()==0)

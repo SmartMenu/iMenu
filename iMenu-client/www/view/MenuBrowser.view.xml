@@ -1,0 +1,55 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" controllerName="com.h3.prj.imenu.view.MenuBrowser"
+	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page showHeader="false" id="menuBrowserPage">
+		<content>
+			<l:Splitter id="menuBrowserSplitter">
+				<List id="categoryFilter" items="{categories>/}"
+					selectionChange="onCategorySelect" mode="SingleSelectMaster"
+					backgroundDesign="Transparent">
+					<layoutData>
+						<l:SplitterLayoutData size="18%" resizable="false" />
+					</layoutData>
+					<StandardListItem title="{categories>cat_name}"
+						info="{
+							path: 'categories>cat_id',
+							formatter: 'com.h3.prj.imenu.util.Formatter.formatSelectedItemsPerCategory'}"
+						data:key="{categories>cat_id}" />
+				</List>
+				<NavContainer id="categoryDetails">
+					<layoutData>
+						<l:SplitterLayoutData size="auto" />
+					</layoutData>
+				</NavContainer>
+			</l:Splitter>
+		</content>
+		<footer>
+			<Toolbar>
+				<Label
+					text="{
+					path: 'l10n>/settings/device_id',
+					formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'
+				}" />
+				<Label text="{app>/device_id}"></Label>
+				<Label text="{l10n>/deskNo}" />
+				<Label text="{tracking>/current/desk}" />
+				<ToolbarSpacer />
+				<Button id="submittedOrderButton" icon="sap-icon://loan" press="onSubmittedOrderButtonPressed"
+					text="{
+					path: 'tracking>/current',
+					formatter: 'com.h3.prj.imenu.util.Formatter.formatOverallTotal'
+				}"
+					width="15em"/>
+				<Button id="pendingOrderButton" icon="sap-icon://cart-2" press="onPendingOrderButtonPressed"
+					text="{
+					path: 'tracking>/current/cart',
+					formatter: 'com.h3.prj.imenu.util.Formatter.formatTotal'
+				}"
+					width="16em"/>
+				
+			</Toolbar>
+		</footer>
+	</Page>
+
+</core:View>

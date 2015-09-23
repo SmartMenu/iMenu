@@ -40,7 +40,7 @@ public class OrderController {
     String makeNewOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
     {
-		//JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
+
 		JSONObject json = JSONObject.fromObject(data);
 		System.out.println("/makeNewOrder: call order handler deal the request");
 		JSONObject jRet=orderService.makeNewOrder(json);
@@ -53,7 +53,6 @@ public class OrderController {
     String updateOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
     {
-		//JSONObject json = JSONObject.fromObject(CharsetUtils.encodeStr(data));
 		JSONObject json = JSONObject.fromObject(data);
 		System.out.println("/addToOrder: call order handler deal the request");
 		JSONObject jRet=orderService.addToOrder(json);

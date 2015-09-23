@@ -53,6 +53,7 @@ public class OrderService {
 					System.out.println("SUCCESS");
 					status=0;
 					msg = ReturnMsgCode.SUCCESS;
+					json.put("tran_no", newOrder.getTranNo());
 				}else{
 					System.out.println("Printer list for kitchen failed.");
 					status = 1;
@@ -144,6 +145,7 @@ public class OrderService {
 					System.out.println("SUCCESS");
 					status=0;
 					msg = ReturnMsgCode.SUCCESS;
+					json.put("tran_no", newOrder.getTranNo());
 				}else{
 					System.out.println("Printer list for kitchen failed.");
 					status = 1;

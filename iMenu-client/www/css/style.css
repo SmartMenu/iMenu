@@ -1,0 +1,187 @@
+* {
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-weight: bold;
+}
+
+ul[data-sap-ui$="languageButton"]>li {
+	border: none;
+	border-radius: 0.5em;
+	font-size: 1.5em;
+}
+
+button[id$="settingsButton"]>div>span {
+	font-size: 2em;
+}
+
+button.keyboard {
+	width: 100%;
+	text-align: center;
+	border: none;
+}
+
+button.keyboard>div {
+	border: none;
+	border-radius: 0.5em;
+	font-size: 2.5em;
+}
+
+button.keyboard.sapMBtn {
+	height: 5em;
+}
+
+button.keyboard>div.sapMBtnInner {
+	height: 1.5em;
+}
+
+button.confirmBtn>div {
+	background-color: #ffc477;
+	background-image: none;
+}
+
+.loginReset {
+	width: 100%;
+}
+
+label.loginLabel {
+	font-size: 2em;
+}
+
+.loginInputActive {
+	border: solid;
+	border-width: 1;
+	border-color: #ffc477;
+}
+
+.loginInputInactive {
+	border: hidden;
+	border-width: 1;
+}
+
+.sapUiBtnS.sapUiBtnNorm.menuItemButton {
+	border: none;
+	border-radius: 0.5em;
+}
+
+button.menuItemButton>div {
+	border: none;
+	border-radius: 0.5em;
+}
+
+button.menuItemButton>div>span {
+	font-size: 1.5em;
+}
+
+footer>button[id$="pendingOrderButton"]>div>span.sapMBtnIcon {
+	font-size: 3em;
+}
+
+footer>button[id$="pendingOrderButton"]>div>span {
+	text-align: left;
+	font-size: 2em;
+}
+
+footer>button[id$="submittedOrderButton"]>div>span.sapMBtnIcon {
+	font-size: 3em;
+}
+
+footer>button[id$="submittedOrderButton"]>div>span {
+	text-align: left;
+	font-size: 2em;
+}
+
+div[data-sap-ui$="--IMenuApp"] .sapMLabel {
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+div[id$="--deskGrid"] .deskStatus0 {
+	background-color: yellowgreen;
+}
+
+div[id$="--deskGrid"] .deskStatus1 {
+	background-color: tomato;
+}
+
+div[id$="--deskGrid"] .deskStatus2 {
+	background-color: yellow;
+}
+
+div[id$="menuBrowserPage"] footer.sapMIBar-CTX label.sapMLabel {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+div[id="orderDlg"] .sapMLabel {
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-weight: bold;
+	font-size: 1.3em;
+}
+
+div[id="orderDlg"] .sapMDialog-CTX .sapMIBar-CTX .sapMLabel {
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+div[id="orderDlg"]>footer>button>div {
+	border: none;
+	border-radius: 0.5em;
+}
+
+div[id="orderDlg"] .sapMDialogSection {
+	background-color: transparent;
+}
+
+div[id="orderDlg"] .sapMListTbl .sapMLabel {
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+footer>button>div>span {
+	font-size: 1.5em;
+}
+
+div[id="orderDlg"].sapMDialog-CTX footer.sapMIBar-CTX label.sapMLabel{
+	font-size: 1.5em;
+}
+
+footer>button>div>span.sapMBtnIcon {
+	font-size: 2em;
+}
+
+
+div[id$="orderIconTab"]>div>div>div>div[id$="text"] {
+	font-size: 2em;
+}
+
+.sap-phone #orderDlg .sapMITBTextOnly .sapMITBText {
+	font-size: 2em;
+}
+
+div[id$="cartTable"] .sapMListTbl .sapMLabel {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+div[id$="cartTable"] .sapMListTbl .sapUiIcon:not(.sapMLIBImgNav ) {
+	font-size: 2em;
+}
+
+div[id$="cartTable"] .sapMListTbl .sapUiBtnS {
+	height: 2.5em;
+	width: 3.5em;
+}
+
+div[id$="orderTable"] .sapMListTbl .sapMLabel {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+div[id$="orderTable"] .sapMListTbl .sapUiIcon:not(.sapMLIBImgNav ) {
+	font-size: 2em;
+}
+
+div[id$="orderTable"] .sapMListTbl .sapUiBtnS {
+	height: 2.5em;
+	width: 3.5em;
+}

@@ -623,9 +623,10 @@ public class DBOrder{
 				    " case when a.svchargeable is null then 0 else a.svchargeable end as svchg_able, " + 
 				    " case when a.taxable is null then 0 else a.taxable end as tax_able, " + 
 				    " a.desc1 as name, a.desc2 as name2, a.cat_id,b.desc1 as cat_name, b.desc2 as cat_name2, subtype, is_modifier, link_row, modifier2_value " +
-					" from dbo.sales_details a, dbo.category b " +
-					" where a.cat_id=b.cat_id and "	+ 
-					" shop_id='"+shopId+"' and tran_no='"+tranNo+"' and ivoid_status<>1 order by a.seqno;";
+					" from dbo.sales_details a" + 
+					" left join dbo.category b " +
+					" on a.cat_id = b.cat_id " + 
+					" where a.shop_id='"+shopId+"' and a.tran_no='"+tranNo+"' and a.ivoid_status<>1 order by a.seqno;";
 		System.out.println("Exist order details: " + sql);
 		List<Object> lsResult = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 

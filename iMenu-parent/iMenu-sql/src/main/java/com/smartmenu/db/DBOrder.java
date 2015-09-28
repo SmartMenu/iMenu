@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.smartmenu.common.PrintProperty;
+import com.smartmenu.common.SQLEncode;
 import com.smartmenu.entity.Discount;
 import com.smartmenu.entity.Order;
 import com.smartmenu.entity.OrderDetail;
@@ -215,7 +216,7 @@ public class DBOrder{
 					", balance_amount="+order.getSubtotalAmount().toPlainString()+
 					", total_amount="+order.getTotalAmount().toPlainString()+
 					", modify_date=GETDATE(), modify_by='"+order.getUserId()+"', "
-					+ " lastorder_by='"+order.getUserId()+"', "
+					+ " lastorder_by=N'"+SQLEncode.encode(order.getUserId())+"', "
 					+ "capture_systype=1, capture_systime=GETDATE(), capture_reproc_req=1, capture_reproc_status=0 ";
 			
 			updateSql += " where tran_no='"+order.getTranNo()+"' and shop_id='"+order.getShopId()+"'";
@@ -292,8 +293,8 @@ public class DBOrder{
 		if(svchg!=null){
 			map.put("chg_id", "'"+svchg.getId()+"'");
 			map.put("svchg_rate", svchg.getValue().toPlainString());
-			map.put("svchg_desc1", "N'"+svchg.getDesc()+"'");
-			map.put("svchg_desc2", "N'"+svchg.getDesc2()+"'");
+			map.put("svchg_desc1", "N'"+SQLEncode.encode(svchg.getDesc())+"'");
+			map.put("svchg_desc2", "N'"+SQLEncode.encode(svchg.getDesc2())+"'");
 			map.put("svchg_by", "'"+order.getUserId()+"'");
 		}
 		map.put("svchg_amount", order.getSvchgAmount().toPlainString());
@@ -309,9 +310,9 @@ public class DBOrder{
 		map.put("total_amount", order.getTotalAmount().toPlainString());
 		map.put("table_code", order.getTableId());
 		map.put("create_date", "GETDATE()");
-		map.put("create_by", "'"+order.getUserId()+"'");
+		map.put("create_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		map.put("modify_date", "GETDATE()");
-		map.put("modify_by", "'"+order.getUserId()+"'");
+		map.put("modify_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		map.put("capture_systype", "1");
 		map.put("capture_systime", "GETDATE()");
 		map.put("capture_reproc_req", "1");
@@ -340,8 +341,8 @@ public class DBOrder{
 		map.put("cover_charge", "''");
 		if(order.getDiscount()!=null){
 			map.put("disc_id", "'"+order.getDiscount().getDiscId()+"'");
-			map.put("disc_desc1", "N'"+order.getDiscount().getDiscDesc()+"'");
-			map.put("disc_desc2", "N'"+order.getDiscount().getDiscDesc2()+"'");
+			map.put("disc_desc1", "N'"+SQLEncode.encode(order.getDiscount().getDiscDesc())+"'");
+			map.put("disc_desc2", "N'"+SQLEncode.encode(order.getDiscount().getDiscDesc2())+"'");
 			map.put("disc_type", ""+order.getDiscount().getDiscType());
 			map.put("disc_by", "'"+order.getUserId()+"'");
 			map.put("disc_ref", "''");
@@ -358,8 +359,8 @@ public class DBOrder{
 		map.put("minchg_id", "''");
 		map.put("cashier_id", "''");
 		map.put("sent_by", "''");
-		map.put("firstorder_by", "'"+order.getUserId()+"'");
-		map.put("lastorder_by", "'"+order.getUserId()+"'");
+		map.put("firstorder_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
+		map.put("lastorder_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		return map;
 	}
 	private Map<String, String> buildOrderDetailProperty(Order order, OrderDetail detail){
@@ -384,8 +385,8 @@ public class DBOrder{
 		//map.put("dept_id","");
 		map.put("cat_id","'"+detail.getCatId()+"'");
 		//map.put("class_id", "");
-		map.put("desc1", "N'"+detail.getDesc()+"'");
-		map.put("desc2", "N'"+detail.getDesc2()+"'");
+		map.put("desc1", "N'"+SQLEncode.encode(detail.getDesc())+"'");
+		map.put("desc2", "N'"+SQLEncode.encode(detail.getDesc2())+"'");
 		map.put("qty", ""+detail.getQty()+"");
 		map.put("rate", "1");
 		map.put("unit", "N'"+detail.getUnit()+"'");
@@ -398,7 +399,7 @@ public class DBOrder{
 			map.put("disc_id", "'"+disc.getDiscId()+"'");
 			map.put("disc_type", ""+disc.getDiscType());
 			map.put("disc_rate", disc.getDiscRate().toPlainString());
-			map.put("disc_by", "'"+order.getUserId()+"'");
+			map.put("disc_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		}else
 			map.put("disc_type", "0");
 		map.put("disc_amount", detail.getDiscAmount().toPlainString());
@@ -418,7 +419,7 @@ public class DBOrder{
 		}
 		map.put("tax_amount", detail.getTaxAmount().toPlainString());
 		map.put("net_amount", detail.getTotalAmount().toPlainString());  //
-		map.put("order_by", "'"+order.getUserId()+"'");
+		map.put("order_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		map.put("order_shop", "'"+order.getShopId()+"'");
 		map.put("order_pos", "'"+order.getPosId()+"'");
 		map.put("is_modifier", ""+detail.getIsModifier());
@@ -432,9 +433,9 @@ public class DBOrder{
 		map.put("buy_qty", "0");
 		map.put("free_qty", "0");
 		map.put("create_date", "GETDATE()");
-		map.put("create_by", "'"+order.getUserId()+"'");
+		map.put("create_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		map.put("modify_date", "GETDATE()");
-		map.put("modify_by", "'"+order.getUserId()+"'");
+		map.put("modify_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		map.put("update_count", "1");
 		map.put("sent_count", "0");
 		map.put("sent_seq", "0");
@@ -483,11 +484,11 @@ public class DBOrder{
 		map.put("ivoid_ktprinted", "0");
 		//////////reason
 		if(detail.getReasonCode() != null)
-			map.put("ivoid_reason_code", detail.getReasonCode());
+			map.put("ivoid_reason_code", "N'"+SQLEncode.encode(detail.getReasonCode())+"'");
 		if(detail.getReasonDesc() != null)
-			map.put("ivoid_reason_desc1", detail.getReasonDesc());
+			map.put("ivoid_reason_desc1", "N'"+SQLEncode.encode(detail.getReasonDesc())+"'");
 		if(detail.getReasonDesc2() != null)
-			map.put("ivoid_reason_desc2", detail.getReasonDesc2());
+			map.put("ivoid_reason_desc2", "N'"+SQLEncode.encode(detail.getReasonDesc2())+"'");
 		return map;
 	}
 	
@@ -675,7 +676,7 @@ public class DBOrder{
 		map.put("status_time", "GETDATE()");
 		map.put("cover", ""+order.getCover());
 		map.put("create_date", "GETDATE()");////////////
-		map.put("create_by", "'"+order.getUserId()+"'");
+		map.put("create_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		map.put("modify_date", "GETDATE()");
 		map.put("modify_by", "'"+order.getUserId()+"'");
 		map.put("shop_id", "'"+order.getShopId()+"'");
@@ -893,14 +894,14 @@ public class DBOrder{
 					", balance_amount="+order.getSubtotalAmount().toPlainString()+
 					", total_amount="+order.getTotalAmount().toPlainString()+
 					", modify_date=GETDATE(), modify_by='"+order.getUserId()+"', "
-					+ " lastorder_by='"+order.getUserId()+"', "
+					+ " lastorder_by=N'"+SQLEncode.encode(order.getUserId())+"', "
 					+ "capture_systype=1, capture_systime=GETDATE(), capture_reproc_req=1, capture_reproc_status=0 ";
 			if(order.getReasonCode() != null)
-				updateSql += ", void_reason_code='" + order.getReasonCode() + "' ";
+				updateSql += ", void_reason_code=N'" + SQLEncode.encode(order.getReasonCode()) + "' ";
 			if(order.getReasonDesc() != null)
-				updateSql += ", void_reason_desc1='" + order.getReasonDesc() + "' ";
+				updateSql += ", void_reason_desc1=N'" + SQLEncode.encode(order.getReasonDesc()) + "' ";
 			if(order.getReasonDesc2() != null)
-				updateSql += ", void_reason_desc2='" + order.getReasonDesc2() + "' ";
+				updateSql += ", void_reason_desc2=N'" + SQLEncode.encode(order.getReasonDesc2()) + "' ";
 
 			updateSql += " where tran_no='"+order.getTranNo()+"' and shop_id='"+order.getShopId()+"'";
 			System.out.println("Update order: " + updateSql);
@@ -920,7 +921,7 @@ public class DBOrder{
 		                     //", qty=qty-"+orderDetail.getQty()+
 		                     //", amount=amount-"+orderDetail.getTotalAmount()+
 		                     //", total_amount=total_amount-"+orderDetail.getPayAmount()+
-		                     ", modify_date=GETDATE(), modify_by='"+order.getUserId()+"'"+
+		                     ", modify_date=GETDATE(), modify_by=N'"+SQLEncode.encode(order.getUserId())+"'"+
 		                     " where shop_id='"+order.getShopId()+"' "
 		                     + " and tran_no='"+order.getTranNo()+"' "
 		                     + " and code='" + orderDetail.getItemId() + "' "
@@ -946,7 +947,7 @@ public class DBOrder{
 			   detailProperty.put("ivoid_shop", "'"+order.getShopId()+"'");
 			   detailProperty.put("ivoid_pos", "'"+order.getPosId()+"'");
 			   detailProperty.put("ivoid_time", "GETDATE()");
-			   detailProperty.put("ivoid_by", "'"+order.getUserId()+"'");
+			   detailProperty.put("ivoid_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 			   detailProperty.put("qty", "-"+orderDetail.getQty());
 			   detailProperty.put("amount", "-"+order.getTotalAmount());
 			   detailProperty.put("total_amount", "-"+orderDetail.getPayAmount());

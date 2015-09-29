@@ -188,11 +188,13 @@ com.h3.prj.imenu.iMenuInitializer = {
 		var menu_en_US_Model = sap.ui.getCore().getModel("com.h3.prj.imenu.model.menu_en_US");
 		var menu_zh_TW_Model = sap.ui.getCore().getModel("com.h3.prj.imenu.model.menu_zh_TW");
 		var l10nMenuModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nMenu");
+		var menuItemIdToModifierModel_en_US = sap.ui.getCore().getModel("com.h3.prj.imenu.model.menuItemId_to_Modifier_en_US");
+		var menuItemIdToModifierModel_zh_TW = sap.ui.getCore().getModel("com.h3.prj.imenu.model.menuItemId_to_Modifier_zh_TW");
+		var l10nModifierModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nModifier");
 		var categoryModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.menu_categories");
 		var menuItemToCategoryModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.menuItem_to_Category");
 		var menuItemIdToNameModel_en_US = sap.ui.getCore().getModel("com.h3.prj.imenu.model.menuItemId_to_Name_en_US");
 		var menuItemIdToNameModel_zh_TW = sap.ui.getCore().getModel("com.h3.prj.imenu.model.menuItemId_to_Name_zh_TW");
-
 		var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
 		var appData = appInfoModel.getData();
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
@@ -214,10 +216,39 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                	item_name: "item-name", \
 					                	price: price, \
 					                	item_pic: "item-pic", \
-					                    svc_chargeable: "svchg-allow"\
+					                    svc_chargeable: "svchg-allow", \
+					                    modifier: "modifier"\
 					                	}\
 					                }');
+					var menuItemIdToModifier_en_US_Data = {};
+					menu_en_US_Data.forEach(function(cat){
+						cat.items.forEach(function(item){
+							var modifier;
+							if(item.modifier){
+								modifier = jmespath.search(item.modifier, '{\
+								                           modifier_id: "modifier-id", \
+								                           modifier_name: "modifier-name", \
+								                           compulsory: compulsory, \
+								                           min_count: "min-count", \
+								                           max_count: "max-count", \
+								                           details: details[].{\
+								                           		item_id: "item-id", \
+								                           		item_name: "item-name", \
+								                           		price: price, \
+								                           		subtype: subtype, \
+								                           		desc: "item-name", \
+								                                desc2: "item-name2"\
+								                           }\
+								                         }');
+								menuItemIdToModifier_en_US_Data[item.item_id] = modifier;
+								delete item.modifier;
+							}
+						});
+					});
+					menuItemIdToModifierModel_en_US.setData(menuItemIdToModifier_en_US_Data);
+					
 					menu_en_US_Model.setData(menu_en_US_Data);
+					
 					var menuItemIdToName_en_US_Data = {};
 					menu_en_US_Data.forEach(function(cat){
 						cat.items.forEach(function(item){
@@ -225,6 +256,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 						});
 					});
 					menuItemIdToNameModel_en_US.setData(menuItemIdToName_en_US_Data);
+					
 					var menu_zh_TW_Data = jmespath.search(json, 'data[?length(items) > "0"].{\
 					                cat_id: "lookup-id", \
 					                cat_name: "lookup-name2", \
@@ -235,10 +267,39 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                	item_name: item_name2, \
 					                	price: price, \
 					                	item_pic: "item-pic", \
-					                    svc_chargeable: "svchg-allow"\
+					                    svc_chargeable: "svchg-allow", \
+					                    modifier: "modifier"\
 					                	}\
 					                }');
+					var menuItemIdToModifier_zh_TW_Data = {};
+					menu_zh_TW_Data.forEach(function(cat){
+						cat.items.forEach(function(item){
+							var modifier;
+							if(item.modifier){
+								modifier = jmespath.search(item.modifier, '{\
+								                           modifier_id: "modifier-id", \
+								                           modifier_name: "modifier-name2", \
+								                           compulsory: compulsory, \
+								                           min_count: "min-count", \
+								                           max_count: "max-count", \
+								                           details: details[].{\
+								                           		item_id: "item-id", \
+								                           		item_name: "item-name2", \
+								                           		price: price, \
+								                           		subtype: subtype, \
+								                                desc: "item-name", \
+								                                desc2: "item-name2"\
+								                           }\
+								                         }');
+								menuItemIdToModifier_zh_TW_Data[item.item_id] = modifier;
+								delete item.modifier;
+							}
+						});
+					});
+					menuItemIdToModifierModel_zh_TW.setData(menuItemIdToModifier_zh_TW_Data);
+					
 					menu_zh_TW_Model.setData(menu_zh_TW_Data);
+					
 					var menuItemIdToName_zh_TW_Data = {};
 					menu_zh_TW_Data.forEach(function(cat){
 						cat.items.forEach(function(item){
@@ -249,9 +310,11 @@ com.h3.prj.imenu.iMenuInitializer = {
 					switch (localStorage.getItem("com.h3.prj.imenu.language")) {
 						case "繁":
 							l10nMenuModel.setData(menu_zh_TW_Model.getData());
+							l10nModifierModel.setData(menuItemIdToModifier_zh_TW_Data);
 							break;
 						case "EN":
 							l10nMenuModel.setData(menu_en_US_Model.getData());
+							l10nModifierModel.setData(menuItemIdToModifier_en_US_Data);
 							break;
 					}
 					var menuData = l10nMenuModel.getData();
@@ -351,6 +414,9 @@ com.h3.prj.imenu.iMenuInitializer = {
 		var menu_en_US_Model = new sap.ui.model.json.JSONModel();
 		var menu_zh_TW_Model = new sap.ui.model.json.JSONModel();
 		var l10nMenuModel = new sap.ui.model.json.JSONModel();
+		var menuItemIdToModifierModel_en_US = new sap.ui.model.json.JSONModel();
+		var menuItemIdToModifierModel_zh_TW = new sap.ui.model.json.JSONModel();
+		var l10nModifierModel = new sap.ui.model.json.JSONModel();
 		var categoryModel = new sap.ui.model.json.JSONModel();
 		var menuItemToCategoryModel = new sap.ui.model.json.JSONModel();
 		var menuItemIdToNameModel_en_US = new sap.ui.model.json.JSONModel();
@@ -366,6 +432,9 @@ com.h3.prj.imenu.iMenuInitializer = {
 		sap.ui.getCore().setModel(menu_en_US_Model, "com.h3.prj.imenu.model.menu_en_US");
 		sap.ui.getCore().setModel(menu_zh_TW_Model, "com.h3.prj.imenu.model.menu_zh_TW");
 		sap.ui.getCore().setModel(l10nMenuModel, "com.h3.prj.imenu.model.l10nMenu");
+		sap.ui.getCore().setModel(menuItemIdToModifierModel_en_US, "com.h3.prj.imenu.model.menuItemId_to_Modifier_en_US");
+		sap.ui.getCore().setModel(menuItemIdToModifierModel_zh_TW, "com.h3.prj.imenu.model.menuItemId_to_Modifier_zh_TW");
+		sap.ui.getCore().setModel(l10nModifierModel, "com.h3.prj.imenu.model.l10nModifier");
 		sap.ui.getCore().setModel(categoryModel, "com.h3.prj.imenu.model.menu_categories");
 		sap.ui.getCore().setModel(menuItemToCategoryModel, "com.h3.prj.imenu.model.menuItem_to_Category");
 		sap.ui.getCore().setModel(menuItemIdToNameModel_en_US, "com.h3.prj.imenu.model.menuItemId_to_Name_en_US");
@@ -380,4 +449,4 @@ com.h3.prj.imenu.iMenuInitializer = {
 
 };
 
-com.h3.prj.imenu.iMenuInitializer.attachDeviceReady();
+com.h3.prj.imenu.iMenuInitializer.start();

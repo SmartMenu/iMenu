@@ -41,18 +41,18 @@
 									<cells>
 										<HBox>
 											<com:Button icon="sap-icon://delete" style="Reject"
-												data:tracking_id="{tracking>id}" press="onItemDeleteButtonPressed" class="menuItemButton"/>
+												data:tracking_id="{tracking>id}" press="onItemDeleteButtonPressed" class="menuItemButton" visible="{= 1!==${tracking>is_modifier}}"/>
 										</HBox>
 										<Label text="{tracking>item_name}" />
 										<HBox alignItems="Center">
 											<com:Button icon="sap-icon://less"
-												data:tracking_id="{tracking>id}" press="onItemLessButtonPressed" class="menuItemButton"/>
+												data:tracking_id="{tracking>id}" press="onItemLessButtonPressed" class="menuItemButton" visible="{= 1!==${tracking>is_modifier}}"/>
 											<Label text="{tracking>item_count}" textAlign="Center"
-												width="3em" />
+												width="3em" visible="{= 1!==${tracking>is_modifier}}"/>
 											<com:Button icon="sap-icon://add"
-												data:tracking_id="{tracking>id}" press="onItemMoreButtonPressed" class="menuItemButton"/>
+												data:tracking_id="{tracking>id}" press="onItemMoreButtonPressed" class="menuItemButton" visible="{= 1!==${tracking>is_modifier}}"/>
 										</HBox>
-										<com:Button icon="sap-icon://waiver" text="" style="Emph" class="menuItemButton"/>
+										<com:Button icon="sap-icon://waiver" text="" style="Emph" class="menuItemButton" visible="{= 1!==${tracking>is_modifier}}"/>
 										<HBox>
 											<Label
 												text="{
@@ -147,11 +147,11 @@
 <!-- 											<com:Button icon="sap-icon://less" -->
 <!-- 												data:tracking_id="{tracking>id}" press="onItemLessButtonPressed" class="menuItemButton"/> -->
 											<Label text="{tracking>item_count}" textAlign="Center"
-												width="3em" />
+												width="3em" visible="{= 1!==${tracking>is_modifier}}"/>
 <!-- 											<com:Button icon="sap-icon://add" -->
 <!-- 												data:tracking_id="{tracking>id}" press="onItemMoreButtonPressed" class="menuItemButton"/> -->
 										</HBox>
-										<com:Button icon="sap-icon://waiver" text="" style="Emph" class="menuItemButton"/>
+										<com:Button icon="sap-icon://waiver" text="" style="Emph" class="menuItemButton" visible="{= 1!==${tracking>is_modifier}}"/>
 										<HBox>
 											<Label
 												text="{

@@ -35,7 +35,7 @@
 		"item_name": "Name",
 		"item_cat": "Category",
 		"item_price": "Price",
-		"item_count": "Pieces",
+		"item_count": "Quantity",
 		"item_favor": "Favor",
 		"sub_total": "Sub Total",
 		"print_sheet": "Print",
@@ -46,7 +46,7 @@
 		"pending_order": "Pending",
 		"submitted_order": "Submitted"
 	},
-	"deskNo": "Desk No.:",
+	"deskNo": "Table No.:",
 	"sector": "Sector:",
 	"all": "All",
 	"orderTotal": "Total",

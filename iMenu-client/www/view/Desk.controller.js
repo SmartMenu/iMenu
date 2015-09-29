@@ -164,7 +164,8 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 					                    id: seq,\
 					                	item_id: "item-id", \
 					                    item_count: qty,\
-					                	item_price: price\
+					                	item_price: price, \
+					                    is_modifier: "is-modifier"\
 					                	}\
 					                }');
 					var currentData = null;

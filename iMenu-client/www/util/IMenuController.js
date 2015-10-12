@@ -312,6 +312,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
 				detail["discount-able"] = 1;
+				detail["tax-able"] = 1;
 			}else{
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
@@ -379,6 +380,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
 				detail["discount-able"] = 1;
+				detail["tax-able"] = 1;
 			}else{
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];

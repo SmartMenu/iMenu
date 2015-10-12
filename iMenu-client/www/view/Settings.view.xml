@@ -28,6 +28,11 @@
 				<InputListItem label="{l10n>/settings/app_time_out}">
 					<Input value="{app>/time_out}" liveChange="onTimeOutChange"/>
 				</InputListItem>
+				<InputListItem label="{l10n>/settings/sync_img_label}">
+					<HBox alignItems="Center" justifyContent="End">
+						<Button id="syncButton" text="{l10n>/settings/sync_img_button}" press="onSyncButtonPressed" />
+					</HBox>
+				</InputListItem>
 			</List>
 		</content>
 		<buttons>

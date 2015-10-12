@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.smartmenu.db.DBOrder;
+import com.smartmenu.db.DBSetting;
 import com.smartmenu.db.DBTable;
 import com.smartmenu.entity.Discount;
 import com.smartmenu.entity.Order;
@@ -30,6 +31,9 @@ public class OrderService {
 	
 	@Autowired
 	private DBTable dbTable;
+	
+	@Autowired
+	private DBSetting dbSetting;
 	
 	public JSONObject makeNewOrder(JSONObject data){
 		JSONObject json = new JSONObject();
@@ -557,11 +561,14 @@ public class OrderService {
 		json.put("msg", msg);
 		return json;
 	}
-	public JSONObject dealReqPrintOrder(String shopId, String orderNo) {
+	public JSONObject dealReqPrintOrder(String mac, String shopId, String orderNo) {
 		JSONObject json = new JSONObject();
 		String msg;
 		int status = 0;	
 		Order order = dbOrder.getOrder(shopId, orderNo);
+	    String[] shopAndPos = dbSetting.getShopIdAndPosId(mac);
+	    if(shopAndPos.length == 2)
+	    	order.setPosId(shopAndPos[2]);
 		boolean result = printer.printListForCustomer(order);
 		if(result){
 			status = 0;

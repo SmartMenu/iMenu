@@ -602,6 +602,7 @@ public class DBOrder{
 					order.setDiscAmount(rs.getBigDecimal("disc_amount"));
 					order.setSubtotalAmount(rs.getBigDecimal("subtotal_amount"));
 					order.setTotalAmount(rs.getBigDecimal("total_amount"));
+					order.setUserId(rs.getString("lastorder_by"));
 					ls.add(order);
 				}
 				if(ls==null || ls.size()==0)

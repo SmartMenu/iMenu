@@ -108,7 +108,7 @@ public class OrderController {
     		@RequestParam String orderno, @RequestParam String callback) throws IOException
     {
 		System.out.println("/printOrder: call order handler deal the request");
-		JSONObject jRet=orderService.dealReqPrintOrder(shopid, orderno);
+		JSONObject jRet=orderService.dealReqPrintOrder(mac, shopid, orderno);
 		System.out.println("/printOrder: handler finished");
 		return callback+"("+jRet.toString()+")";
     }

@@ -282,6 +282,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 
 		orderData.details = [];
 		var seq = 1;
+		var pre_seq = seq;
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
@@ -293,7 +294,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.price = item.item_price;
 			if (svcChargeData[currentData.desk]) {
 				detail["service-charge"] = svcChargeData[currentData.desk];
-				if (item.svc_chargeable === 1) {
+				if (item.svc_chargeable === 1 || 1===item.is_modifier) {
 					detail["service-charge-able"] = 1;
 					detail["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatItemSvcCharge(item, svcChargeData[currentData.desk]);
 				} else {
@@ -308,13 +309,15 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			if(1===item.is_modifier){
 				detail["modifier-value"] = 0;
 				detail["is-modifier"] = 1;
-				detail["link-row"] = 1;
+				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
+				detail["discount-able"] = 1;
 			}else{
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
+				pre_seq = seq;
 			}
 			orderData.details.push(detail);
 			seq++;
@@ -345,6 +348,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 
 		orderData.details = [];
 		var seq = 1;
+		var pre_seq = seq;
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
@@ -356,7 +360,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.price = item.item_price;
 			if (svcChargeData[currentData.desk]) {
 				detail["service-charge"] = svcChargeData[currentData.desk];
-				if (item.svc_chargeable === 1) {
+				if (item.svc_chargeable === 1 || 1===item.is_modifier) {
 					detail["service-charge-able"] = 1;
 					detail["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatItemSvcCharge(item, svcChargeData[currentData.desk]);
 				} else {
@@ -371,13 +375,15 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			if(1===item.is_modifier){
 				detail["modifier-value"] = 0;
 				detail["is-modifier"] = 1;
-				detail["link-row"] = 1;
+				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
+				detail["discount-able"] = 1;
 			}else{
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
+				pre_seq = seq;
 			}
 			orderData.details.push(detail);
 			seq++;

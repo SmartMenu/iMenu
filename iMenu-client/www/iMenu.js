@@ -212,6 +212,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                cat_type: "lookup-type", \
 					                pic_type: "picture-type", \
 					                items: items[].{\
+					                    cat_id: "cat-id",\
 					                	item_id: "item-id", \
 					                	item_name: "item-name", \
 					                	price: price, \
@@ -263,6 +264,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                cat_type: "lookup-type", \
 					                pic_type: "picture-type", \
 					                items: items[].{\
+					                    cat_id: "cat-id",\
 					                	item_id: "item-id", \
 					                	item_name: item_name2, \
 					                	price: price, \
@@ -449,4 +451,4 @@ com.h3.prj.imenu.iMenuInitializer = {
 
 };
 
-com.h3.prj.imenu.iMenuInitializer.attachDeviceReady();
+com.h3.prj.imenu.iMenuInitializer.start();

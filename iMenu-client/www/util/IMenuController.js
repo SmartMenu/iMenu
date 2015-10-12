@@ -286,7 +286,6 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
-			detail["cat-id"] = item.item_cat_id;
 			detail.desc = item.desc ? item.desc : menuItemIdToNameData_en_US[item.item_id];
 			detail.desc2 = item.desc2 ? item.desc2 : menuItemIdToNameData_zh_TW[item.item_id];
 			detail.seq = seq;
@@ -307,12 +306,14 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.unit = "份";
 			detail["take-away"] = 0;
 			if(1===item.is_modifier){
+				detail["cat-id"] = "";
 				detail["modifier-value"] = 0;
 				detail["is-modifier"] = 1;
 				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
 				detail["discount-able"] = 1;
 			}else{
+				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
@@ -352,7 +353,6 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
-			detail["cat-id"] = item.item_cat_id;
 			detail.desc = item.desc ? item.desc : menuItemIdToNameData_en_US[item.item_id];
 			detail.desc2 = item.desc2 ? item.desc2 : menuItemIdToNameData_zh_TW[item.item_id];
 			detail.seq = seq;
@@ -373,12 +373,14 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.unit = "份";
 			detail["take-away"] = 0;
 			if(1===item.is_modifier){
+				detail["cat-id"] = "";
 				detail["modifier-value"] = 0;
 				detail["is-modifier"] = 1;
 				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
 				detail["discount-able"] = 1;
 			}else{
+				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;

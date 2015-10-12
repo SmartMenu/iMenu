@@ -65,9 +65,11 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Menu4Item", 
 			modifierPopover.attachAfterClose(function() {
 				var item_id = this.getView().data("item_id");
 				var item_count = this.getView().getModel().getData().count;
+				var cat_id = this.getView().getModel("item").getData().cat_id;
 				var item_price = this.getView().getModel("item").getData().price;
 				var item_cat_id = this.getView().data("item_cat");
 				this.addToCart({
+					"cat_id": cat_id,
 					"item_id": item_id,
 					"item_cat_id": item_cat_id,
 					"item_count": item_count,
@@ -105,8 +107,10 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Menu4Item", 
 			var item_id = this.getView().data("item_id");
 			var item_count = this.getView().getModel().getData().count;
 			var item_price = this.getView().getModel("item").getData().price;
+			var cat_id = this.getView().getModel("item").getData().cat_id;
 			var item_cat_id = this.getView().data("item_cat");
 			this.addToCart({
+				"cat_id": cat_id,
 				"item_id": item_id,
 				"item_cat_id": item_cat_id,
 				"item_count": item_count,

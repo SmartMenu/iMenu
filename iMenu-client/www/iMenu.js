@@ -451,4 +451,4 @@ com.h3.prj.imenu.iMenuInitializer = {
 
 };
 
-com.h3.prj.imenu.iMenuInitializer.start();
+com.h3.prj.imenu.iMenuInitializer.attachDeviceReady();

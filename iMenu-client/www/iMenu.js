@@ -401,6 +401,22 @@ com.h3.prj.imenu.iMenuInitializer = {
 
 		});
 	},
+	
+	initLocalDir: function() {
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+			function(fileSystem){	
+				newFile = fileSystem.root.getDirectory("iMenu", 
+					{ create : true, exclusive : false }, 
+					function (dirEntry) {
+						iMenuDirURL = dirEntry.toURL();
+						sap.ui.getCore().setModel(iMenuDirURL, "com.h3.prj.imenu.model.iMenuDirURL");
+					},
+					function (dirError) {}
+				);  
+			},
+			function (fileSystemError) {}
+		);
+	},
 
 	start: function() {
 
@@ -445,6 +461,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 
 		com.h3.prj.imenu.iMenuInitializer.initModels_i18_app();
 		com.h3.prj.imenu.iMenuInitializer.initUI();
+		com.h3.prj.imenu.iMenuInitializer.initLocalDir();
 	}
 
 };

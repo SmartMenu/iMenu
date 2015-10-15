@@ -17,6 +17,13 @@ com.h3.prj.imenu.util.Formatter = {
 		return "img/" + img;
 	},
 	
+	/*
+	formatImg: function(img) {
+		iMenuDirURL = sap.ui.getCore().getModel("com.h3.prj.imenu.model.iMenuDirURL");
+		return iMenuDirURL + "/" + img;
+	},
+	*/
+	
 	appendColon: function(text) {
 		switch(localStorage.getItem("com.h3.prj.imenu.language")){
 			case "繁":

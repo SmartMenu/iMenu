@@ -349,7 +349,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		orderData.order["user-id"] = trackingData.user_id;
 
 		orderData.details = [];
-		var seq = 1;
+		var seq = Math.max.apply(null, trackingData.current.order.map(function(o){return o.seq;})) + 1;
 		var pre_seq = seq;
 		currentData.cart.forEach(function(item) {
 			var detail = {};

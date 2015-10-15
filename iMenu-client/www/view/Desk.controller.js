@@ -162,6 +162,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 					                order_no: "order-no", \
 					                order: details[].{\
 					                    id: seq,\
+					                    seq: seq,\
 					                	item_id: "item-id", \
 					                    item_count: qty,\
 					                	item_price: price, \

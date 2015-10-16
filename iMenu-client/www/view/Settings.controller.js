@@ -67,7 +67,9 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Settings", {
 		var msg = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().settings.sync_img_msg_start;
 		sap.m.MessageToast.show(msg);
 		
-		baseURL = "http://gamiao.gotoip55.com/imgsync/repo1/";
+		//baseURL = "http://gamiao.gotoip55.com/imgsync/repo1/";
+		appData = thisView.getModel("app").getData();
+		baseURL = appData.server_url + "/imgsync/";
 		listFileName = "filelist.txt";
 		iMenuDir = dirEntry.toURL();
 		console.log("downloading file: " + listFileName);

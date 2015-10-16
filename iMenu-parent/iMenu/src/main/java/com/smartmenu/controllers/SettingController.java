@@ -22,7 +22,7 @@ public class SettingController {
 	@Autowired
 	private SettingService settingService;
 	
-	@RequestMapping(value = "/getDeleteReason", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getDeleteReason", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String getDeleteReason(HttpServletResponse resp, @RequestParam String mac, @RequestParam String callback) throws IOException {
 		System.out.println("/getDeleteReason: call setting handler deal the request");
@@ -31,7 +31,7 @@ public class SettingController {
 		return callback+"("+json.toString()+")";
     }
 	
-	@RequestMapping(value = "/getShopAndPos", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getShopAndPos", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String getShopAndPos(HttpServletResponse resp, @RequestParam String mac, @RequestParam String callback) throws IOException
     {
@@ -41,7 +41,7 @@ public class SettingController {
 		return callback+"("+json.toString()+")";
     }
 	
-	@RequestMapping(value = "/getServiceCharge", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getServiceCharge", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String getServiceCharge(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, 
     		@RequestParam String tableid, @RequestParam String callback) throws IOException
@@ -52,7 +52,7 @@ public class SettingController {
 		return callback+"("+json.toString()+")";
     }
 	
-	@RequestMapping(value = "/getTaxInfo", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getTaxInfo", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String getTaxInfo(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, 
     		@RequestParam String tableid, @RequestParam String callback) throws IOException
@@ -63,7 +63,7 @@ public class SettingController {
 		return callback+"("+json.toString()+")";
     }
 	
-	@RequestMapping(value = "/getDiscounts", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getDiscounts", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String getDiscounts(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, 
     		 @RequestParam String callback) throws IOException

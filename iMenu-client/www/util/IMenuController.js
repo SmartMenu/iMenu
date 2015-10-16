@@ -175,7 +175,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			cmd = "/makeNewOrder";
 		}
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-			jQuery.getJSON(appData.server_url + cmd + "?mac=" + appData.device_mac + "&&callback=?", {
+			jQuery.getJSON(appData.server_url + "/action" + cmd + "?mac=" + appData.device_mac + "&&callback=?", {
 				data: orderData
 			}, function(json) {
 				if (json.status == 1) {
@@ -402,7 +402,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		if (currentData.orderId) {
 			if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
 
-				jQuery.getJSON(appData.server_url + "/printOrder?mac=" + appData.device_mac + "&&shopid=" + appData.shop_id + "&&posid=" + appData.device_id + "&&orderno=" + currentData.orderId + "&&callback=?", function(json) {
+				jQuery.getJSON(appData.server_url + "/action" + "/printOrder?mac=" + appData.device_mac + "&&shopid=" + appData.shop_id + "&&posid=" + appData.device_id + "&&orderno=" + currentData.orderId + "&&callback=?", function(json) {
 					if (json.status == 1) {
 						sap.m.MessageToast.show(json.msg);
 						return;

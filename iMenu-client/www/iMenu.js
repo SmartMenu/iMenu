@@ -53,7 +53,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 			appData.device_mac = localStorage.getItem("com.h3.prj.imenu.device_mac");
 		}
 		if (appData.device_mac && appData.server_url) {
-			jQuery.getJSON(appData.server_url + "/getShopAndPos?mac=" + appData.device_mac + 
+			jQuery.getJSON(appData.server_url + "/action" + "/getShopAndPos?mac=" + appData.device_mac + 
 			               "&&callback=?", function(json) {
 				if (json.status == 1) {
 					sap.m.MessageToast.show(json.msg);
@@ -83,7 +83,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 		var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
 		var appData = appInfoModel.getData();
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-			jQuery.getJSON(appData.server_url + "/getTables?mac=" + appData.device_mac +
+			jQuery.getJSON(appData.server_url + "/action" + "/getTables?mac=" + appData.device_mac +
 			               "&&shopid=" + appData.shop_id + "&&callback=?", function(json){
 				if (json.status == 1) {
 					sap.m.MessageToast.show(json.msg);
@@ -148,7 +148,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 				deferreds[desk.id] = jQuery.Deferred();
 			});
 			deskData.forEach(function(desk){
-				jQuery.getJSON(appData.server_url + "/getServiceCharge?mac=" +
+				jQuery.getJSON(appData.server_url + "/action" + "/getServiceCharge?mac=" +
 			                   appData.device_mac + "&&shopid=" + appData.shop_id + 
 			                   "&&tableid=" + desk.id + "&&callback=?", function(json){
 							if (json.status == 1) {
@@ -198,7 +198,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 		var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
 		var appData = appInfoModel.getData();
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-			jQuery.getJSON(appData.server_url + "/getMenu?mac=" + appData.device_mac + 
+			jQuery.getJSON(appData.server_url + "/action" + "/getMenu?mac=" + appData.device_mac + 
 			               "&&shopid=" + appData.shop_id + 
 			               "&&posid=" + appData.device_id + 
 			               "&&callback=?", function(json) {

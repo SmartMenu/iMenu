@@ -149,7 +149,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 		var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
 		var appData = appInfoModel.getData();
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-			jQuery.getJSON(appData.server_url + "/getOrder?mac=" + appData.device_mac + 
+			jQuery.getJSON(appData.server_url + "/action" + "/getOrder?mac=" + appData.device_mac + 
 			               "&&shopid=" + appData.shop_id + 
 			               "&&posid=" + appData.device_id +
 			               "&&tableid=" + deskNo + 
@@ -238,7 +238,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 		var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
 		var appData = appInfoModel.getData();
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-			jQuery.getJSON(appData.server_url + "/getTables?mac=" + appData.device_mac +
+			jQuery.getJSON(appData.server_url + "/action" + "/getTables?mac=" + appData.device_mac +
 			               "&&shopid=" + appData.shop_id + "&&callback=?", function(json){
 				if (json.status == 1) {
 					sap.m.MessageToast.show(json.msg);

@@ -22,7 +22,7 @@ public class TableController {
 	@Autowired
 	private TableService tableService;
 
-	@RequestMapping(value = "/getTableSymbol", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getTableSymbol", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String getTableSymbol(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid,
     					@RequestParam String callback) throws IOException
@@ -33,7 +33,7 @@ public class TableController {
 		return callback+"("+json.toString()+")";
     }
 	
-	@RequestMapping(value = "/getTables", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getTables", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String getTables(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid,
     					@RequestParam String callback) throws IOException

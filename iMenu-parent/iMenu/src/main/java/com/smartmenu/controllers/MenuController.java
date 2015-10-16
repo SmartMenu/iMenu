@@ -23,7 +23,7 @@ public class MenuController {
 	@Autowired
 	private MenuService menuService;
 
-	@RequestMapping(value = "/getMenu", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getMenu", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String doGetMenu2(HttpServletResponse resp, @RequestParam String callback, @RequestParam String mac, @RequestParam String shopid, @RequestParam String posid) throws IOException
     {
@@ -33,7 +33,7 @@ public class MenuController {
 		return callback+"("+json.toString()+")";
     }
 	
-	@RequestMapping(value = "/getSoldoutInfo", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getSoldoutInfo", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
 	String doGetSoldoutInfo(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid,
 								@RequestParam String callback) throws IOException

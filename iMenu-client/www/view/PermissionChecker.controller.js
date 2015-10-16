@@ -140,7 +140,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.PermissionCh
 		var appData = appInfoModel.getData();
 		var that = this;
 		if (appData.device_mac && appData.server_url) {
-			jQuery.getJSON(appData.server_url + "/loginByUserPwd?mac=" + appData.device_mac + "&&shopid=" + appData.shop_id + "&&userid=" + user + "&&password=" + pass + "&&callback=?", function(json) {
+			jQuery.getJSON(appData.server_url + "/action" + "/loginByUserPwd?mac=" + appData.device_mac + "&&shopid=" + appData.shop_id + "&&userid=" + user + "&&password=" + pass + "&&callback=?", function(json) {
 				if (json.status == 1) {
 					sap.m.MessageToast.show(json.msg);
 					if(deferred.check){

@@ -23,7 +23,7 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	
-	@RequestMapping(value = "/getOrder", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/getOrder", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String doGetOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, @RequestParam String posid,
             @RequestParam String tableid, @RequestParam String callback) throws IOException
@@ -35,7 +35,7 @@ public class OrderController {
     }
 	
 	
-	@RequestMapping(value = "/makeNewOrder", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/makeNewOrder", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String makeNewOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
@@ -48,7 +48,7 @@ public class OrderController {
 		return callback+"("+jRet.toString()+")";
     }
 	//append to exist order 
-	@RequestMapping(value = "/addToOrder", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/addToOrder", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String updateOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
@@ -61,7 +61,7 @@ public class OrderController {
     }
 	
 	//delete item from an exist order
-	@RequestMapping(value = "/deleteFromOrder", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/deleteFromOrder", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String deleteFromOrder(HttpServletResponse resp, @RequestParam String mac, @RequestParam String data,
     		@RequestParam String callback) throws IOException
@@ -74,7 +74,7 @@ public class OrderController {
 		return callback+"("+jRet.toString()+")";
     }
 	
-	@RequestMapping(value = "/changeCover", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/changeCover", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String changeCover(HttpServletResponse resp, @RequestParam String mac, 
     		@RequestParam String shopid, @RequestParam String posid,
@@ -87,7 +87,7 @@ public class OrderController {
 		return callback+"("+jRet.toString()+")";
     }
 	
-	@RequestMapping(value = "/changeTable", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/changeTable", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String changeTable(HttpServletResponse resp, @RequestParam String mac, 
     		@RequestParam String shopid, @RequestParam String posid,
@@ -101,7 +101,7 @@ public class OrderController {
     }
 	
 	
-	@RequestMapping(value = "/printOrder", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/printOrder", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String printOrder(HttpServletResponse resp, @RequestParam String mac, 
     		@RequestParam String shopid, @RequestParam String posid,

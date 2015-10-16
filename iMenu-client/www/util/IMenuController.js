@@ -282,10 +282,10 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 
 		orderData.details = [];
 		var seq = 1;
+		var pre_seq = seq;
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
-			detail["cat-id"] = item.item_cat_id;
 			detail.desc = item.desc ? item.desc : menuItemIdToNameData_en_US[item.item_id];
 			detail.desc2 = item.desc2 ? item.desc2 : menuItemIdToNameData_zh_TW[item.item_id];
 			detail.seq = seq;
@@ -293,7 +293,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.price = item.item_price;
 			if (svcChargeData[currentData.desk]) {
 				detail["service-charge"] = svcChargeData[currentData.desk];
-				if (item.svc_chargeable === 1) {
+				if (item.svc_chargeable === 1 || 1===item.is_modifier) {
 					detail["service-charge-able"] = 1;
 					detail["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatItemSvcCharge(item, svcChargeData[currentData.desk]);
 				} else {
@@ -306,15 +306,20 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.unit = "份";
 			detail["take-away"] = 0;
 			if(1===item.is_modifier){
+				detail["cat-id"] = "";
 				detail["modifier-value"] = 0;
 				detail["is-modifier"] = 1;
-				detail["link-row"] = 1;
+				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
+				detail["discount-able"] = 1;
+				detail["tax-able"] = 1;
 			}else{
+				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
+				pre_seq = seq;
 			}
 			orderData.details.push(detail);
 			seq++;
@@ -344,11 +349,11 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		orderData.order["user-id"] = trackingData.user_id;
 
 		orderData.details = [];
-		var seq = 1;
+		var seq = Math.max.apply(null, trackingData.current.order.map(function(o){return o.seq;})) + 1;
+		var pre_seq = seq;
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
-			detail["cat-id"] = item.item_cat_id;
 			detail.desc = item.desc ? item.desc : menuItemIdToNameData_en_US[item.item_id];
 			detail.desc2 = item.desc2 ? item.desc2 : menuItemIdToNameData_zh_TW[item.item_id];
 			detail.seq = seq;
@@ -356,7 +361,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.price = item.item_price;
 			if (svcChargeData[currentData.desk]) {
 				detail["service-charge"] = svcChargeData[currentData.desk];
-				if (item.svc_chargeable === 1) {
+				if (item.svc_chargeable === 1 || 1===item.is_modifier) {
 					detail["service-charge-able"] = 1;
 					detail["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatItemSvcCharge(item, svcChargeData[currentData.desk]);
 				} else {
@@ -369,15 +374,20 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.unit = "份";
 			detail["take-away"] = 0;
 			if(1===item.is_modifier){
+				detail["cat-id"] = "";
 				detail["modifier-value"] = 0;
 				detail["is-modifier"] = 1;
-				detail["link-row"] = 1;
+				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
+				detail["discount-able"] = 1;
+				detail["tax-able"] = 1;
 			}else{
+				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
+				pre_seq = seq;
 			}
 			orderData.details.push(detail);
 			seq++;

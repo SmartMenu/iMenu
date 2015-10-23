@@ -53,7 +53,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 			appData.device_mac = localStorage.getItem("com.h3.prj.imenu.device_mac");
 		}
 		if (appData.device_mac && appData.server_url) {
-			jQuery.getJSON(appData.server_url + "/getShopAndPos?mac=" + appData.device_mac + 
+			jQuery.getJSON(appData.server_url + "/action" + "/getShopAndPos?mac=" + appData.device_mac + 
 			               "&&callback=?", function(json) {
 				if (json.status == 1) {
 					sap.m.MessageToast.show(json.msg);
@@ -83,7 +83,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 		var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
 		var appData = appInfoModel.getData();
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-			jQuery.getJSON(appData.server_url + "/getTables?mac=" + appData.device_mac +
+			jQuery.getJSON(appData.server_url + "/action" + "/getTables?mac=" + appData.device_mac +
 			               "&&shopid=" + appData.shop_id + "&&callback=?", function(json){
 				if (json.status == 1) {
 					sap.m.MessageToast.show(json.msg);
@@ -148,7 +148,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 				deferreds[desk.id] = jQuery.Deferred();
 			});
 			deskData.forEach(function(desk){
-				jQuery.getJSON(appData.server_url + "/getServiceCharge?mac=" +
+				jQuery.getJSON(appData.server_url + "/action" + "/getServiceCharge?mac=" +
 			                   appData.device_mac + "&&shopid=" + appData.shop_id + 
 			                   "&&tableid=" + desk.id + "&&callback=?", function(json){
 							if (json.status == 1) {
@@ -198,7 +198,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 		var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
 		var appData = appInfoModel.getData();
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-			jQuery.getJSON(appData.server_url + "/getMenu?mac=" + appData.device_mac + 
+			jQuery.getJSON(appData.server_url + "/action" + "/getMenu?mac=" + appData.device_mac + 
 			               "&&shopid=" + appData.shop_id + 
 			               "&&posid=" + appData.device_id + 
 			               "&&callback=?", function(json) {
@@ -212,6 +212,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                cat_type: "lookup-type", \
 					                pic_type: "picture-type", \
 					                items: items[].{\
+					                    cat_id: "cat-id",\
 					                	item_id: "item-id", \
 					                	item_name: "item-name", \
 					                	price: price, \
@@ -263,6 +264,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                cat_type: "lookup-type", \
 					                pic_type: "picture-type", \
 					                items: items[].{\
+					                    cat_id: "cat-id",\
 					                	item_id: "item-id", \
 					                	item_name: item_name2, \
 					                	price: price, \
@@ -401,6 +403,22 @@ com.h3.prj.imenu.iMenuInitializer = {
 
 		});
 	},
+	
+	initLocalDir: function() {
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+			function(fileSystem){	
+				newFile = fileSystem.root.getDirectory("iMenu", 
+					{ create : true, exclusive : false }, 
+					function (dirEntry) {
+						iMenuDirURL = dirEntry.toURL();
+						sap.ui.getCore().setModel(iMenuDirURL, "com.h3.prj.imenu.model.iMenuDirURL");
+					},
+					function (dirError) {}
+				);  
+			},
+			function (fileSystemError) {}
+		);
+	},
 
 	start: function() {
 
@@ -445,8 +463,9 @@ com.h3.prj.imenu.iMenuInitializer = {
 
 		com.h3.prj.imenu.iMenuInitializer.initModels_i18_app();
 		com.h3.prj.imenu.iMenuInitializer.initUI();
+		com.h3.prj.imenu.iMenuInitializer.initLocalDir();
 	}
 
 };
 
-com.h3.prj.imenu.iMenuInitializer.start();
+com.h3.prj.imenu.iMenuInitializer.attachDeviceReady();

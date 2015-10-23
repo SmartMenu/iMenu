@@ -162,7 +162,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Login", {
 		var appData = appInfoModel.getData();
 		var that = this;
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-			jQuery.getJSON(appData.server_url + "/loginByUserPwd?mac=" + appData.device_mac + 
+			jQuery.getJSON(appData.server_url + "/action" + "/loginByUserPwd?mac=" + appData.device_mac + 
 			               "&&shopid=" + appData.shop_id + 
 			               "&&userid=" + user +
 			               "&&password=" + pass + 
@@ -179,7 +179,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Login", {
 						var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
 						var appData = appInfoModel.getData();
 						if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-							jQuery.getJSON(appData.server_url + "/getOrder?mac=" + appData.device_mac + 
+							jQuery.getJSON(appData.server_url + "/action" + "/getOrder?mac=" + appData.device_mac + 
 							               "&&shopid=" + appData.shop_id + 
 							               "&&posid=" + appData.device_id +
 							               "&&tableid=" + desk + 
@@ -192,6 +192,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Login", {
 									                order_no: "order-no", \
 									                order: details[].{\
 									                    id: seq,\
+									                    seq: seq,\
 									                	item_id: "item-id", \
 									                    item_count: qty,\
 									                    item_price: price,\

@@ -23,7 +23,7 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value = "/loginByUserPwd", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/loginByUserPwd", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String doLoginByUserPwd(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, @RequestParam String userid, @RequestParam String password, 
     		@RequestParam String callback) throws IOException
@@ -35,7 +35,7 @@ public class LoginController {
 		return callback+"("+jsonResult.toString()+")";
     }
 
-	@RequestMapping(value = "/loginByUser", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/loginByUser", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String doLoginByUser(HttpServletResponse resp, @RequestParam String shopid, @RequestParam String userid, 
     		@RequestParam String callback) throws IOException
@@ -47,7 +47,7 @@ public class LoginController {
 		return callback+"("+jsonResult.toString()+")";
     }
 
-	@RequestMapping(value = "/loginByCard", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/loginByCard", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String doLoginByCard(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, @RequestParam String cardno, 
     		@RequestParam String callback) throws IOException
@@ -59,7 +59,7 @@ public class LoginController {
 		return callback+"("+jsonResult.toString()+")";
     }
 	
-	@RequestMapping(value = "/checkUserPwd/{variable}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/checkUserPwd/{variable}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String doCheckRightByUserPwd(HttpServletResponse resp, @PathVariable String variable, @RequestParam String mac, @RequestParam String shopid, 
     		@RequestParam String userid, 
@@ -80,7 +80,7 @@ public class LoginController {
 		return callback+"("+json.toString()+")";
     }
 
-	@RequestMapping(value = "/checkUser/{variable}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/checkUser/{variable}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String doCheckRightByUser(HttpServletResponse resp, @PathVariable String variable, @RequestParam String mac, @RequestParam String shopid,
     		@RequestParam String userid,  
@@ -100,7 +100,7 @@ public class LoginController {
 		return callback+"("+json.toString()+")";
     }
 	
-	@RequestMapping(value = "/checkCard/{variable}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+	@RequestMapping(value = "/action/checkCard/{variable}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String doCheckRightByCard(HttpServletResponse resp, @PathVariable String variable, @RequestParam String mac, @RequestParam String shopid,
     		@RequestParam String cardno,  

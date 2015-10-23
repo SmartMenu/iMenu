@@ -243,29 +243,38 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.MenuBrowser"
 	},
 
 	orderPrinter: function(permissionCheckDlg, ctrl, dlg) {
-		return function printOrderClosure() {
-			function print() {
+		return function print() {
 				ctrl.printOrder();
 				dlg.close();
-			}
-			permissionCheckDlg.closeDeferred = jQuery.Deferred();
-			jQuery.when(permissionCheckDlg.closeDeferred).then(print);
-			permissionCheckDlg.open();
 		};
+//		return function printOrderClosure() {
+//			function print() {
+//				ctrl.printOrder();
+//				dlg.close();
+//			}
+//			permissionCheckDlg.closeDeferred = jQuery.Deferred();
+//			jQuery.when(permissionCheckDlg.closeDeferred).then(print);
+//			permissionCheckDlg.open();
+//		};
 	},
 
 	orderPlacer: function(permissionCheckDlg, ctrl, dlg) {
-		return function placeOrderClosure() {
-			function place() {
+		return function place() {
 				ctrl.placeOrder();
 				ctrl.getRouter().navTo("desk");
 				dlg.close();
-				
-			}
-			permissionCheckDlg.closeDeferred = jQuery.Deferred();
-			jQuery.when(permissionCheckDlg.closeDeferred).then(place);
-			permissionCheckDlg.open();
 		};
+//		return function placeOrderClosure() {
+//			function place() {
+//				ctrl.placeOrder();
+//				ctrl.getRouter().navTo("desk");
+//				dlg.close();
+//				
+//			}
+//			permissionCheckDlg.closeDeferred = jQuery.Deferred();
+//			jQuery.when(permissionCheckDlg.closeDeferred).then(place);
+//			permissionCheckDlg.open();
+//		};
 	},
 
 	onSubmittedOrderButtonPressed: function(event) {

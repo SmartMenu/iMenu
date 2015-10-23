@@ -70,12 +70,15 @@ public class SetterContainer extends Setter {
 			json.put("select-all", "1");
 		else
 			json.put("select-all", "0");
-
-		JSONArray ja= new JSONArray();
-		for(Setter setter: lsSetters){
-			ja.add(setter.toJson());
+		if(lsSetters != null){
+			JSONArray ja = new JSONArray();
+			for (Setter setter : lsSetters) {
+				ja.add(setter.toJson());
+			}
+			json.put("details", ja);
 		}
-		json.put("details", ja);
+		else
+			json.put("details", "[]");
 		return json;
 	}
 	

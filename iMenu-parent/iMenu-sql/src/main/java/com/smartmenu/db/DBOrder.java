@@ -34,17 +34,20 @@ public class DBOrder{
 	@Autowired
 	private DBCommonUtil dbCommonUtil;
 	
-	//tranNo, checkNo
-	private synchronized String[] generateTranNoAndCheckNo(Connection conn, String shopId){
+	private String tranNoUpdate;
+	//tranNo, checkNo, slipNo
+	private synchronized String[] generateTranCheckAndSlipNo(Connection conn, String shopId, String posId){
+		
+		String sql="select id, seq, prefix, suffix, [length], shop_id, pos_id from [dbo].[tranno] with (HOLDLOCK, TABLOCK) " +
+					" where shop_id='"+shopId+"' and (pos_id='"+posId+"' or pos_id='') and (id='SALESTRANNO' or id='CHECKNO' or id='SLIPNO') order by pos_id desc;";
 		
 		//String sql="select id, seq, prefix, suffix, [length] from [dbo].[tranno] with (HOLDLOCK, TABLOCK) " +
-		//			" where shop_id='"+shopId+"' and (pos_id='"+posId+"' or pos_id='') and (id='SALESTRANNO' or id='CHECKNO' or id='SLIPNO') order by pos_id desc;";
-		
-		String sql="select id, seq, prefix, suffix, [length] from [dbo].[tranno] with (HOLDLOCK, TABLOCK) " +
-					" where shop_id='"+shopId+"' and (id='IMENUCHECKNO' or id='IMENUSALESTRANNO');";
-		System.out.println("GenerateTranNo: " + sql);
+		//			" where shop_id='"+shopId+"' and (id='IMENUCHECKNO' or id='IMENUSALESTRANNO' or id='IMENUSLIPNO');";
+		System.out.println("generateTranCheckAndSlipNo: " + sql);
 		String tranNo;
 		String checkNo;
+		String slipNo;
+		tranNoUpdate="";
 		List<Object> lsResult = dbCommonUtil.query(conn, sql, new ParseResultSetInterface(){
 
 			@Override
@@ -52,6 +55,8 @@ public class DBOrder{
 				Map<String,String> map = new HashMap<String, String>();
 				while(rs.next()){
 					String id = rs.getString("id");
+					String rShopId=rs.getString("shop_id");
+					String rPosId = rs.getString("pos_id");
 					String prefix=rs.getString("prefix");
 					if(prefix==null)
 						prefix="";
@@ -72,7 +77,10 @@ public class DBOrder{
 						System.out.println(id + " sequence no is longer than expected.");
 						continue;
 					}
-					map.put(id, no);
+					if(!map.containsKey(id)){
+						map.put(id, no);
+						tranNoUpdate+="update dbo.tranno set seq=seq+1 where shop_id='"+rShopId+"' and pos_id='"+rPosId+"' and id='"+id+"';";
+					}
 				}
 				if(map.isEmpty())
 					return null;
@@ -85,26 +93,49 @@ public class DBOrder{
 		if(lsResult == null || lsResult.size()== 0)
 			return null;
 		Map<String, String> map = (Map<String,String>)lsResult.get(0);
-		if(!map.containsKey("IMENUCHECKNO")||!map.containsKey("IMENUSALESTRANNO"))
+		if(!map.containsKey("SALESTRANNO")||!map.containsKey("CHECKNO")||!map.containsKey("SLIPNO"))
 			return null;
 		else{
-			checkNo=map.get("IMENUCHECKNO");
-			tranNo=map.get("IMENUSALESTRANNO");
-			return new String[]{tranNo, checkNo};
+			checkNo=map.get("CHECKNO");
+			tranNo=map.get("SALESTRANNO");
+			slipNo=map.get("SLIPNO");
+			return new String[]{tranNo, checkNo, slipNo};
 		}
 	}
 
-	private boolean updateTranNoSettings(Connection conn, String shopId){
-		String sql="update [dbo].[tranno] set seq=seq+1 "+
-				" where shop_id='"+shopId+"' and (id='IMENUCHECKNO' or id='IMENUSALESTRANNO');";
-		System.out.println("UpdateTranNoSetting: "+ sql);
-		int count = dbCommonUtil.execute(conn, sql);
+	private boolean updateTranNoSettings(Connection conn){
+//		String sql="update [dbo].[tranno] set seq=seq+1 "+
+//				" where shop_id='"+shopId+"' and (id='IMENUCHECKNO' or id='IMENUSALESTRANNO');";
+		System.out.println("UpdateTranNoSetting: "+ tranNoUpdate);
+		int count = dbCommonUtil.execute(conn, tranNoUpdate);
+		tranNoUpdate=null;
 		if(count>0)
 			return true;
 		else
 			return false;
 	}
-	
+	public String getCurCodeForShop(String shopId){
+		String sql = "select cur_code from dbo.shop where shop_id='"+shopId+"'";
+		List<Object> ls = dbCommonUtil.query(sql, new ParseResultSetInterface(){
+			@Override
+			public List<Object> parseResult(ResultSet rs) throws SQLException {
+				List<Object> lsResult = new ArrayList<Object>();
+				String curCode = "";
+				if(rs.next()){
+					curCode=rs.getString("cur_code");
+				}
+				lsResult.add(curCode);
+				return lsResult;
+			}
+		});
+
+		if(ls == null || ls.size() == 0)
+			return "";
+		else{
+			String curCode = (String)ls.get(0);
+			return curCode;
+		}
+	}
 	public String addNewOrder(Order order, List<OrderDetail> lsOrderDetail){
 		String resultMsg;
 		Connection conn=null;
@@ -112,12 +143,13 @@ public class DBOrder{
 		try {
 			conn = dataSource.getConnection();
 			conn.setAutoCommit(false);
-			String[] strNos = this.generateTranNoAndCheckNo(conn, order.getShopId());
+			String[] strNos = this.generateTranCheckAndSlipNo(conn, order.getShopId(), order.getPosId());
 			if(strNos!=null){
-				updateTranNoSettings(conn, order.getShopId());
+				updateTranNoSettings(conn);
 				String tranNo = strNos[0];
 				order.setTranNo(tranNo);
 				order.setCheckNo(strNos[1]);
+				order.setSlipNo(strNos[2]);
 				//
 				Calendar ca = Calendar.getInstance();
 				ca.setTimeInMillis(System.currentTimeMillis());
@@ -128,9 +160,11 @@ public class DBOrder{
 				order.setTranDate(tranDate);
 				Timestamp checkDate = new Timestamp(System.currentTimeMillis());
 				order.setCheckDate(checkDate);
+				/*set cur_code for order*/
+				order.setCurCode(getCurCodeForShop(order.getShopId()));
 				Map<String,String> mapOrderProperty = this.buildOrderProperty(order);
 				String orderSql = this.buildInsertSql("[dbo].[sales_header]", mapOrderProperty);
-				System.out.println("INSERT ORDER: " + orderSql);
+				System.out.println("ADD NEW ORDER SQL: " + orderSql);
 			    int count = dbCommonUtil.execute(conn, orderSql);
 			    if(count==-1){
 				   System.out.println("ERROR: Insert order failed.");
@@ -145,10 +179,9 @@ public class DBOrder{
 					   detailsSql.append(sqlTmp);
 				   }
 				   //append update dept_id and class_id from sales_details
-				   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id " +
+				   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, cat_id=b.cat_id " +
 							 " from dbo.item b where b.item_code = code and shop_id='"+order.getShopId() +
-							 "' and tran_no='" + tranNo + "' and sales_details.dept_id is null " +
-							 " and sales_details.class_id is null;");
+							 "' and tran_no='" + tranNo + "';");
 				   System.out.println("INSERT DETAILS: "+detailsSql.toString());
 				   int detail_count=dbCommonUtil.execute(conn, detailsSql.toString());
 				   if(detail_count==-1){
@@ -287,8 +320,10 @@ public class DBOrder{
 		map.put("check_date", "'"+sdf.format(order.getCheckDate())+"'");
 		map.put("table_no", "'"+order.getTableId()+"'");
 		map.put("section_id", "'"+order.getSectionId()+"'");
+		map.put("slip_no", "'"+order.getSlipNo()+"'");
 		map.put("cur_rate1", "0");
 		map.put("cur_rate2", "0");
+		map.put("cur_code", "'"+order.getCurCode()+"'");
 		ServiceCharge svchg = order.getSvchg();
 		if(svchg!=null){
 			map.put("chg_id", "'"+svchg.getId()+"'");
@@ -377,7 +412,7 @@ public class DBOrder{
 		map.put("subtype",""+detail.getSubtype()); //////////////////////////
 		map.put("link_row",""+detail.getLinkRow());
 		map.put("shift_no", "0");
-		//map.put("[close]", "0");
+		map.put("close_id", "' '");
 		map.put("start_id", "' '");
 		map.put("order_date", "GETDATE()");
 		//map.put("level_no","");
@@ -476,19 +511,29 @@ public class DBOrder{
 		map.put("capture_reproc_req","1"); //for print
 		map.put("capture_reproc_status","0"); //for print
 		map.put(" takeaway_mode",detail.getTakeAway()+"");
-/////////////////		
+/////////////////	
+		map.put("ivoid_shop", "' '");
+		map.put("ivoid_pos", "' '");
+		map.put("ivoid_by", "' '");
 		map.put("ivoid_qty", "0");
 		map.put("ivoid_amount", "0");
 		map.put("ivoid_total", "0");
 		map.put("ivoid_printed", "0");
 		map.put("ivoid_ktprinted", "0");
+		map.put("ivoid_reference", "' '");
 		//////////reason
 		if(detail.getReasonCode() != null)
 			map.put("ivoid_reason_code", "N'"+SQLEncode.encode(detail.getReasonCode())+"'");
+		else
+			map.put("ivoid_reason_code", "' '");
 		if(detail.getReasonDesc() != null)
 			map.put("ivoid_reason_desc1", "N'"+SQLEncode.encode(detail.getReasonDesc())+"'");
+		else 
+			map.put("ivoid_reason_desc1", "' '");
 		if(detail.getReasonDesc2() != null)
 			map.put("ivoid_reason_desc2", "N'"+SQLEncode.encode(detail.getReasonDesc2())+"'");
+		else
+			map.put("ivoid_reason_desc2", "' '");
 		return map;
 	}
 	

@@ -29,6 +29,10 @@ public class Order {
 	private String reasonDesc;
 	private String reasonDesc2;
 	
+	//cur_code
+	private String curCode;
+	private String slipNo;
+	
 	public String getTranNo() {
 		return tranNo;
 	}
@@ -154,6 +158,18 @@ public class Order {
 	}
 	public void setReasonDesc2(String reasonDesc2) {
 		this.reasonDesc2 = reasonDesc2;
+	}
+	public String getCurCode() {
+		return curCode;
+	}
+	public void setCurCode(String curCode) {
+		this.curCode = curCode;
+	}
+	public String getSlipNo() {
+		return slipNo;
+	}
+	public void setSlipNo(String slipNo) {
+		this.slipNo = slipNo;
 	}
 	
 }

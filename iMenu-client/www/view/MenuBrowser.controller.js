@@ -210,10 +210,10 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.MenuBrowser"
 			width: "8em",
 			press: this.delAllFromCart
 		});
-		var discountBtn = new sap.m.Button({
-			text: "{l10n>/cart/discount}",
-			width: "12em"
-		});
+//		var discountBtn = new sap.m.Button({
+//			text: "{l10n>/cart/discount}",
+//			width: "12em"
+//		});
 		var printBtn = new sap.m.Button({
 			text: "{l10n>/cart/print_sheet}",
 			width: "7em",
@@ -234,7 +234,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.MenuBrowser"
 		buttons.push(totalBtn);
 		buttons.push(totalLabel);
 		buttons.push(removeAllBtn);
-		buttons.push(discountBtn);
+//		buttons.push(discountBtn);
 		buttons.push(printBtn);
 		buttons.push(closeBtn);
 		buttons.push(orderBtn);

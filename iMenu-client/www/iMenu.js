@@ -224,24 +224,10 @@ com.h3.prj.imenu.iMenuInitializer = {
 					var menuItemIdToModifier_en_US_Data = {};
 					menu_en_US_Data.forEach(function(cat){
 						cat.items.forEach(function(item){
-							var modifier;
 							if(item.modifier){
-								modifier = jmespath.search(item.modifier, '{\
-								                           modifier_id: "modifier-id", \
-								                           modifier_name: "modifier-name", \
-								                           compulsory: compulsory, \
-								                           min_count: "min-count", \
-								                           max_count: "max-count", \
-								                           details: details[].{\
-								                           		item_id: "item-id", \
-								                           		item_name: "item-name", \
-								                           		price: price, \
-								                           		subtype: subtype, \
-								                           		desc: "item-name", \
-								                                desc2: "item-name2"\
-								                           }\
-								                         }');
-								menuItemIdToModifier_en_US_Data[item.item_id] = modifier;
+								var flattenedModifiers = [];
+								that.flatModifiers_en_US(item.modifier, flattenedModifiers);
+								menuItemIdToModifier_en_US_Data[item.item_id] = flattenedModifiers;
 								delete item.modifier;
 							}
 						});
@@ -276,24 +262,10 @@ com.h3.prj.imenu.iMenuInitializer = {
 					var menuItemIdToModifier_zh_TW_Data = {};
 					menu_zh_TW_Data.forEach(function(cat){
 						cat.items.forEach(function(item){
-							var modifier;
 							if(item.modifier){
-								modifier = jmespath.search(item.modifier, '{\
-								                           modifier_id: "modifier-id", \
-								                           modifier_name: "modifier-name2", \
-								                           compulsory: compulsory, \
-								                           min_count: "min-count", \
-								                           max_count: "max-count", \
-								                           details: details[].{\
-								                           		item_id: "item-id", \
-								                           		item_name: "item-name2", \
-								                           		price: price, \
-								                           		subtype: subtype, \
-								                                desc: "item-name", \
-								                                desc2: "item-name2"\
-								                           }\
-								                         }');
-								menuItemIdToModifier_zh_TW_Data[item.item_id] = modifier;
+								var flattenedModifiers = [];
+								that.flatModifiers_zh_TW(item.modifier, flattenedModifiers);
+								menuItemIdToModifier_zh_TW_Data[item.item_id] = flattenedModifiers;
 								delete item.modifier;
 							}
 						});
@@ -349,6 +321,56 @@ com.h3.prj.imenu.iMenuInitializer = {
 			var msg = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").settings.wrong_settings;
 			sap.m.MessageToast.show(msg);
 		}
+	},
+	
+	flatModifiers_en_US: function(modifier, flattenedModifiers) {
+		var that = com.h3.prj.imenu.iMenuInitializer;
+		var m = {};
+		m.modifier_id = modifier["modifier-id"];
+		m.modifier_name = modifier["modifier-name"];
+		m.compulsory = modifier["compulsory"];
+		m.min_count = modifier["min_count"];
+		m.max_count = modifier["max_count"];
+		var details = jmespath.search(modifier, "details[?type=='detail']");
+		m.details = jmespath.search(details, '[].{\
+			                            item_id: "item-id", \
+		                           		item_name: "item-name", \
+		                           		price: price, \
+		                           		subtype: subtype, \
+		                           		desc: "item-name", \
+		                                desc2: "item-name2"\
+		                            }');
+		flattenedModifiers.push(m);
+		
+		childModifiers = jmespath.search(modifier, "details[?type=='modifier']");
+		childModifiers.forEach(function(cm){
+			that.flatModifiers_en_US(cm, flattenedModifiers);
+		});
+	},
+	
+	flatModifiers_zh_TW: function(modifier, flattenedModifiers) {
+		var that = com.h3.prj.imenu.iMenuInitializer;
+		var m = {};
+		m.modifier_id = modifier["modifier-id"];
+		m.modifier_name = modifier["modifier-name2"];
+		m.compulsory = modifier["compulsory"];
+		m.min_count = modifier["min_count"];
+		m.max_count = modifier["max_count"];
+		var details = jmespath.search(modifier, "details[?type=='detail']");
+		m.details = jmespath.search(details, '[].{\
+			                            item_id: "item-id", \
+		                           		item_name: "item-name2", \
+		                           		price: price, \
+		                           		subtype: subtype, \
+		                           		desc: "item-name", \
+		                                desc2: "item-name2"\
+		                            }');
+		flattenedModifiers.push(m);
+		
+		childModifiers = jmespath.search(modifier, "details[?type=='modifier']");
+		childModifiers.forEach(function(cm){
+			that.flatModifiers_zh_TW(cm, flattenedModifiers);
+		});
 	},
 
 	initTrackingModel: function() {
@@ -435,6 +457,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 		var menuItemIdToModifierModel_en_US = new sap.ui.model.json.JSONModel();
 		var menuItemIdToModifierModel_zh_TW = new sap.ui.model.json.JSONModel();
 		var l10nModifierModel = new sap.ui.model.json.JSONModel();
+		var l10nCurrentModifierModel = new sap.ui.model.json.JSONModel();
 		var categoryModel = new sap.ui.model.json.JSONModel();
 		var menuItemToCategoryModel = new sap.ui.model.json.JSONModel();
 		var menuItemIdToNameModel_en_US = new sap.ui.model.json.JSONModel();
@@ -453,6 +476,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 		sap.ui.getCore().setModel(menuItemIdToModifierModel_en_US, "com.h3.prj.imenu.model.menuItemId_to_Modifier_en_US");
 		sap.ui.getCore().setModel(menuItemIdToModifierModel_zh_TW, "com.h3.prj.imenu.model.menuItemId_to_Modifier_zh_TW");
 		sap.ui.getCore().setModel(l10nModifierModel, "com.h3.prj.imenu.model.l10nModifier");
+		sap.ui.getCore().setModel(l10nCurrentModifierModel, "com.h3.prj.imenu.model.l10nCurrentModifier");
 		sap.ui.getCore().setModel(categoryModel, "com.h3.prj.imenu.model.menu_categories");
 		sap.ui.getCore().setModel(menuItemToCategoryModel, "com.h3.prj.imenu.model.menuItem_to_Category");
 		sap.ui.getCore().setModel(menuItemIdToNameModel_en_US, "com.h3.prj.imenu.model.menuItemId_to_Name_en_US");

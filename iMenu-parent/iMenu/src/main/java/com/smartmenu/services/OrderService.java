@@ -566,16 +566,22 @@ public class OrderService {
 		String msg;
 		int status = 0;	
 		Order order = dbOrder.getOrder(shopId, orderNo);
-	    String[] shopAndPos = dbSetting.getShopIdAndPosId(mac);
-	    if(shopAndPos.length == 2)
-	    	order.setPosId(shopAndPos[2]);
-		boolean result = printer.printListForCustomer(order);
-		if(result){
-			status = 0;
-			msg = ReturnMsgCode.SUCCESS;
-		}else{
+		if(order==null)
+		{
 			status = 1;
 			msg = ReturnMsgCode.PRINT_ERROR;
+		}else{
+		    String[] shopAndPos = dbSetting.getShopIdAndPosId(mac);
+		    if(shopAndPos.length == 2)
+		    	order.setPosId(shopAndPos[1]);
+			boolean result = printer.printListForCustomer(order);
+			if(result){
+				status = 0;
+				msg = ReturnMsgCode.SUCCESS;
+			}else{
+				status = 1;
+				msg = ReturnMsgCode.PRINT_ERROR;
+			}
 		}
 		json.put("status", status);
 		json.put("msg", msg);

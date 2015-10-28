@@ -58,68 +58,9 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Menu1Item", 
 		var item_id = this.getView().data("item_id");
 		var modifierData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nModifier").getData()[item_id];
 		if (modifierData) {
-			var selectedModifiers = [];
-			var modifierView = sap.ui.xmlview("com.h3.prj.imenu.view.Modifier");
-			modifierView.setModel(sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n"), "l10n");
-			var modifierPopover = modifierView.byId("modifierPopover");
-			modifierPopover.attachAfterClose(function() {
-				var item_id = this.getView().data("item_id");
-				var item_count = this.getView().getModel().getData().count;
-				var item_price = this.getView().getModel("item").getData().price;
-				var cat_id = this.getView().getModel("item").getData().cat_id;
-				var item_cat_id = this.getView().data("item_cat");
-				this.addToCart({
-					"cat_id": cat_id;
-					"item_id": item_id,
-					"item_cat_id": item_cat_id,
-					"item_count": item_count,
-					"item_price": item_price
-				}, selectedModifiers);
-				modifierView.destroy();
-				var data = this.getView().getModel().getData();
-				data.count = 1;
-				this.getView().getModel().setData(data);
-			}, this);
-			var modifierGrid = modifierView.byId("modifierGrid");
-			modifierData.details.forEach(function(d){
-				var toggleButton = new sap.m.ToggleButton({
-					text: d.item_name,
-					width: "8em",
-					press: function(event){
-						var button = event.getSource();
-						if(button.getPressed()){
-							selectedModifiers.push(d);
-						}else{
-							var pos = jQuery.inArray(d, selectedModifiers);
-							if(pos!==-1){
-								selectedModifiers.splice(pos, 1);
-							}
-							
-						}
-					}
-				});
-				toggleButton.addStyleClass("menuItemButton");
-				modifierGrid.addContent(toggleButton);
-			});
-			var button = event.getSource();
-			modifierPopover.openBy(button);
+			this.prepareModifierDlg(modifierData);
 		} else {
-			var item_id = this.getView().data("item_id");
-			var item_count = this.getView().getModel().getData().count;
-			var item_price = this.getView().getModel("item").getData().price;
-			var cat_id = this.getView().getModel("item").getData().cat_id;
-			var item_cat_id = this.getView().data("item_cat");
-			this.addToCart({
-				"cat_id": cat_id,
-				"item_id": item_id,
-				"item_cat_id": item_cat_id,
-				"item_count": item_count,
-				"item_price": item_price
-			});
-
-			var data = this.getView().getModel().getData();
-			data.count = 1;
-			this.getView().getModel().setData(data);
+			this.doAddToCart(this);
 		}
 	}
 

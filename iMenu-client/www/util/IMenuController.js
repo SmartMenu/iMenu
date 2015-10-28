@@ -2,6 +2,9 @@ jQuery.sap.declare("com.h3.prj.imenu.util.IMenuController");
 
 sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 
+	modifierDlg: null,
+	modifierView: null,
+
 	getEventBus: function() {
 		return this.getOwnerComponent().getEventBus();
 	},
@@ -111,7 +114,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				m.item_cat_id = item.item_cat_id;
 				m.item_price = m.price;
 				trackingData.cart.push(m);
-				item["modifier-value"] = item["modifier-value"] + m.price; 
+				item["modifier-value"] = item["modifier-value"] + m.price;
 			});
 		}
 		if (!trackingData.categories) {
@@ -135,7 +138,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		}
 		var item = trackingData.cart[index];
 		trackingData.cart.splice(index, 1);
-		while(trackingData.cart[index] && 1===trackingData.cart[index].is_modifier){
+		while (trackingData.cart[index] && 1 === trackingData.cart[index].is_modifier) {
 			trackingData.cart.splice(index, 1);
 		}
 		trackingData.categories[item.item_cat_id] = trackingData.categories[item.item_cat_id] - item.item_count;
@@ -219,9 +222,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item_cat_nm = jmespath.search(menuData, "[?cat_id=='" + item.item_cat_id + "']")[0].cat_name;
 					item.item_cat = item_cat_nm;
 					item.sub_total = item.item_price * item.item_count;
-				}else{
+				} else {
 					item.item_cat = item_cat_nm;
-					item.item_name = jmespath.search(modifierData[item_nm.item_id].details, "[?item_id=='" + item.item_id + "']")[0].item_name; 
+					item.item_name = jmespath.search(modifierData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']")[0].item_name;
 					item.sub_total = item.item_price * item.item_count;
 				}
 			});
@@ -237,9 +240,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item_cat_nm = jmespath.search(menuData, "[?cat_id=='" + item.item_cat_id + "']")[0].cat_name;
 					item.item_cat = item_cat_nm;
 					item.sub_total = item.item_price * item.item_count;
-				}else{
+				} else {
 					item.item_cat = item_cat_nm;
-					item.item_name = jmespath.search(modifierData[item_nm.item_id].details, "[?item_id=='" + item.item_id + "']")[0].item_name; 
+					item.item_name = jmespath.search(modifierData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']")[0].item_name;
 					item.sub_total = item.item_price * item.item_count;
 				}
 			});
@@ -293,7 +296,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.price = item.item_price;
 			if (svcChargeData[currentData.desk]) {
 				detail["service-charge"] = svcChargeData[currentData.desk];
-				if (item.svc_chargeable === 1 || 1===item.is_modifier) {
+				if (item.svc_chargeable === 1 || 1 === item.is_modifier) {
 					detail["service-charge-able"] = 1;
 					detail["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatItemSvcCharge(item, svcChargeData[currentData.desk]);
 				} else {
@@ -305,7 +308,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail["pay-amount"] = com.h3.prj.imenu.util.Formatter.formatItemPayAmount(item, svcChargeData[currentData.desk]);
 			detail.unit = "份";
 			detail["take-away"] = 0;
-			if(1===item.is_modifier){
+			if (1 === item.is_modifier) {
 				detail["cat-id"] = "";
 				detail["modifier-value"] = 0;
 				detail["is-modifier"] = 1;
@@ -313,7 +316,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				detail.subtype = 2;
 				detail["discount-able"] = 1;
 				detail["tax-able"] = 1;
-			}else{
+			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
@@ -349,7 +352,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		orderData.order["user-id"] = trackingData.user_id;
 
 		orderData.details = [];
-		var seq = Math.max.apply(null, trackingData.current.order.map(function(o){return o.seq;})) + 1;
+		var seq = Math.max.apply(null, trackingData.current.order.map(function(o) {
+			return o.seq;
+		})) + 1;
 		var pre_seq = seq;
 		currentData.cart.forEach(function(item) {
 			var detail = {};
@@ -361,7 +366,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.price = item.item_price;
 			if (svcChargeData[currentData.desk]) {
 				detail["service-charge"] = svcChargeData[currentData.desk];
-				if (item.svc_chargeable === 1 || 1===item.is_modifier) {
+				if (item.svc_chargeable === 1 || 1 === item.is_modifier) {
 					detail["service-charge-able"] = 1;
 					detail["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatItemSvcCharge(item, svcChargeData[currentData.desk]);
 				} else {
@@ -373,7 +378,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail["pay-amount"] = com.h3.prj.imenu.util.Formatter.formatItemPayAmount(item, svcChargeData[currentData.desk]);
 			detail.unit = "份";
 			detail["take-away"] = 0;
-			if(1===item.is_modifier){
+			if (1 === item.is_modifier) {
 				detail["cat-id"] = "";
 				detail["modifier-value"] = 0;
 				detail["is-modifier"] = 1;
@@ -381,7 +386,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				detail.subtype = 2;
 				detail["discount-able"] = 1;
 				detail["tax-able"] = 1;
-			}else{
+			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
@@ -416,6 +421,106 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		} else {
 			sap.m.MessageToast.show(l10nData.status_msg.order_not_exist);
 		}
+	},
+
+	prepareModifierDlg: function(modifierData) {
+		var modifierView = sap.ui.xmlview("com.h3.prj.imenu.view.Modifier");
+		modifierView.setModel(sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n"), "l10n");
+		modifierView.setModel(new sap.ui.model.json.JSONModel(modifierData), "modifiers");
+		var selectedModifiers = [];
+		var modifierIconTab = modifierView.byId("modifierIconTab");
+		modifierData.forEach(function(modifierGroup) {
+			var iconTabFilter = new sap.m.IconTabFilter({
+				text: modifierGroup.modifier_name
+			});
+			var modifierGrid = new sap.ui.layout.Grid({
+				defaultSpan: "L3 M3 S3"
+			});
+			iconTabFilter.addContent(modifierGrid);
+			modifierGroup.details.forEach(function(d) {
+				var toggleButton = new sap.m.ToggleButton({
+					text: d.item_name,
+					width: "20em",
+					press: function(event) {
+						var button = event.getSource();
+						if (button.getPressed()) {
+							selectedModifiers.push(d);
+						} else {
+							var pos = jQuery.inArray(d, selectedModifiers);
+							if (pos !== -1) {
+								selectedModifiers.splice(pos, 1);
+							}
+						}
+					}
+				});
+				toggleButton.addStyleClass("menuItemButton");
+				modifierGrid.addContent(toggleButton);
+			});
+			modifierIconTab.addItem(iconTabFilter);
+		});
+		this.createModifierDlg(modifierView, selectedModifiers).open();
+	},
+
+	createModifierDlg: function(modifierView, selectedModifiers) {
+		var doAdd = this.doAddToCart;
+		var that = this;
+		if (!com.h3.prj.imenu.util.IMenuController.modifierDlg) {
+			var modifierDlg = new sap.m.Dialog("modifierDlg", {
+				contentHeight: "100%",
+				contentWidth: "100%",
+				showHeader: false,
+				content: [
+					modifierView
+				]
+			});
+			var l10n = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n");
+			modifierDlg.setModel(l10n, "l10n");
+			modifierDlg.addButton(new sap.m.Button({
+				text: "{l10n>/ok}",
+				width: "8em",
+				press: function() {
+					modifierDlg.close();
+					doAdd(that, selectedModifiers);
+				}
+			}));
+			com.h3.prj.imenu.util.IMenuController.modifierDlg = modifierDlg;
+		} else {
+			var dlg = com.h3.prj.imenu.util.IMenuController.modifierDlg;
+			dlg.removeAllButtons();
+			dlg.removeAllContent();
+			dlg.addContent(modifierView);
+			var button = new sap.m.Button({
+				text: "{l10n>/ok}",
+				width: "8em",
+				press: function() {
+					dlg.close();
+					doAdd(that, selectedModifiers);
+				}
+			});
+			dlg.addButton(button);
+			dlg.setInitialFocus(button);
+		}
+		return com.h3.prj.imenu.util.IMenuController.modifierDlg;
+	},
+
+	doAddToCart: function(that, selectedModifiers) {
+		var view = that.getView();
+		var item_id = view.data("item_id");
+		var item_count = view.getModel().getData().count;
+		var item_price = view.getModel("item").getData().price;
+		var cat_id = view.getModel("item").getData().cat_id;
+		var item_cat_id = view.data("item_cat");
+		that.addToCart({
+			"cat_id": cat_id,
+			"item_id": item_id,
+			"item_cat_id": item_cat_id,
+			"item_count": item_count,
+			"item_price": item_price
+		}, selectedModifiers);
+
+		var data = view.getModel().getData();
+		data.count = 1;
+		view.getModel().setData(data);
 	}
 
 });

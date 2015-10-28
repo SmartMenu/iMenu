@@ -35,9 +35,5 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Modifier", {
 //	onExit: function() {
 //
 //	}
-	
-	onModifierConfirmPressed: function(event){
-		this.getView().byId("modifierPopover").close();
-	}
 
 });

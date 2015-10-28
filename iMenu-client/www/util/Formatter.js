@@ -111,6 +111,14 @@ com.h3.prj.imenu.util.Formatter = {
 		}else{
 			return number;
 		}
+	},
+	
+	itemGroup: function(context){
+		var key = context.getProperty("item_cat");
+		return {
+			key: key,
+			text: key
+		};
 	}
 
 };

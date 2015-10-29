@@ -13,6 +13,7 @@ public class OrderDetail {
 	private int linkRow;
 	private BigDecimal modifierValue;
 	private BigDecimal totalAmount;
+	private int levelNo;
 	private int discAble;
 	private Discount discount;
 	private BigDecimal discAmount;
@@ -86,6 +87,13 @@ public class OrderDetail {
 	}
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
+	}
+	
+	public int getLevelNo() {
+		return levelNo;
+	}
+	public void setLevelNo(int levelNo) {
+		this.levelNo = levelNo;
 	}
 	public int getDiscAble() {
 		return discAble;

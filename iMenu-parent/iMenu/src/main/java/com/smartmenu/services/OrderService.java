@@ -372,6 +372,7 @@ public class OrderService {
 	}
 /*
  * "details":[{"item-id":,"seq":,"qty":,"price":,"subtype":, "is-modifier":,"link-row":,"modifier-value":,total-amount:,discount-able:,
+            level-no: ,
             discount:{"id":"","disc-type":,"rate":,"desc":"","desc2":""},discount-amount:,
 			service-charge-able:,
 			service-charge:{"id":,"desc":"","desc2":"","value":, "type":},service-charge-amount:,
@@ -402,6 +403,10 @@ public class OrderService {
 			orderDetail.setLinkRow(json.getInt("link-row"));
 			orderDetail.setModifierValue(new BigDecimal(json.getString("modifier-value")));
 			orderDetail.setTotalAmount(new BigDecimal(json.getString("total-amount")));
+			if(json.containsKey("level-no"))
+				orderDetail.setLevelNo(json.getInt("level-no"));
+			else
+				orderDetail.setLevelNo(0);
 			if(json.containsKey("discount-able"))
 				orderDetail.setDiscAble(json.getInt("discount-able"));
 			else

@@ -218,6 +218,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item_nm = item;
 					var menuItem = jmespath.search(menuItemsData, "[?item_id=='" + item.item_id + "']");
 					item.item_name = menuItem[0].item_name;
+					item.discountable = menuItem[0].discountable;
 					item.svc_chargeable = menuItem[0].svc_chargeable;
 					item_cat_nm = jmespath.search(menuData, "[?cat_id=='" + item.item_cat_id + "']")[0].cat_name;
 					item.item_cat = item_cat_nm;
@@ -236,6 +237,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item_nm = item;
 					var menuItem = jmespath.search(menuItemsData, "[?item_id=='" + item.item_id + "']");
 					item.item_name = menuItem[0].item_name;
+					item.discountable = menuItem[0].discountable;
 					item.svc_chargeable = menuItem[0].svc_chargeable;
 					item_cat_nm = jmespath.search(menuData, "[?cat_id=='" + item.item_cat_id + "']")[0].cat_name;
 					item.item_cat = item_cat_nm;
@@ -286,6 +288,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		orderData.details = [];
 		var seq = 1;
 		var pre_seq = seq;
+		var pre_disc = 0;
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
@@ -314,15 +317,16 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				detail["is-modifier"] = 1;
 				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
-				detail["discount-able"] = 1;
-				detail["tax-able"] = 1;
+				detail["discount-able"] = pre_disc;
 			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
+				detail["discount-able"] = item.discountable;
 				pre_seq = seq;
+				pre_disc = item.discountable;
 			}
 			orderData.details.push(detail);
 			seq++;
@@ -356,6 +360,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			return o.seq;
 		})) + 1;
 		var pre_seq = seq;
+		var pre_disc = 0;
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
@@ -384,15 +389,16 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				detail["is-modifier"] = 1;
 				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
-				detail["discount-able"] = 1;
-				detail["tax-able"] = 1;
+				detail["discount-able"] = pre_disc;
 			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
+				detail["discount-able"] = item.discountable;
 				pre_seq = seq;
+				pre_disc = item.discountable;
 			}
 			orderData.details.push(detail);
 			seq++;

@@ -203,7 +203,8 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Login", {
 									if(orderData.order_no){
 										var menuItemToCategoryData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.menuItem_to_Category").getData();
 										orderData.order.forEach(function(o){
-											o.item_cat_id = menuItemToCategoryData[o.item_id]; 
+											o.item_cat_id = menuItemToCategoryData[o.item_id];
+											o.id = o.item_cat_id + "_" + that.genIdtxt(o.id);
 										});
 										currentData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().current;
 										currentData.orderId = orderData.order_no;

@@ -56,8 +56,40 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 
 	nextItemId: function() {
 		var trackingData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData();
+		if(!trackingData.current.itemId){
+			trackingData.current.itemId = 1;
+		}
+		var idtxt = this.genIdtxt(trackingData.current.itemId);
 		trackingData.current.itemId = trackingData.current.itemId + 1;
-		return trackingData.current.itemId;
+		return idtxt;
+	},
+	
+	genIdtxt: function(id){
+		var idtxt = id;
+		if(id===1000000000 || !id){
+			id=1;
+			idtxt=1;
+		}
+		if(id<10){
+			idtxt = "000000000" + id;
+		}else if(id<100){
+			idtxt = "00000000" + id;
+		}else if(id<1000){
+			idtxt = "0000000" + id;
+		}else if(id<10000){
+			idtxt = "000000" + id;
+		}else if(id<100000){
+			idtxt = "00000" + id;
+		}else if(id<1000000){
+			idtxt = "0000" + id;
+		}else if(id<10000000){
+			idtxt = "000" + id;
+		}else if(id<100000000){
+			idtxt = "00" + id;
+		}else{
+			idtxt = "0" + id;
+		}
+		return idtxt;
 	},
 
 	oneMoreItem: function(id) {
@@ -98,7 +130,8 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 	addToCart: function(item, modifiers) {
 		var trackingData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().current;
 		var id = this.nextItemId();
-		item.id = id;
+
+		item.id = item.item_cat_id + "_" + id;
 		item["modifier-value"] = 0;
 		if (!trackingData.cart) {
 			trackingData.cart = [];
@@ -108,7 +141,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		if (modifiers) {
 			modifiers.forEach(function(m) {
 				var id = that.nextItemId();
-				m.id = id;
+				m.id = item.item_cat_id + "_" + id;
 				m.is_modifier = 1;
 				m.item_count = item.item_count;
 				m.item_cat_id = item.item_cat_id;

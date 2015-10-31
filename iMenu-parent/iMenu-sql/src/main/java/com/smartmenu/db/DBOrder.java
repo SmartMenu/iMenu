@@ -411,6 +411,7 @@ public class DBOrder{
 		map.put("seqno", ""+detail.getSeqNo()+"");
 		map.put("subtype",""+detail.getSubtype()); //////////////////////////
 		map.put("link_row",""+detail.getLinkRow());
+		map.put("level_no", ""+detail.getLevelNo());
 		map.put("shift_no", "0");
 		map.put("close_id", "' '");
 		map.put("start_id", "' '");

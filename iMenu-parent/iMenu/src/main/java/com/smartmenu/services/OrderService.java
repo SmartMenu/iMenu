@@ -372,6 +372,7 @@ public class OrderService {
 	}
 /*
  * "details":[{"item-id":,"seq":,"qty":,"price":,"subtype":, "is-modifier":,"link-row":,"modifier-value":,total-amount:,discount-able:,
+            level-no: ,
             discount:{"id":"","disc-type":,"rate":,"desc":"","desc2":""},discount-amount:,
 			service-charge-able:,
 			service-charge:{"id":,"desc":"","desc2":"","value":, "type":},service-charge-amount:,
@@ -402,6 +403,10 @@ public class OrderService {
 			orderDetail.setLinkRow(json.getInt("link-row"));
 			orderDetail.setModifierValue(new BigDecimal(json.getString("modifier-value")));
 			orderDetail.setTotalAmount(new BigDecimal(json.getString("total-amount")));
+			if(json.containsKey("level-no"))
+				orderDetail.setLevelNo(json.getInt("level-no"));
+			else
+				orderDetail.setLevelNo(0);
 			if(json.containsKey("discount-able"))
 				orderDetail.setDiscAble(json.getInt("discount-able"));
 			else
@@ -566,16 +571,22 @@ public class OrderService {
 		String msg;
 		int status = 0;	
 		Order order = dbOrder.getOrder(shopId, orderNo);
-	    String[] shopAndPos = dbSetting.getShopIdAndPosId(mac);
-	    if(shopAndPos.length == 2)
-	    	order.setPosId(shopAndPos[2]);
-		boolean result = printer.printListForCustomer(order);
-		if(result){
-			status = 0;
-			msg = ReturnMsgCode.SUCCESS;
-		}else{
+		if(order==null)
+		{
 			status = 1;
 			msg = ReturnMsgCode.PRINT_ERROR;
+		}else{
+		    String[] shopAndPos = dbSetting.getShopIdAndPosId(mac);
+		    if(shopAndPos.length == 2)
+		    	order.setPosId(shopAndPos[1]);
+			boolean result = printer.printListForCustomer(order);
+			if(result){
+				status = 0;
+				msg = ReturnMsgCode.SUCCESS;
+			}else{
+				status = 1;
+				msg = ReturnMsgCode.PRINT_ERROR;
+			}
 		}
 		json.put("status", status);
 		json.put("msg", msg);

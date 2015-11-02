@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,6 +14,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
 import java.security.Key;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.crypto.Cipher;
@@ -39,28 +39,73 @@ public class SmartCheck {
 	public static SmartCheck getInstanse(){
 		return checker;
 	}
+
+	private String getUserDataDirectory()
+	{
+		String imenuUserFolder = null;
+	    String OS = System.getProperty("os.name").toUpperCase();
+	    if (OS.contains("WIN"))
+	        imenuUserFolder = System.getenv("APPDATA");
+	    else if (OS.contains("MAC"))
+	        imenuUserFolder = System.getProperty("user.home") + File.separator + "Library"
+	                          +File.separator + "Application Support";
+	    else if (OS.contains("NUX")){
+	    	String folder = System.getenv("XDG_DATA_HOME");
+	    	String userHome = System.getProperty("user.home"); 
+	    	if (folder == null) {
+	    		folder = userHome + File.separator + ".local" + File.separator + "share";
+	    	}
+	    	imenuUserFolder = folder;
+		}
+	    else		        
+			imenuUserFolder = System.getProperty("user.dir");
+	    
+	    return imenuUserFolder + File.separator + "iMenu" + File.separator;
+	}
+	
 	//record first use time
 	public void takedownFirstUse(long time,String licenseID){
-		URL path = SmartCheck.class.getResource("/");
-		File file = new File(path.getPath()+fTime);
+		String path = this.getUserDataDirectory();
+		File dir = new File(path);
+		if(!dir.isDirectory())
+			dir.mkdirs();
+		File file = new File(path+fTime);
 		if(file.exists()){
 			file.delete();
 		}
+		BufferedWriter bufferWritter = null;
+		FileWriter fileWritter = null;
 		try {
 			file.createNewFile();
-			FileWriter fileWritter = new FileWriter(file,true);
-             BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-             bufferWritter.write(time+","+licenseID);
-             bufferWritter.close();
+			fileWritter = new FileWriter(file,false);
+            bufferWritter = new BufferedWriter(fileWritter);
+            bufferWritter.write(time+","+licenseID);
+            
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally{
+			try{
+					if(bufferWritter != null){
+						bufferWritter.flush();
+						bufferWritter.close();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			try{
+				if(fileWritter!=null)
+					fileWritter.close();
+			}catch(IOException e){
+				e.printStackTrace();
+			}
 		}
 		
 	}
 	//get first use time
 	public long getFirstUseTime(){
-		URL path = SmartCheck.class.getResource("/");
-		File file = new File(path.getPath()+fTime);
+		String path = this.getUserDataDirectory();
+		File file = new File(path+fTime);
 		if(file.exists()){
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(file));
@@ -78,8 +123,8 @@ public class SmartCheck {
 		return -1;
 	}
 	public String getLicenseID(){
-		URL path = SmartCheck.class.getResource("/");
-		File file = new File(path.getPath()+fTime);
+		String path = this.getUserDataDirectory();
+		File file = new File(path+fTime);
 		if(file.exists()){
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(file));
@@ -95,27 +140,45 @@ public class SmartCheck {
 		return null;
 		
 	}
-	//check license, return max connections
+	//check license, 
 	public boolean checkLicense(){
 		Key key = readKey();
 		byte[] input = readData();
-		if(key == null || input == null)
+		if(key == null || input == null){
+			System.out.println("License[ERROR]: public.key file is missed.");
 			return false;
-		String[] data = publicDecrypt(key, input);
-		if(data == null)
-			return false;
-		String oldLicenseID = this.getLicenseID();
-		if(oldLicenseID==null||!oldLicenseID.equals(data[0])){
-			this.takedownFirstUse(System.currentTimeMillis(),data[0]);
 		}
+		String[] data = publicDecrypt(key, input);
+		if(data == null){
+			System.out.println("License[ERROR]: the license file shop.lic can't be decrypted.");
+			return false;
+		}
+		String oldLicenseID = this.getLicenseID();
+		if(oldLicenseID==null){
+			System.out.println("License[INFO]: License ID is "+data[0]+"(for the first use).");
+			this.takedownFirstUse(System.currentTimeMillis(),data[0]);
+		}else if(!oldLicenseID.equals(data[0])){
+			System.out.println("License[INFO]: License ID is " + data[0] + "(new, the old is "+oldLicenseID+").");
+			this.takedownFirstUse(System.currentTimeMillis(),data[0]);
+		}else{
+			System.out.println("License[INFO]: License ID is " + data[0]);
+		}
+//		if(oldLicenseID==null||!oldLicenseID.equals(data[0])){
+//			System.out.println("License[INFO]: a new license file.");
+//			this.takedownFirstUse(System.currentTimeMillis(),data[0]);
+//		}
 		if(!data[1].equals("null")){
 			String localMac = getLocalMac();
-			if(!localMac.equalsIgnoreCase(data[1]))
+			if(!localMac.equalsIgnoreCase(data[1])){
+				System.out.println("License[INFO]: License Mac Address("+data[1]+") can't match the server mac address("+localMac+"). ");
 				return false;
+			}
 		}
 		this.connector = Integer.parseInt(data[3]); 
+		System.out.println("License[INFO]: max connection " + this.connector);
 		long firstTime = getFirstUseTime();
 		if(firstTime == -1){
+			System.out.println("License[ERROR]: System config file is missed.");
 			return false;
 		}
 		Calendar caEnd = Calendar.getInstance();
@@ -123,10 +186,15 @@ public class SmartCheck {
 		caEnd.add(Calendar.MONTH, Integer.parseInt(data[4]));
 		this.endtime = caEnd.getTimeInMillis();
 		long currentTime = System.currentTimeMillis();
+		SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.print("License[INFO]: Valid date up to "+sm.format(caEnd.getTime()));
 		if(currentTime<firstTime|| currentTime>caEnd.getTimeInMillis()){
+			Calendar caBegin = Calendar.getInstance();
+			caBegin.setTimeInMillis(currentTime);
+			System.out.println("(fail, current date is )"+sm.format(caBegin.getTime()));
 			return false;
 		}
-		
+		System.out.println("(pass).");
 		return true;
 	}
 	private String getLocalMac() {

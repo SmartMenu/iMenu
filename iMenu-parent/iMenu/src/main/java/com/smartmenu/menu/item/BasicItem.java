@@ -133,6 +133,8 @@ public class BasicItem {
 		json.put("item-pic", itemPic==null?" ": itemPic);
 		json.put("disc-able", discountable);
 		json.put("svchg-allow", svchgAble);
+		json.put("item-desc", this.itemDesc==null?"":itemDesc);
+		json.put("item-desc2", this.itemDesc2==null?"":itemDesc2);
 		return json;
 	}
 	

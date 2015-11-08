@@ -217,6 +217,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                	item_name: "item-name", \
 					                	price: price, \
 					                	item_pic: "item-pic", \
+					                    discountable: "disc-able",\
 					                    svc_chargeable: "svchg-allow", \
 					                    modifier: "modifier"\
 					                	}\
@@ -255,6 +256,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                	item_name: item_name2, \
 					                	price: price, \
 					                	item_pic: "item-pic", \
+					                    discountable: "disc-able",\
 					                    svc_chargeable: "svchg-allow", \
 					                    modifier: "modifier"\
 					                	}\

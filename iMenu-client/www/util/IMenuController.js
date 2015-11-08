@@ -56,8 +56,40 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 
 	nextItemId: function() {
 		var trackingData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData();
+		if(!trackingData.current.itemId){
+			trackingData.current.itemId = 1;
+		}
+		var idtxt = this.genIdtxt(trackingData.current.itemId);
 		trackingData.current.itemId = trackingData.current.itemId + 1;
-		return trackingData.current.itemId;
+		return idtxt;
+	},
+	
+	genIdtxt: function(id){
+		var idtxt = id;
+		if(id===1000000000 || !id){
+			id=1;
+			idtxt=1;
+		}
+		if(id<10){
+			idtxt = "000000000" + id;
+		}else if(id<100){
+			idtxt = "00000000" + id;
+		}else if(id<1000){
+			idtxt = "0000000" + id;
+		}else if(id<10000){
+			idtxt = "000000" + id;
+		}else if(id<100000){
+			idtxt = "00000" + id;
+		}else if(id<1000000){
+			idtxt = "0000" + id;
+		}else if(id<10000000){
+			idtxt = "000" + id;
+		}else if(id<100000000){
+			idtxt = "00" + id;
+		}else{
+			idtxt = "0" + id;
+		}
+		return idtxt;
 	},
 
 	oneMoreItem: function(id) {
@@ -98,7 +130,8 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 	addToCart: function(item, modifiers) {
 		var trackingData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().current;
 		var id = this.nextItemId();
-		item.id = id;
+
+		item.id = item.item_cat_id + "_" + id;
 		item["modifier-value"] = 0;
 		if (!trackingData.cart) {
 			trackingData.cart = [];
@@ -108,7 +141,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		if (modifiers) {
 			modifiers.forEach(function(m) {
 				var id = that.nextItemId();
-				m.id = id;
+				m.id = item.item_cat_id + "_" + id;
 				m.is_modifier = 1;
 				m.item_count = item.item_count;
 				m.item_cat_id = item.item_cat_id;
@@ -218,6 +251,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item_nm = item;
 					var menuItem = jmespath.search(menuItemsData, "[?item_id=='" + item.item_id + "']");
 					item.item_name = menuItem[0].item_name;
+					item.discountable = menuItem[0].discountable;
 					item.svc_chargeable = menuItem[0].svc_chargeable;
 					item_cat_nm = jmespath.search(menuData, "[?cat_id=='" + item.item_cat_id + "']")[0].cat_name;
 					item.item_cat = item_cat_nm;
@@ -236,6 +270,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item_nm = item;
 					var menuItem = jmespath.search(menuItemsData, "[?item_id=='" + item.item_id + "']");
 					item.item_name = menuItem[0].item_name;
+					item.discountable = menuItem[0].discountable;
 					item.svc_chargeable = menuItem[0].svc_chargeable;
 					item_cat_nm = jmespath.search(menuData, "[?cat_id=='" + item.item_cat_id + "']")[0].cat_name;
 					item.item_cat = item_cat_nm;
@@ -286,6 +321,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		orderData.details = [];
 		var seq = 1;
 		var pre_seq = seq;
+		var pre_disc = 0;
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
@@ -314,15 +350,16 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				detail["is-modifier"] = 1;
 				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
-				detail["discount-able"] = 1;
-				detail["tax-able"] = 1;
+				detail["discount-able"] = pre_disc;
 			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
+				detail["discount-able"] = item.discountable;
 				pre_seq = seq;
+				pre_disc = item.discountable;
 			}
 			orderData.details.push(detail);
 			seq++;
@@ -356,6 +393,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			return o.seq;
 		})) + 1;
 		var pre_seq = seq;
+		var pre_disc = 0;
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
@@ -384,15 +422,16 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				detail["is-modifier"] = 1;
 				detail["link-row"] = pre_seq;
 				detail.subtype = 2;
-				detail["discount-able"] = 1;
-				detail["tax-able"] = 1;
+				detail["discount-able"] = pre_disc;
 			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
+				detail["discount-able"] = item.discountable;
 				pre_seq = seq;
+				pre_disc = item.discountable;
 			}
 			orderData.details.push(detail);
 			seq++;

@@ -1,5 +1,6 @@
 package com.smartmenu.db;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -439,7 +440,7 @@ public class DBOrder{
 		}else
 			map.put("disc_type", "0");
 		map.put("disc_amount", detail.getDiscAmount().toPlainString());
-		map.put("total_amount", detail.getPayAmount().toPlainString());
+		map.put("total_amount", detail.getTotalAmount().toPlainString());
 		map.put("cdisc_amount", "0");
 		map.put("svchargeable", detail.getSvchgAble()+"");
 		ServiceCharge svchg = detail.getServiceCharge();
@@ -454,14 +455,15 @@ public class DBOrder{
 			map.put("tax_rate", tax.getTaxValue().toPlainString());
 		}
 		map.put("tax_amount", detail.getTaxAmount().toPlainString());
-		map.put("net_amount", detail.getTotalAmount().toPlainString());  //
+		//net_amount=total_amount-cdisc_amount+svchg_amount
+		map.put("net_amount", detail.getPayAmount().toPlainString());  
 		map.put("order_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		map.put("order_shop", "'"+order.getShopId()+"'");
 		map.put("order_pos", "'"+order.getPosId()+"'");
 		map.put("is_modifier", ""+detail.getIsModifier());
-		map.put("cost", "0");
+		//map.put("cost", "0");
 		//map.put("stock_code", value);
-		map.put("total_cost", "0");
+		//map.put("total_cost", "0");
 		map.put("print_count", "0");
 		map.put("ticket_print", "0");
 		map.put("ticket_printed", "0");
@@ -964,10 +966,10 @@ public class DBOrder{
 		    for(OrderDetail orderDetail: lsDeleteOrderDetail){
 			   String tmp = "update dbo.sales_details set ivoid_status=2, ivoid_qty="+
 		                     orderDetail.getQty()+", ivoid_amount="+orderDetail.getTotalAmount()+
-		                     ", ivoid_total="+orderDetail.getPayAmount()+
+		                     ", ivoid_total="+orderDetail.getTotalAmount()+
 		                     //", qty=qty-"+orderDetail.getQty()+
 		                     //", amount=amount-"+orderDetail.getTotalAmount()+
-		                     //", total_amount=total_amount-"+orderDetail.getPayAmount()+
+		                     ", total_amount=total_amount-"+orderDetail.getTotalAmount()+
 		                     ", modify_date=GETDATE(), modify_by=N'"+SQLEncode.encode(order.getUserId())+"'"+
 		                     " where shop_id='"+order.getShopId()+"' "
 		                     + " and tran_no='"+order.getTranNo()+"' "
@@ -997,7 +999,7 @@ public class DBOrder{
 			   detailProperty.put("ivoid_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 			   detailProperty.put("qty", "-"+orderDetail.getQty());
 			   detailProperty.put("amount", "-"+order.getTotalAmount());
-			   detailProperty.put("total_amount", "-"+orderDetail.getPayAmount());
+			   detailProperty.put("total_amount", "-"+orderDetail.getTotalAmount());
 			   String sqlTmp = this.buildInsertSql("[dbo].[sales_details]", detailProperty);
 			   insertDeleteDetails.append(sqlTmp);
 		    }

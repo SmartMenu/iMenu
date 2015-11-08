@@ -60,7 +60,7 @@ public class SmartCheck {
 	    else		        
 			imenuUserFolder = System.getProperty("user.dir");
 	    
-	    return imenuUserFolder + File.separator + "iMenu" + File.separator;
+	    return imenuUserFolder + File.separator + "iData" + File.separator;
 	}
 	
 	//record first use time

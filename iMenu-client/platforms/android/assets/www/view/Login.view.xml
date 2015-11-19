@@ -1,0 +1,111 @@
+<mvc:View height="100%" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns="sap.m"
+	controllerName="com.h3.prj.imenu.view.Login">
+
+	<Page showHeader="false">
+		<content>
+			<l:Grid>
+				<Label>
+					<layoutData>
+						<l:GridData span="L12 M12 S12" />
+					</layoutData>
+				</Label>
+				<VBox id="leftBox">
+					<layoutData>
+						<l:GridData span="L5 M5 S5" />
+					</layoutData>
+					<l:Grid>
+						<l:content>
+							<VBox justifyContent="End">
+								<layoutData>
+									<l:GridData span="L12 M12 S12" />
+								</layoutData>
+								<HBox id="usernamePanel">
+									<Label class="loginLabel" text="{l10n>/login/id}" width="10em" />
+									<VBox width="100%">
+										<Input id="usernameInput" enabled="false" width="100%" />
+									</VBox>
+								</HBox>
+
+								<HBox id="passwordPanel">
+									<Label class="loginLabel" text="{l10n>/login/pass}"
+										width="10em" />
+									<VBox width="100%">
+										<Input id="passwordInput" type="Password" enabled="false"
+											width="100%" />
+									</VBox>
+								</HBox>
+
+								<HBox id="deskPanel">
+									<Label class="loginLabel" text="{l10n>/deskNo}" width="10em" />
+									<VBox width="100%">
+										<Input id="deskInput" enabled="false" width="100%" />
+									</VBox>
+								</HBox>
+
+								<HBox>
+									<Label text="" width="0.5em" />
+									<VBox width="8em">
+										<Button id="ResetButton" class="keyboard confirmBtn" text="{l10n>/login/reset}" 
+											enabled="{= ${app>/state}!=='NEW'}"
+											press="onResetButtonPressed" width="100%"/>
+									</VBox>
+									<Label text="" width="1em" />
+									<VBox width="8em">
+									</VBox>
+									<Label text="" width="0.5em" />
+								</HBox>
+
+							</VBox>
+						</l:content>
+					</l:Grid>
+				</VBox>
+				<VBox id="rightBox">
+					<layoutData>
+						<l:GridData span="L7 M7 S7"/>
+					</layoutData>
+					<l:Grid id="keyboardChar" defaultSpan="L2 M2 S2">
+						<l:content>
+							<Button class="keyboard" text="A" press="onInputButtonPressed" />
+							<Button class="keyboard" text="B" press="onInputButtonPressed" />
+							<Button class="keyboard" text="C" press="onInputButtonPressed" />
+							<Button class="keyboard" text="D" press="onInputButtonPressed" />
+							<Button class="keyboard" text="E" press="onInputButtonPressed" />
+							<Button class="keyboard" text="F" press="onInputButtonPressed" />
+						</l:content>
+					</l:Grid>
+					<l:Grid id="keyboardNum" defaultSpan="L3 M3 S3">
+						<l:content>
+							<Button class="keyboard" text="7" press="onInputButtonPressed" />
+							<Button class="keyboard" text="8" press="onInputButtonPressed" />
+							<Button class="keyboard" text="9" press="onInputButtonPressed" />
+							<Button class="keyboard" text="0" press="onInputButtonPressed" />
+							<Button class="keyboard" text="4" press="onInputButtonPressed">
+								<layoutData>
+									<l:GridData linebreakL="true" linebreakM="true"
+										linebreakS="true" />
+								</layoutData>
+							</Button>
+							<Button class="keyboard" text="5" press="onInputButtonPressed" />
+							<Button class="keyboard" text="6" press="onInputButtonPressed" />
+							<Button class="keyboard confirmBtn" icon="sap-icon://arrow-left"
+								press="onDeleteButtonPressed" />
+							<Button class="keyboard" text="1" press="onInputButtonPressed">
+								<layoutData>
+									<l:GridData linebreakL="true" linebreakM="true"
+										linebreakS="true" />
+								</layoutData>
+							</Button>
+							<Button class="keyboard" text="2" press="onInputButtonPressed" />
+							<Button class="keyboard" text="3" press="onInputButtonPressed" />									
+							<Button id="OKButton" class="keyboard confirmBtn" icon="sap-icon://accept"
+									enabled="{= ${app>/state}!=='NEW'}" 
+									press="onOKButtonPressed"/>
+						</l:content>
+					</l:Grid>
+				</VBox>
+			</l:Grid>
+
+		</content>
+	</Page>
+</mvc:View>

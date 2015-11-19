@@ -1,0 +1,16 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" controllerName="com.h3.prj.imenu.view.Menu4Item"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Toolbar>
+		<Label text="{item>/item_name}" class="menuItemLabel"></Label>
+		<ToolbarSpacer></ToolbarSpacer>
+		<Label text="{item>/price}" class="menuItemLabel"></Label>
+		<Label text="" width="0.5em"/>
+		<Button icon="sap-icon://less" class="menuItemButton" press="onLessButtonPressed"></Button>
+		<Input type="Number" editable="false" value="{/count}" width="4rem"
+			id="itemCount" textAlign="Center" />
+		<Button icon="sap-icon://add" class="menuItemButton" press="onAddButtonPressed"></Button>
+		<Label text="" width="1em"/>
+		<Button icon="sap-icon://cart" class="menuItemButton confirmBtn" press="onAcceptButtonPressed" width="5em"></Button>
+	</Toolbar>
+</core:View>

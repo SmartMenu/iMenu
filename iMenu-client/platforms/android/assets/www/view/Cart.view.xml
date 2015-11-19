@@ -1,0 +1,38 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" xmlns:com="sap.ui.commons" xmlns:l="sap.ui.layout"
+	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:f="sap.ui.layout.form" controllerName="com.h3.prj.imenu.view.Cart"
+	xmlns:html="http://www.w3.org/1999/xhtml" class="sapUiSizeCompact">
+	<Dialog id="cartDlg" modal="true" title="{l10n>/cart/title}"
+		class="sapUiSizeCompact" contentWidth="100%" contentHeight="100%">
+		<content>
+			<ScrollContainer id="cartTableContainer" width="100%"
+				horizontal="false" vertical="true">
+			</ScrollContainer>
+			<HBox>
+				<Label
+					text="{
+			path: 'l10n>/cart/sub_total',
+			formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'}" />
+				<Label text="12345" width="6em" />
+				<Label text="{
+					path: 'l10n>/cart/discount',
+					formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'
+					}" />
+				<Label text="-12345" width="6em" />
+				<Label text="{l10n>/cart/service_charge}" />
+				<Label text="12345" width="6em" textAlign="Begin" />
+			</HBox>
+		</content>
+		<buttons>
+			<Button icon="sap-icon://menu2"/>
+			<Button text="{l10n>/cart/total}" type="Emphasized" />
+			<Label text="12345" width="6em" textAlign="Begin" design="Bold"/>
+			<Button text="{l10n>/cart/remove_all}" type="Reject" />
+			<Button text="{l10n>/cart/discount}" width="6em" />
+			<Button text="{l10n>/cart/print_sheet}" width="5em" />
+			<Button text="{l10n>/cart/close}" width="6em" />
+			<Button text="{l10n>/cart/order}" type="Accept" width="6em" />
+		</buttons>
+	</Dialog>
+</core:View>

@@ -4,12 +4,12 @@
 	<VBox>
 		<Label text="{item>/item_name}" class="menuItemLabel"></Label>
 		<Label text="{item>/price}" class="menuItemLabel"></Label>
-		<Image width="100%" densityAware="false"
+		<Image densityAware="false"
 			src="{
 				path: 'item>/item_pic',
 				formatter: 'com.h3.prj.imenu.util.Formatter.formatImg'}">
 		</Image>
-		<Toolbar width="100%">
+		<Toolbar>
 			<Button icon="sap-icon://less" class="menuItemButton" press="onLessButtonPressed"></Button>
 			<Input type="Number" editable="false" value="{/count}" width="4em"
 				id="itemCount" textAlign="Center" />

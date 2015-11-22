@@ -127,6 +127,38 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		this.preShowCart();
 	},
 
+	addToCartSetter: function(item, setters) {
+		var trackingData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().current;
+		var id = this.nextItemId();
+		item.id = id;
+		item["modifier-value"] = 0;//TODO
+		if (!trackingData.cart) {
+			trackingData.cart = [];
+		}
+		var that = this;
+		trackingData.cart.push(item);
+		if (setters) {
+			setters.forEach(function(m) {
+				var id = that.nextItemId();
+				m.id = id;
+				m.is_modifier = 1;
+				m.item_count = item.item_count;
+				m.item_cat_id = item.item_cat_id;
+				m.item_price = 0;
+				trackingData.cart.push(m);
+				//item["modifier-value"] = item["modifier-value"] + 0;
+			});
+		}
+		if (!trackingData.categories) {
+			trackingData.categories = {};
+		}
+		if (!trackingData.categories[item.item_cat_id]) {
+			trackingData.categories[item.item_cat_id] = 0;
+		}
+		trackingData.categories[item.item_cat_id] = trackingData.categories[item.item_cat_id] + item.item_count;
+		this.preShowCart();
+	},
+
 	delFromCart: function(id) {
 		var trackingData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().current;
 		var index = 0;
@@ -208,6 +240,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		var trackingData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().current;
 		var menuData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nMenu").getData();
 		var modifierData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nModifier").getData();
+		var setterData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nSetter").getData();
 		var menuItemsData = jmespath.search(menuData, "[].items[]");
 		var cart = trackingData.cart;
 		var item_cat_nm = null;
@@ -224,7 +257,13 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item.sub_total = item.item_price * item.item_count;
 				} else {
 					item.item_cat = item_cat_nm;
-					item.item_name = jmespath.search(modifierData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']")[0].item_name;
+					var modifierItems = jmespath.search(modifierData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']");
+					var setterItems = jmespath.search(setterData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']");
+					if (modifierItems != null){
+						item.item_name = modifierItems[0].item_name;
+					} else if (setterItems != null){
+						item.item_name = setterItems[0].item_name;
+					}
 					item.sub_total = item.item_price * item.item_count;
 				}
 			});
@@ -242,7 +281,13 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item.sub_total = item.item_price * item.item_count;
 				} else {
 					item.item_cat = item_cat_nm;
-					item.item_name = jmespath.search(modifierData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']")[0].item_name;
+					var modifierItems = jmespath.search(modifierData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']");
+					var setterItems = jmespath.search(setterData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']");
+					if (modifierItems != null) {
+						item.item_name = modifierItems[0].item_name;
+					} else if (setterItems != null) {
+						item.item_name = setterItems[0].item_name;
+					}
 					item.sub_total = item.item_price * item.item_count;
 				}
 			});
@@ -463,6 +508,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		var setterView = sap.ui.xmlview("com.h3.prj.imenu.view.Setter");
 		setterView.setModel(sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n"), "l10n");
 		var setterContainer = setterView.byId("setterContainer");
+		var selectedSetterItems = [];
 		setterData.forEach(function(setterGroupData) {
 			var item_required = false;
 			var item_selected = false;
@@ -483,10 +529,67 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				var setterItem = sap.ui.xmlview("com.h3.prj.imenu.view.SetterItem");
 				var setterItemModel = new sap.ui.model.json.JSONModel(setterItemData);
 				setterItem.setModel(setterItemModel,"item");
+				if (setterItemData.item_required == true) {
+					selectedSetterItems.push(setterItemData);
+				}
+				setterItem.data("selectedSetterItems", selectedSetterItems);
 				setterContainer.addContent(setterItem);
 			});
 		});
-		this.createSelectionDlg(dialogName, setterView).open();
+		this.createSelectionDlg(dialogName, setterView, selectedSetterItems).open();
+	},
+	
+	updateSelectedSetterItems: function(itemData, selectedSetterItems) {
+		console.log("-> Enter updateSelectedSetterItems");
+		
+		if (itemData == null || selectedSetterItems == null) {
+			return;
+		}
+		
+		var currentItemID = itemData.item_id;
+		var currentItemCount = itemData.count;
+		var isCurrentSelected = itemData.item_selected;
+		if (currentItemID == null || currentItemID == ""){
+			return;
+		}
+		if (currentItemCount == null || currentItemCount < 1){
+			return;
+		}
+		if (isCurrentSelected == null){
+			return;
+		}
+		
+		console.log("-> itemData is valid and selectedSetterItems size is: " + selectedSetterItems.length);
+
+		var existingSelectedItem = null;
+		var existingSelectedItemIndex = null;
+			
+		for ( var i in selectedSetterItems) {
+			if (selectedSetterItems[i].item_id === currentItemID) {
+				existingSelectedItem = selectedSetterItems[i];
+				existingSelectedItemIndex = i;
+				break;
+			}
+		}
+			
+		if (existingSelectedItem == null && !isCurrentSelected) {
+			console.log("-> Do nothing");
+		}
+			
+		if (existingSelectedItem == null && isCurrentSelected) {
+			console.log("-> Add it");
+			selectedSetterItems.push(itemData);
+		}
+			
+		if (existingSelectedItem != null && !isCurrentSelected) {
+			console.log("-> Remove it");
+			selectedSetterItems.splice(existingSelectedItemIndex, 1);
+		}
+			
+		if (existingSelectedItem != null && isCurrentSelected) {
+			console.log("-> Update it");
+			existingSelectedItem = itemData;
+		}
 	},
 	
 	prepareModifierDlg: function(modifierData, dialogName) {
@@ -567,49 +670,97 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				dlg.close();
 			}
 		});
-		var checkButton = new sap.m.Button({
-			text: "{l10n>/check}",
-			width: buttonWidth,
-			type: "Emphasized",
-			press: function() {
-			}
-		});
 		var okButton = new sap.m.Button({
 			text: "{l10n>/ok}",
 			width: buttonWidth,
 			type: "Accept",
 			press: function() {
-				dlg.close();
-				doAdd(that, selections);
+				var result = doAdd(that, selections);
+				if (result) {
+					dlg.close();
+				}
 			}
 		});
 		dlg.addButton(nameLabel);
 		dlg.addButton(spacer);
 		dlg.addButton(closeButton);
-		dlg.addButton(checkButton);
 		dlg.addButton(okButton);
-		dlg.setInitialFocus(checkButton);
+		dlg.setInitialFocus(okButton);
 		return com.h3.prj.imenu.util.IMenuController.selectionDlg;
 	},
 
-	doAddToCart: function(that, selectedModifiers) {
+	doAddToCart: function(that, subSelections) {
 		var view = that.getView();
 		var item_id = view.data("item_id");
-		var item_count = view.getModel().getData().count;
-		var item_price = view.getModel("item").getData().price;
-		var cat_id = view.getModel("item").getData().cat_id;
 		var item_cat_id = view.data("item_cat");
-		that.addToCart({
-			"cat_id": cat_id,
-			"item_id": item_id,
-			"item_cat_id": item_cat_id,
-			"item_count": item_count,
-			"item_price": item_price
-		}, selectedModifiers);
+		var itemData = view.getModel("item").getData();
+		var item_count = view.getModel().getData().count;
+		var item_price = itemData.price;
+		var cat_id = itemData.cat_id;
+		
+		var setterData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nSetter").getData()[item_id];
+		if (setterData) {
+			console.log("-> This is a setter");
+			var errorSetterGroupNames = [];
+			setterData.forEach(function(setterGroupData) {
+				var select_all = setterGroupData.select_all;
+				var min_count = setterGroupData.min_count;
+				var group_name = setterGroupData.lookup_name;
+				if(select_all != 1){
+					console.log("-> checking setterGroupData: " + setterGroupData.item_id);
+					var group_counting = 0;
+					setterGroupData.details.forEach(function(setterItemData) {
+						var setter_item_id = setterItemData.item_id;
+						console.log("-> checking setter_item_id: " + setter_item_id);
+						var selectedItems = jmespath.search(subSelections, "[?item_id=='" + setter_item_id + "']");
+						console.log("-> selectedItems size is: " + selectedItems.length);
+						if(selectedItems != null && selectedItems.length > 0) {
+							var setter_item_count = selectedItems[0].count;
+							if (setter_item_count != null) {
+								console.log("-> setter_item_count is: " + setter_item_count);
+								group_counting = group_counting + setter_item_count;
+							}
+						}
+					});
+
+					if(group_counting != min_count) {
+						errorSetterGroupNames.push(group_name);
+					}
+				}
+			});
+			
+			if(errorSetterGroupNames.length > 0){
+				var setterGroupError = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().setter_group_error;
+				setterGroupError += errorSetterGroupNames[0];
+				for (var i = 1, len = errorSetterGroupNames.length; i < len; i += 1) {
+					setterGroupError += ", " + errorSetterGroupNames[i];
+				}
+				sap.m.MessageToast.show(setterGroupError);
+				return false;
+			}
+			
+			that.addToCartSetter({
+				"cat_id": cat_id,
+				"item_id": item_id,
+				"item_cat_id": item_cat_id,
+				"item_count": item_count,
+				"item_price": item_price
+			}, subSelections);
+		} else {
+			console.log("-> This is a modifier");
+			that.addToCart({
+				"cat_id": cat_id,
+				"item_id": item_id,
+				"item_cat_id": item_cat_id,
+				"item_count": item_count,
+				"item_price": item_price
+			}, subSelections);
+		}
 
 		var data = view.getModel().getData();
 		data.count = 1;
 		view.getModel().setData(data);
+		return true;
 	}
 
 });

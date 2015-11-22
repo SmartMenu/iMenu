@@ -6,7 +6,7 @@
 		<Toolbar width="100%">
 			<Label text="{item>/price}" class="menuItemLabel"></Label>
 			<Label width="0.5em"/>
-			<Button icon="sap-icon://cart" class="menuItemButton confirmBtn" press="onAcceptButtonPressed" width="4.5em"></Button>
+			<Button icon="sap-icon://cart-approval" class="menuItemButton confirmBtn" press="onAcceptButtonPressed" width="4.5em"></Button>
 		</Toolbar>
 		<Image width="100%" densityAware="false"
 			src="{

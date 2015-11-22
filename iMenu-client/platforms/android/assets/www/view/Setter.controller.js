@@ -41,25 +41,6 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Setter", {
 
 		var trackingModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking");
 		this.getView().setModel(trackingModel, "tracking");
-	},
-	
-	groupHeader: function(group) {
-		return new sap.m.GroupHeaderListItem({
-			title: group.key,
-			upperCase: false
-		});
-	},
-	
-	onItemLessButtonPressed: function(event) {
-		var btn = event.getSource();
-		var id = btn.data("tracking_id");
-		this.oneLessItem(id);
-	},
-	
-	onItemMoreButtonPressed: function(event) {
-		var btn = event.getSource();
-		var id = btn.data("tracking_id");
-		this.oneMoreItem(id);
 	}
 
 });

@@ -23,7 +23,9 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 		var floorFilter = this.getView().byId("floorFilter");
 		floorFilter.attachEventOnce("updateFinished", function(){
 			var items = floorFilter.getItems();
-			floorFilter.setSelectedItem(items[0]);
+			if(items != null){
+				floorFilter.setSelectedItem(items[0]);
+			}
 		});
 	},
 

@@ -12,7 +12,7 @@
 				id="itemCount" textAlign="Center" />
 			<Button icon="sap-icon://add" class="menuItemButton" press="onAddButtonPressed"></Button>
 			<Label text="" width="1em"/>
-			<Button icon="sap-icon://cart" class="menuItemButton confirmBtn" press="onAcceptButtonPressed" width="5em"></Button>
+			<Button icon="sap-icon://cart-approval" class="menuItemButton confirmBtn" press="onAcceptButtonPressed" width="5em"></Button>
 		</Toolbar>
 		<Image width="100%" densityAware="false"
 			src="{

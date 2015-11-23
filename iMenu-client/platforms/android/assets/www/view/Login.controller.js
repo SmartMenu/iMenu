@@ -196,6 +196,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Login", {
 									                	item_id: "item-id", \
 									                    item_count: qty,\
 									                    item_price: price,\
+											subtype: "subtype", \
 									                    is_modifier: "is-modifier"\
 									                	}\
 									                }');

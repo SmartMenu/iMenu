@@ -112,9 +112,14 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				m.is_modifier = 1;
 				m.item_count = item.item_count;
 				m.item_cat_id = item.item_cat_id;
-				m.item_price = m.price;
+				var sub_price = m.price;
+				if (sub_price = null) {
+					sub_price = 0;
+				}
+				m.item_price = sub_price;
+				m.subtype = 2;
+				item["modifier-value"] = item["modifier-value"] + sub_price;
 				trackingData.cart.push(m);
-				item["modifier-value"] = item["modifier-value"] + m.price;
 			});
 		}
 		if (!trackingData.categories) {
@@ -131,7 +136,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		var trackingData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().current;
 		var id = this.nextItemId();
 		item.id = id;
-		item["modifier-value"] = 0;//TODO
+		item["modifier-value"] = 0;
 		if (!trackingData.cart) {
 			trackingData.cart = [];
 		}
@@ -141,12 +146,17 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			setters.forEach(function(m) {
 				var id = that.nextItemId();
 				m.id = id;
-				m.is_modifier = 1;
+				m.is_modifier = 0;
 				m.item_count = item.item_count;
 				m.item_cat_id = item.item_cat_id;
-				m.item_price = 0;
+				var sub_price = m.price;
+				if (sub_price = null) {
+					sub_price = 0;
+				}
+				m.item_price = sub_price;
+				m.subtype = 4;
 				trackingData.cart.push(m);
-				//item["modifier-value"] = item["modifier-value"] + 0;
+				item["modifier-value"] = item["modifier-value"] + sub_price;
 			});
 		}
 		if (!trackingData.categories) {
@@ -170,7 +180,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		}
 		var item = trackingData.cart[index];
 		trackingData.cart.splice(index, 1);
-		while (trackingData.cart[index] && 1 === trackingData.cart[index].is_modifier) {
+		while (trackingData.cart[index] && ( 2 == trackingData.cart[index].subtype || 4 == trackingData.cart[index].subtype) ) {
 			trackingData.cart.splice(index, 1);
 		}
 		trackingData.categories[item.item_cat_id] = trackingData.categories[item.item_cat_id] - item.item_count;
@@ -246,8 +256,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		var item_cat_nm = null;
 		var item_nm = null;
 		if (cart) {
+			console.log("cart size is: " + cart.length);
 			cart.forEach(function(item) {
-				if (!item.is_modifier) {
+				if (2 != item.subtype && 4 != item.subtype) {
 					item_nm = item;
 					var menuItem = jmespath.search(menuItemsData, "[?item_id=='" + item.item_id + "']");
 					item.item_name = menuItem[0].item_name;
@@ -271,7 +282,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		var order = trackingData.order;
 		if (order) {
 			order.forEach(function(item) {
-				if (!item.is_modifier) {
+				if (2 != item.subtype && 4 != item.subtype) {
 					item_nm = item;
 					var menuItem = jmespath.search(menuItemsData, "[?item_id=='" + item.item_id + "']");
 					item.item_name = menuItem[0].item_name;
@@ -334,6 +345,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		currentData.cart.forEach(function(item) {
 			var detail = {};
 			detail["item-id"] = item.item_id;
+			
 			detail.desc = item.desc ? item.desc : menuItemIdToNameData_en_US[item.item_id];
 			detail.desc2 = item.desc2 ? item.desc2 : menuItemIdToNameData_zh_TW[item.item_id];
 			detail.seq = seq;
@@ -341,7 +353,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.price = item.item_price;
 			if (svcChargeData[currentData.desk]) {
 				detail["service-charge"] = svcChargeData[currentData.desk];
-				if (item.svc_chargeable === 1 || 1 === item.is_modifier) {
+				if (item.svc_chargeable === 1 || 2 == item.subtype || 4 == item.subtype) {
 					detail["service-charge-able"] = 1;
 					detail["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatItemSvcCharge(item, svcChargeData[currentData.desk]);
 				} else {
@@ -353,12 +365,14 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail["pay-amount"] = com.h3.prj.imenu.util.Formatter.formatItemPayAmount(item, svcChargeData[currentData.desk]);
 			detail.unit = "份";
 			detail["take-away"] = 0;
-			if (1 === item.is_modifier) {
+			console.log("item: "  + detail.desc + ", subtype: " + item.subtype 
+					+", is_modifier: " + item.is_modifier + ", modifier-value: " + item["modifier-value"]);
+			if (2 == item.subtype || 4 == item.subtype) {
 				detail["cat-id"] = "";
-				detail["modifier-value"] = 0;
-				detail["is-modifier"] = 1;
+				detail["modifier-value"] = item["modifier-value"];
+				detail["is-modifier"] = item.is_modifier;
 				detail["link-row"] = pre_seq;
-				detail.subtype = 2;
+				detail.subtype = item.subtype;
 				detail["discount-able"] = 1;
 				detail["tax-able"] = 1;
 			} else {
@@ -411,7 +425,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail.price = item.item_price;
 			if (svcChargeData[currentData.desk]) {
 				detail["service-charge"] = svcChargeData[currentData.desk];
-				if (item.svc_chargeable === 1 || 1 === item.is_modifier) {
+				if (item.svc_chargeable === 1 || 2 == item.subtype || 4 == item.subtype) {
 					detail["service-charge-able"] = 1;
 					detail["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatItemSvcCharge(item, svcChargeData[currentData.desk]);
 				} else {
@@ -423,12 +437,14 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail["pay-amount"] = com.h3.prj.imenu.util.Formatter.formatItemPayAmount(item, svcChargeData[currentData.desk]);
 			detail.unit = "份";
 			detail["take-away"] = 0;
-			if (1 === item.is_modifier) {
+			console.log("item: "  + detail.desc + ", subtype: " + item.subtype 
+					+", is_modifier: " + item.is_modifier + ", modifier-value: " + item["modifier-value"]);
+			if (2 == item.subtype || 4 == item.subtype) {
 				detail["cat-id"] = "";
-				detail["modifier-value"] = 0;
-				detail["is-modifier"] = 1;
+				detail["modifier-value"] = item["modifier-value"];
+				detail["is-modifier"] = item.is_modifier;
 				detail["link-row"] = pre_seq;
-				detail.subtype = 2;
+				detail.subtype = item.subtype;
 				detail["discount-able"] = 1;
 				detail["tax-able"] = 1;
 			} else {
@@ -697,6 +713,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		var item_count = view.getModel().getData().count;
 		var item_price = itemData.price;
 		var cat_id = itemData.cat_id;
+		var subtype = 0;
 		
 		var setterData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nSetter").getData()[item_id];
 		if (setterData) {
@@ -744,6 +761,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				"item_id": item_id,
 				"item_cat_id": item_cat_id,
 				"item_count": item_count,
+				"subtype": subtype,
 				"item_price": item_price
 			}, subSelections);
 		} else {
@@ -753,6 +771,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				"item_id": item_id,
 				"item_cat_id": item_cat_id,
 				"item_count": item_count,
+				"subtype": subtype,
 				"item_price": item_price
 			}, subSelections);
 		}

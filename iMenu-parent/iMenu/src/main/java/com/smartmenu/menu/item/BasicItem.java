@@ -135,6 +135,7 @@ public class BasicItem {
 		json.put("svchg-allow", svchgAble);
 		json.put("item-desc", this.itemDesc==null?"":itemDesc);
 		json.put("item-desc2", this.itemDesc2==null?"":itemDesc2);
+		json.put("subtype", 0);
 		return json;
 	}
 	

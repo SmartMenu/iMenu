@@ -23,8 +23,8 @@ public class DBMenu{
 	private DBCommonUtil dbCommonUtil;
 	
 	public Item[] getItems(String shopId){
-		String sql="select item_id, item_name, item_name2, aa.plu_no, aa.unit, aa.cat_id, aa.discountable, aa.service_allow, price, image_file, e.desc1 as cat_name, e.desc2 as cat_name2, aa.is_modifier, aa.modifier, aa.item_set, d.caption1, d.caption2 " +
-					"from (select a.item_code as item_id, a.pos_desc1 as item_name, a.pos_desc2 as item_name2, a.plu_no as plu_no, a.unit, a.cat_id, b.price, a.discountable, a.service_allow, a.is_modifier, a.modifier1 as modifier, a.item_set as item_set " +
+		String sql="select item_id, item_name, item_name2, aa.plu_no, aa.unit, aa.cat_id, aa.discountable, aa.service_allow, price, set_price, image_file, e.desc1 as cat_name, e.desc2 as cat_name2, aa.is_modifier, aa.modifier, aa.item_set, d.caption1, d.caption2 " +
+					"from (select a.item_code as item_id, a.pos_desc1 as item_name, a.pos_desc2 as item_name2, a.plu_no as plu_no, a.unit, a.cat_id, b.price, b.set_price, a.discountable, a.service_allow, a.is_modifier, a.modifier1 as modifier, a.item_set as item_set " +
 					"from [dbo].[item] a, [dbo].[item_price] b " + 
 					"where a.item_code=b.item_code and b.shop_id='"+shopId+"' and b.price_no=1) aa " +
 					"left join dbo.item_caption d " +
@@ -55,6 +55,7 @@ public class DBMenu{
 						item.setCategory(c);
 					}
 					item.setItemPrice(rs.getBigDecimal("price"));
+					item.setItemSetPrice(rs.getBigDecimal("set_price"));
 					item.setItemPic(rs.getString("image_file"));
 					item.setIsModifier(rs.getInt("is_modifier"));
 					item.setModifierId(rs.getString("modifier"));

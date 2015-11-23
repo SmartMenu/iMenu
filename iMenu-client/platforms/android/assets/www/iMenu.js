@@ -221,6 +221,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                	price: price, \
 					                	item_pic: "item-pic", \
 							subtype: "subtype", \
+							disc_able: "disc-able", \
 					                    svc_chargeable: "svchg-allow", \
 					                    modifier: "modifier",\
 		                    			setter: "setter"\
@@ -269,6 +270,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                	price: price, \
 					                	item_pic: "item-pic", \
 							subtype: "subtype", \
+							disc_able: "disc-able", \
 					                    svc_chargeable: "svchg-allow", \
 					                    modifier: "modifier",\
 										setter: "setter"\

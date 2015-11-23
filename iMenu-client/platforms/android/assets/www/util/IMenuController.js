@@ -112,11 +112,14 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				m.is_modifier = 1;
 				m.item_count = item.item_count;
 				m.item_cat_id = item.item_cat_id;
+				m["discount-able"] = 1;
+				m["tax-able"] = 1;
 				var sub_price = m.price;
-				if (sub_price = null) {
+				if (sub_price == null) {
 					sub_price = 0;
 				}
 				m.item_price = sub_price;
+				m["modifier-value"] = sub_price;
 				m.subtype = 2;
 				item["modifier-value"] = item["modifier-value"] + sub_price;
 				trackingData.cart.push(m);
@@ -140,6 +143,8 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		if (!trackingData.cart) {
 			trackingData.cart = [];
 		}
+		var parent_disc_able = item.disc_able;
+		var parent_tax_able = null;
 		var that = this;
 		trackingData.cart.push(item);
 		if (setters) {
@@ -149,11 +154,19 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				m.is_modifier = 0;
 				m.item_count = item.item_count;
 				m.item_cat_id = item.item_cat_id;
+				m["level-no"] = 1;
+				if (parent_disc_able != null) {
+					m["discount-able"] = parent_disc_able;
+				}
+				if (parent_tax_able != null) {
+					m["tax-able"] = parent_tax_able;
+				}
 				var sub_price = m.price;
-				if (sub_price = null) {
+				if (sub_price == null) {
 					sub_price = 0;
 				}
 				m.item_price = sub_price;
+				m["modifier-value"] = sub_price;
 				m.subtype = 4;
 				trackingData.cart.push(m);
 				item["modifier-value"] = item["modifier-value"] + sub_price;
@@ -365,16 +378,26 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail["pay-amount"] = com.h3.prj.imenu.util.Formatter.formatItemPayAmount(item, svcChargeData[currentData.desk]);
 			detail.unit = "份";
 			detail["take-away"] = 0;
-			console.log("item: "  + detail.desc + ", subtype: " + item.subtype 
-					+", is_modifier: " + item.is_modifier + ", modifier-value: " + item["modifier-value"]);
+			console.log("item: "  + detail.desc 
+					+ ", subtype: " + item.subtype 
+					+ ", is_modifier: " + item.is_modifier 
+					+ ", price: " + item.price
+					+ ", modifier-value: " + item["modifier-value"]);
 			if (2 == item.subtype || 4 == item.subtype) {
 				detail["cat-id"] = "";
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = item.is_modifier;
 				detail["link-row"] = pre_seq;
 				detail.subtype = item.subtype;
-				detail["discount-able"] = 1;
-				detail["tax-able"] = 1;
+				if (item["discount-able"] != null) {
+					detail["discount-able"] = item["discount-able"];
+				}
+				if (item["tax-able"] != null) {
+					detail["tax-able"] = item["tax-able"];
+				}
+				if (item["level-no"] != null) {
+					detail["level-no"] = item["level-no"];
+				}
 			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
@@ -386,7 +409,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			orderData.details.push(detail);
 			seq++;
 		});
-		return JSON.stringify(orderData);
+		var orderString = JSON.stringify(orderData);
+		console.log(orderString);
+		return orderString;
 	},
 
 	appendOrderData: function() {
@@ -437,16 +462,29 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail["pay-amount"] = com.h3.prj.imenu.util.Formatter.formatItemPayAmount(item, svcChargeData[currentData.desk]);
 			detail.unit = "份";
 			detail["take-away"] = 0;
-			console.log("item: "  + detail.desc + ", subtype: " + item.subtype 
-					+", is_modifier: " + item.is_modifier + ", modifier-value: " + item["modifier-value"]);
+			console.log("item: "  + detail.desc 
+					+ ", subtype: " + item.subtype 
+					+ ", is_modifier: " + item.is_modifier 
+					+ ", price: " + item.price
+					+ ", modifier-value: " + item["modifier-value"]);
 			if (2 == item.subtype || 4 == item.subtype) {
 				detail["cat-id"] = "";
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = item.is_modifier;
 				detail["link-row"] = pre_seq;
+				if (item["level-no"] != null) {
+					detail["level-no"] = item["level-no"];
+				}
 				detail.subtype = item.subtype;
-				detail["discount-able"] = 1;
-				detail["tax-able"] = 1;
+				if (item["discount-able"] != null) {
+					detail["discount-able"] = item["discount-able"];
+				}
+				if (item["tax-able"] != null) {
+					detail["tax-able"] = item["tax-able"];
+				}
+				if (item["level-no"] != null) {
+					detail["level-no"] = item["level-no"];
+				}
 			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
@@ -458,7 +496,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			orderData.details.push(detail);
 			seq++;
 		});
-		return JSON.stringify(orderData);
+		var orderString = JSON.stringify(orderData);
+		console.log(orderString);
+		return orderString;
 	},
 
 	printOrder: function() {
@@ -542,6 +582,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				setterItemData.count = 1;
 				setterItemData.item_required = item_required;
 				setterItemData.item_selected = item_selected;
+				if(setterItemData.price = null) {
+					setterItemData.price = 0;
+				}
 				var setterItem = sap.ui.xmlview("com.h3.prj.imenu.view.SetterItem");
 				var setterItemModel = new sap.ui.model.json.JSONModel(setterItemData);
 				setterItem.setModel(setterItemModel,"item");

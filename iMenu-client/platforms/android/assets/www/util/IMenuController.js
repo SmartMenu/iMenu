@@ -563,7 +563,12 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 	prepareSetterDlg: function(setterData, dialogName) {
 		var setterView = sap.ui.xmlview("com.h3.prj.imenu.view.Setter");
 		setterView.setModel(sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n"), "l10n");
-		var setterContainer = setterView.byId("setterContainer");
+		
+		var setterScrollContainer = setterView.byId("setterContainer");
+		var setterContainer = new sap.ui.layout.Grid({
+			defaultSpan: "L12 M12 S12"
+		});
+		setterScrollContainer.addContent(setterContainer);
 		var selectedSetterItems = [];
 		setterData.forEach(function(setterGroupData) {
 			var item_required = false;

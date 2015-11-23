@@ -3,6 +3,6 @@
 	xmlns:com="sap.ui.commons"
 	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<ScrollContainer id="setterContainer" height="18em"
-		width="100%" horizontal="false" vertical="true"/>
+	<Panel id="setterContainer" showHeader="false" height="100%"
+		width="100%" />
 </core:View>

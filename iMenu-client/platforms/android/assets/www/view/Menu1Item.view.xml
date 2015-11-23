@@ -3,19 +3,21 @@
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<VBox>
 		<Label text="{item>/item_name}" class="menuItemLabel"></Label>
-		<Label text="{item>/price}" class="menuItemLabel"></Label>
-		<Image densityAware="false"
+		<Toolbar width="100%">
+			<Label text="{item>/price}" class="menuItemLabel"></Label>
+			<Label width="0.5em"/>
+			<Button icon="sap-icon://cart-approval" class="menuItemButton confirmBtn" press="onAcceptButtonPressed" width="4.5em"></Button>
+		</Toolbar>
+		<Image width="100%" densityAware="false"
 			src="{
 				path: 'item>/item_pic',
 				formatter: 'com.h3.prj.imenu.util.Formatter.formatImg'}">
 		</Image>
-		<Toolbar>
+		<Toolbar width="100%">
 			<Button icon="sap-icon://less" class="menuItemButton" press="onLessButtonPressed"></Button>
-			<Input type="Number" editable="false" value="{/count}" width="4em"
+			<Input type="Number" editable="false" value="{/count}" width="3.5em"
 				id="itemCount" textAlign="Center" />
 			<Button icon="sap-icon://add" class="menuItemButton" press="onAddButtonPressed"></Button>
-			<Label width="0.5em"/>
-			<Button icon="sap-icon://accept" class="menuItemButton confirmBtn" press="onAcceptButtonPressed" width="4.5em"></Button>
 		</Toolbar>
 	</VBox>
 </core:View>

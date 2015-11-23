@@ -1,0 +1,528 @@
+[
+  {
+    "cat_id": "01",
+    "cat_type": 2,
+    "cat_name": "豬類",
+    "items": [
+      {
+        "item_id": "101",
+        "item_name": "豬豬盛盆",
+        "price": 298,
+        "item_pic": "101.jpg"
+      },
+      {
+        "item_id": "102",
+        "item_name": "六味小豬豬",
+        "price": 238,
+        "item_pic": "102.jpg"
+      },
+      {
+        "item_id": "103",
+        "item_name": "三味小豬豬",
+        "price": 138,
+        "item_pic": "103.jpg"
+      },
+      {
+        "item_id": "104",
+        "item_name": "原味豬腩肉",
+        "price": 98,
+        "item_pic": "104.jpg"
+      },
+      {
+        "item_id": "105",
+        "item_name": "韓版豬皮(配黃豆粉)",
+        "price": 88,
+        "item_pic": "105.jpg"
+      },
+      {
+        "item_id": "106",
+        "item_name": "原味梅豚肉",
+        "price": 88,
+        "item_pic": "106.jpg"
+      },
+      {
+        "item_id": "107",
+        "item_name": "味噌豬頸肉",
+        "price": 118,
+        "item_pic": "107.jpg"
+      },
+      {
+        "item_id": "108",
+        "item_name": "香草豬大腸(配柚子蜜)",
+        "price": 98,
+        "item_pic": "108.jpg"
+      },
+      {
+        "item_id": "109",
+        "item_name": "豬排骨",
+        "price": 138,
+        "item_pic": "109.jpg"
+      },
+      {
+        "item_id": "110",
+        "item_name": "原味黑豚肉",
+        "price": 138,
+        "item_pic": "110.jpg"
+      },
+      {
+        "item_id": "111",
+        "item_name": "芝士豬排骨",
+        "price": 158,
+        "item_pic": "111.jpg"
+      },
+      {
+        "item_id": "112",
+        "item_name": "芝士豬頸肉",
+        "price": 138,
+        "item_pic": "112.jpg"
+      },
+      {
+        "item_id": "0S1",
+        "item_name": "套餐 A",
+        "price": 98,
+        "item_pic": " "
+      }
+    ]
+  },
+  {
+    "cat_id": "02",
+    "cat_type": 1,
+    "cat_name": "牛類",
+    "items": [
+      {
+        "item_id": "201",
+        "item_name": "牛牛盛盆",
+        "price": 298,
+        "item_pic": "201.jpg"
+      },
+      {
+        "item_id": "202",
+        "item_name": "澳洲和牛(配檸檬)",
+        "price": 268,
+        "item_pic": "202.jpg"
+      },
+      {
+        "item_id": "203",
+        "item_name": "原味牛肋骨",
+        "price": 148,
+        "item_pic": "203.jpg"
+      },
+      {
+        "item_id": "204",
+        "item_name": "牛肉眼",
+        "price": 138,
+        "item_pic": "204.jpg"
+      },
+      {
+        "item_id": "205",
+        "item_name": "雪花牛肉",
+        "price": 188,
+        "item_pic": "205.jpg"
+      },
+      {
+        "item_id": "206",
+        "item_name": "牛舌條(配檸檬)",
+        "price": 98,
+        "item_pic": "206.jpg"
+      },
+      {
+        "item_id": "207",
+        "item_name": "牛胃(配柚子蜜)",
+        "price": 138,
+        "item_pic": "207.jpg"
+      },
+      {
+        "item_id": "208",
+        "item_name": "辛辣牛小腸(配柚子蜜)",
+        "price": 98,
+        "item_pic": "208.jpg"
+      },
+      {
+        "item_id": "209",
+        "item_name": "蒜鹽一口牛",
+        "price": 98,
+        "item_pic": "209.jpg"
+      },
+      {
+        "item_id": "210",
+        "item_name": "芝士牛肉漢堡",
+        "price": 148,
+        "item_pic": "210.jpg"
+      }
+    ]
+  },
+  {
+    "cat_id": "03",
+    "cat_type": 3,
+    "cat_name": "禽類",
+    "items": [
+      {
+        "item_id": "301",
+        "item_name": "香草雞腿肉",
+        "price": 88,
+        "item_pic": "301.jpg"
+      },
+      {
+        "item_id": "302",
+        "item_name": "雞羽肉 4pc",
+        "price": 58,
+        "item_pic": "302.jpg"
+      },
+      {
+        "item_id": "303",
+        "item_name": "雞腎(配柚子蜜)",
+        "price": 88,
+        "item_pic": "303.jpg"
+      },
+      {
+        "item_id": "304",
+        "item_name": "雞皮(配檸檬) 3pc",
+        "price": 48,
+        "item_pic": "304.jpg"
+      },
+      {
+        "item_id": "305",
+        "item_name": "辣味鳳爪",
+        "price": 88,
+        "item_pic": "305.jpg"
+      }
+    ]
+  },
+  {
+    "cat_id": "05",
+    "cat_type": 3,
+    "cat_name": "海鮮類",
+    "items": [
+      {
+        "item_id": "501",
+        "item_name": "海鮮盛盤",
+        "price": 338,
+        "item_pic": "501.jpg"
+      },
+      {
+        "item_id": "502",
+        "item_name": "鮮鮑魚(配芥末沙茶醬) 2pc",
+        "price": 88,
+        "item_pic": "502.jpg"
+      },
+      {
+        "item_id": "503",
+        "item_name": "8吋虎蝦(配檸檬) 2pc",
+        "price": 128,
+        "item_pic": "503.jpg"
+      },
+      {
+        "item_id": "504",
+        "item_name": "深水帶子(配檸檬) 4pc",
+        "price": 138,
+        "item_pic": "504.jpg"
+      },
+      {
+        "item_id": "505",
+        "item_name": "魷魚 2pc",
+        "price": 88,
+        "item_pic": "505.jpg"
+      },
+      {
+        "item_id": "506",
+        "item_name": "鯖魚柳(配檸檬)",
+        "price": 88,
+        "item_pic": "506.jpg"
+      },
+      {
+        "item_id": "507",
+        "item_name": "比目魚(配檸檬 芥末沙茶醬)",
+        "price": 108,
+        "item_pic": "507.jpg"
+      },
+      {
+        "item_id": "508",
+        "item_name": "廣烏蠔(配牛油) 4pc",
+        "price": 48,
+        "item_pic": "508.jpg"
+      }
+    ]
+  },
+  {
+    "cat_id": "06",
+    "cat_type": 3,
+    "cat_name": "田園蔬菜",
+    "items": [
+      {
+        "item_id": "602",
+        "item_name": "野菌盛盒",
+        "price": 78,
+        "item_pic": "602.jpg"
+      },
+      {
+        "item_id": "603",
+        "item_name": "南瓜 6pc",
+        "price": 22,
+        "item_pic": "603.jpg"
+      },
+      {
+        "item_id": "604",
+        "item_name": "茄子 6pc",
+        "price": 22,
+        "item_pic": "604.jpg"
+      },
+      {
+        "item_id": "605",
+        "item_name": "翠玉瓜 6pc",
+        "price": 22,
+        "item_pic": "605.jpg"
+      },
+      {
+        "item_id": "606",
+        "item_name": "栗米 6pc",
+        "price": 22,
+        "item_pic": "606.jpg"
+      },
+      {
+        "item_id": "607",
+        "item_name": "鮮冬菇 6pc",
+        "price": 28,
+        "item_pic": "607.jpg"
+      },
+      {
+        "item_id": "608",
+        "item_name": "雞脾菇 6pc",
+        "price": 28,
+        "item_pic": "608.jpg"
+      },
+      {
+        "item_id": "609",
+        "item_name": "金針菇 6pc",
+        "price": 28,
+        "item_pic": "609.jpg"
+      },
+      {
+        "item_id": "610",
+        "item_name": "鮮白蘑菇 6pc",
+        "price": 38,
+        "item_pic": "610.jpg"
+      }
+    ]
+  },
+  {
+    "cat_id": "07",
+    "cat_type": 3,
+    "cat_name": "韓式料理",
+    "items": [
+      {
+        "item_id": "701",
+        "item_name": "韓板冷麵",
+        "price": 88,
+        "item_pic": "701.jpg"
+      },
+      {
+        "item_id": "702",
+        "item_name": "韓板湯麵",
+        "price": 88,
+        "item_pic": "702.jpg"
+      },
+      {
+        "item_id": "703",
+        "item_name": "韓板炸醬麵",
+        "price": 68,
+        "item_pic": "703.jpg"
+      },
+      {
+        "item_id": "704",
+        "item_name": "韓板Shake Shake飯",
+        "price": 68,
+        "item_pic": "704.jpg"
+      },
+      {
+        "item_id": "705",
+        "item_name": "人參雞湯",
+        "price": 168,
+        "item_pic": "705.jpg"
+      },
+      {
+        "item_id": "706",
+        "item_name": "泡菜豆腐湯",
+        "price": 108,
+        "item_pic": "706.jpg"
+      },
+      {
+        "item_id": "707",
+        "item_name": "海鮮泡菜湯",
+        "price": 128,
+        "item_pic": "707.jpg"
+      },
+      {
+        "item_id": "708",
+        "item_name": "大醬豆腐湯",
+        "price": 108,
+        "item_pic": "708.jpg"
+      },
+      {
+        "item_id": "709",
+        "item_name": "大醬海鮮豆腐湯",
+        "price": 128,
+        "item_pic": "709.jpg"
+      },
+      {
+        "item_id": "710",
+        "item_name": "6吋泡菜煎餅",
+        "price": 48,
+        "item_pic": "710.jpg"
+      },
+      {
+        "item_id": "711",
+        "item_name": "6吋海鮮泡菜煎餅",
+        "price": 78,
+        "item_pic": "711.jpg"
+      },
+      {
+        "item_id": "712",
+        "item_name": "6吋芝士泡菜煎餅",
+        "price": 58,
+        "item_pic": "712.jpg"
+      },
+      {
+        "item_id": "713",
+        "item_name": "6吋芝士海鮮泡菜煎餅",
+        "price": 88,
+        "item_pic": "713.jpg"
+      },
+      {
+        "item_id": "714",
+        "item_name": "白飯",
+        "price": 12,
+        "item_pic": "714.jpg"
+      }
+    ]
+  },
+  {
+    "cat_id": "09",
+    "cat_type": 4,
+    "cat_name": "酒精類",
+    "items": [
+      {
+        "item_id": "1001",
+        "item_name": "韓國啤酒",
+        "price": 20,
+        "item_pic": "1001.jpg"
+      },
+      {
+        "item_id": "1002",
+        "item_name": "真露",
+        "price": 58,
+        "item_pic": "1002.jpg"
+      },
+      {
+        "item_id": "1003",
+        "item_name": "清河酒",
+        "price": 68,
+        "item_pic": "1003.jpg"
+      },
+      {
+        "item_id": "1004",
+        "item_name": "真露米酒",
+        "price": 138,
+        "item_pic": "1004.jpg"
+      },
+      {
+        "item_id": "1005",
+        "item_name": "真露有氣米酒",
+        "price": 138,
+        "item_pic": "1005.jpg"
+      },
+      {
+        "item_id": "1006",
+        "item_name": "山楂酒",
+        "price": 118,
+        "item_pic": "1006.jpg"
+      }
+    ]
+  },
+  {
+    "cat_id": "10",
+    "cat_type": 4,
+    "cat_name": "果汁類",
+    "items": [
+      {
+        "item_id": "1012",
+        "item_name": "粒粒青提子果肉",
+        "price": 15,
+        "item_pic": "1012.jpg"
+      },
+      {
+        "item_id": "1013",
+        "item_name": "粒粒梨果肉",
+        "price": 15,
+        "item_pic": "1013.jpg"
+      },
+      {
+        "item_id": "1014",
+        "item_name": "粒粒水蜜桃果肉",
+        "price": 15,
+        "item_pic": "1014.jpg"
+      }
+    ]
+  },
+  {
+    "cat_id": "11",
+    "cat_type": 4,
+    "cat_name": "汽水類",
+    "items": [
+      {
+        "item_id": "1007",
+        "item_name": "可樂",
+        "price": 15,
+        "item_pic": "1007.jpg"
+      },
+      {
+        "item_id": "1008",
+        "item_name": "雪碧",
+        "price": 15,
+        "item_pic": "1008.jpg"
+      },
+      {
+        "item_id": "1009",
+        "item_name": "零系可樂",
+        "price": 15,
+        "item_pic": "1009.jpg"
+      },
+      {
+        "item_id": "1010",
+        "item_name": "芬達",
+        "price": 15,
+        "item_pic": "1010.jpg"
+      },
+      {
+        "item_id": "1011",
+        "item_name": "玉泉忌廉",
+        "price": 15,
+        "item_pic": "1011.jpg"
+      },
+      {
+        "item_id": "1015",
+        "item_name": "蒸餾水",
+        "price": 15,
+        "item_pic": "1015.jpg"
+      }
+    ]
+  },
+  {
+    "cat_id": "12",
+    "cat_type": 4,
+    "cat_name": "甜品類",
+    "items": [
+      {
+        "item_id": "1101",
+        "item_name": "韓冰雪梨",
+        "price": 48,
+        "item_pic": "1101.jpg"
+      },
+      {
+        "item_id": "1102",
+        "item_name": "韓冰蘋果",
+        "price": 48,
+        "item_pic": "1102.jpg"
+      }
+    ]
+  }
+]

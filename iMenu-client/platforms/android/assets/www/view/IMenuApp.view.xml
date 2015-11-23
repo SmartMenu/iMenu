@@ -1,0 +1,5 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" controllerName="com.h3.prj.imenu.view.IMenuApp" xmlns:html="http://www.w3.org/1999/xhtml"
+	displayBlock="true" viewName="com.h3.prj.imenu.view.IMenuApp">
+	<App id="IMenuApp" backgroundColor="#F4E5D2" backgroundOpacity="1"/>
+</core:View>

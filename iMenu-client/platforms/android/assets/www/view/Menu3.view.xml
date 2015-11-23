@@ -1,0 +1,5 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" controllerName="com.h3.prj.imenu.view.Menu3" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Carousel id="menu3Carousel" showPageIndicator="false" height="90%">
+	</Carousel>
+</core:View>

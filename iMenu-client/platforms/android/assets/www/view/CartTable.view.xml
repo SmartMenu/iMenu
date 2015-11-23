@@ -1,0 +1,207 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" controllerName="com.h3.prj.imenu.view.CartTable"
+	xmlns:com="sap.ui.commons"
+	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<IconTabBar id="orderIconTab" select="onIconTabSelect">
+		<items>
+			<IconTabFilter text="{l10n>/cart/pending_order}" key="pendingOrder">
+				<content>
+					<ScrollContainer id="cartTableContainer" height="30em"
+						width="100%" horizontal="false" vertical="true">
+						<Table id="cartTable" mode="SingleSelectMaster" class="sapUiSizeCompact"
+							items="{
+								path: 'tracking>/current/cart',
+								sorter: {
+									path: 'tracking>id',
+									descending: false,
+									group: 'com.h3.prj.imenu.util.Formatter.itemGroup'
+								},
+								groupHeaderFactory: '.groupHeader'
+							}">
+							<columns>
+								<Column id="removeColCart" width="1em">
+									<Label text="" />
+								</Column>
+								<Column id="itemNameColCart" width="12em">
+									<Label text="{l10n>/cart/item_name}" />
+								</Column>
+								<Column id="itemCountColCart" hAlign="Center" width="5em">
+									<Label text="{l10n>/cart/item_count}" />
+								</Column>
+<!-- 								<Column id="itemDiscountColCart" hAlign="Left" width="4em"> -->
+<!-- 									<Label text="{l10n>/cart/discount}" /> -->
+<!-- 								</Column> -->
+								<Column id="subTotalColCart" hAlign="Center" width="4em">
+									<Label text="{l10n>/cart/sub_total}" />
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<HBox>
+											<com:Button icon="sap-icon://delete" style="Reject"
+												data:tracking_id="{tracking>id}" press="onItemDeleteButtonPressed" class="menuItemButton" visible="{= 0 ===${tracking>subtype}}"/>
+										</HBox>
+										<Label text="{tracking>item_name}" />
+										<HBox alignItems="Center">
+											<com:Button icon="sap-icon://less"
+												data:tracking_id="{tracking>id}" press="onItemLessButtonPressed" class="menuItemButton" visible="{= 0 ===${tracking>subtype}}"/>
+											<Label text="{tracking>item_count}" textAlign="Center"
+												width="3em" visible="{= 0 ===${tracking>subtype}}"/>
+											<com:Button icon="sap-icon://add"
+												data:tracking_id="{tracking>id}" press="onItemMoreButtonPressed" class="menuItemButton" visible="{= 0 ===${tracking>subtype}}"/>
+										</HBox>
+										<HBox>
+											<Label
+												text="{
+													path: 'tracking>',
+													formatter: 'com.h3.prj.imenu.util.Formatter.formatItemSubTotal'}"
+												textAlign="Right" width="4em" />
+										</HBox>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</ScrollContainer>
+					<HBox>
+						<Label text="" />
+					</HBox>
+					<HBox>
+						<Label
+							text="{
+								path: 'l10n>/cart/sub_total', 
+								formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'}" />
+						<Label
+							text="{
+								path: 'tracking>/current/cart', 
+								formatter: 'com.h3.prj.imenu.util.Formatter.formatSubTotal'}"
+							design="Bold" width="4em" />
+<!-- 						<Label -->
+<!-- 							text="{ -->
+<!-- 								path: 'l10n>/cart/discount', -->
+<!-- 								formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'}" /> -->
+<!-- 						<Label text="0" width="4em" design="Bold" /> -->
+						<Label
+							text="{
+								path: 'l10n>/cart/service_charge',
+								formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'}" />
+						<Label
+							text="{
+								path: 'tracking>/current/cart', 
+								formatter: 'com.h3.prj.imenu.util.Formatter.formatSvcCharge'}" 
+							width="4em" textAlign="Begin" design="Bold" />
+						<Label
+							text="{
+								path: 'l10n>/cart/total', 
+								formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'}" />
+						<Label
+							text="{
+								path: 'tracking>/current/cart', 
+								formatter: 'com.h3.prj.imenu.util.Formatter.formatTotal'}"
+							design="Bold" width="4em" />
+					</HBox>
+				</content>
+			</IconTabFilter>
+			<IconTabFilter text="{l10n>/cart/submitted_order}" key="submittedOrder">
+				<content>
+					<ScrollContainer id="orderTableContainer" height="30em"
+						width="100%" horizontal="false" vertical="true">
+						<Table id="orderTable" mode="SingleSelectMaster" class="sapUiSizeCompact"
+							items="{
+ 								path: 'tracking>/current/order', 
+ 								sorter: { 
+ 									path: 'tracking>id', 
+ 									descending: false,
+ 									group: 'com.h3.prj.imenu.util.Formatter.itemGroup'
+ 								}, 
+ 								groupHeaderFactory: '.groupHeader' 
+ 							}"> 
+							<columns>
+<!-- 								<Column id="removeColOrder" width="1em"> -->
+<!-- 									<Label text="" /> -->
+<!-- 								</Column> -->
+								<Column id="itemNameColOrder" width="12em">
+									<Label text="{l10n>/cart/item_name}" />
+								</Column>
+								<Column id="itemCountColOrder" hAlign="Center" width="5em">
+									<Label text="{l10n>/cart/item_count}" />
+								</Column>
+<!-- 								<Column id="itemDiscountColOrder" hAlign="Left" width="4em"> -->
+<!-- 									<Label text="{l10n>/cart/discount}" /> -->
+<!-- 								</Column> -->
+								<Column id="subTotalColOrder" hAlign="Center" width="4em">
+									<Label text="{l10n>/cart/sub_total}" />
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+<!-- 										<HBox> -->
+<!-- 											<com:Button icon="sap-icon://delete" style="Reject" enabled="false" -->
+<!-- 												data:tracking_id="{tracking>id}" press="onItemDeleteButtonPressed" class="menuItemButton"/> -->
+<!-- 										</HBox> -->
+										<Label text="{tracking>item_name}" />
+										<HBox alignItems="Center">
+<!-- 											<com:Button icon="sap-icon://less" -->
+<!-- 												data:tracking_id="{tracking>id}" press="onItemLessButtonPressed" class="menuItemButton"/> -->
+											<Label text="{tracking>item_count}" textAlign="Center"
+												width="3em" visible="{= 0 ===${tracking>subtype}}"/>
+<!-- 											<com:Button icon="sap-icon://add" -->
+<!-- 												data:tracking_id="{tracking>id}" press="onItemMoreButtonPressed" class="menuItemButton"/> -->
+										</HBox>
+										<HBox>
+											<Label
+												text="{
+													path: 'tracking>',
+													formatter: 'com.h3.prj.imenu.util.Formatter.formatItemSubTotal'}"
+												textAlign="Right" width="4em" />
+										</HBox>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</ScrollContainer>
+					<HBox>
+						<Label text="" />
+					</HBox>
+					<HBox>
+						<Label
+							text="{
+								path: 'l10n>/cart/sub_total', 
+								formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'}" />
+						<Label
+							text="{
+								path: 'tracking>/current/order',
+								formatter: 'com.h3.prj.imenu.util.Formatter.formatSubTotal'}"
+							design="Bold" width="4em" />
+<!-- 						<Label -->
+<!-- 							text="{ -->
+<!-- 								path: 'l10n>/cart/discount', -->
+<!-- 								formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'}" /> -->
+<!-- 						<Label text="0"	width="4em" design="Bold" /> -->
+						<Label
+							text="{
+								path: 'l10n>/cart/service_charge',
+								formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'}" />
+						<Label text="{
+								path: 'tracking>/current/order', 
+								formatter: 'com.h3.prj.imenu.util.Formatter.formatSvcCharge'}"
+							width="4em" textAlign="Begin" design="Bold" />
+						<Label
+							text="{
+								path: 'l10n>/cart/total', 
+								formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'}" />
+						<Label
+							text="{
+								path: 'tracking>/current/order',
+								formatter: 'com.h3.prj.imenu.util.Formatter.formatTotal'}"
+							design="Bold" width="4em" />
+					</HBox>
+				</content>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+
+
+</core:View>

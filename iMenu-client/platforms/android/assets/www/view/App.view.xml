@@ -1,0 +1,11 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.ui.unified"
+		controllerName="com.h3.prj.imenu.view.App" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Shell id="imenuApp">
+		<headItems>
+			<ShellHeadItem icon="sap-icon://retail-store">
+			</ShellHeadItem>
+		</headItems>
+		<content>
+		</content>
+	</Shell>
+</core:View>

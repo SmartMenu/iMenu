@@ -127,7 +127,7 @@ public class BasicItem {
 		JSONObject json = new JSONObject();
 		json.put("item-id", itemId);
 		json.put("item-name", itemName);
-		json.put("item_name2", itemName2);
+		json.put("item-name2", itemName2);
 		json.put("plu-no", pluNo);
 		json.put("price", itemPrice);
 		json.put("item-pic", itemPic==null?" ": itemPic);
@@ -135,6 +135,7 @@ public class BasicItem {
 		json.put("svchg-allow", svchgAble);
 		json.put("item-desc", this.itemDesc==null?"":itemDesc);
 		json.put("item-desc2", this.itemDesc2==null?"":itemDesc2);
+		json.put("subtype", 0);
 		return json;
 	}
 	

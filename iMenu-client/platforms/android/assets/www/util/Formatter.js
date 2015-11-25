@@ -37,6 +37,21 @@ com.h3.prj.imenu.util.Formatter = {
 		return (item.item_price * item.item_count).toFixed(2);
 	},
 	
+	
+	formatCartCountChangeVisible: function(item) {
+		var subtype = item.subtype;
+		var parent_type = item.parent_type;
+		if (subtype != 0) {
+			return false;
+		}
+		
+		if (parent_type != null) {
+			return false;
+		}
+		
+		return true;
+	},
+	
 	formatItemSvcCharge: function(item, charge){
 		var sum = Number(com.h3.prj.imenu.util.Formatter.formatItemSubTotal(item));
 		if(sum===0){

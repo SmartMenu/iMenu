@@ -12,11 +12,6 @@
 						<Table id="cartTable" mode="SingleSelectMaster" class="sapUiSizeCompact"
 							items="{
 								path: 'tracking>/current/cart',
-								sorter: {
-									path: 'tracking>id',
-									descending: false,
-									group: 'com.h3.prj.imenu.util.Formatter.itemGroup'
-								},
 								groupHeaderFactory: '.groupHeader'
 							}">
 							<columns>
@@ -116,11 +111,6 @@
 						<Table id="orderTable" mode="SingleSelectMaster" class="sapUiSizeCompact"
 							items="{
  								path: 'tracking>/current/order', 
- 								sorter: { 
- 									path: 'tracking>id', 
- 									descending: false,
- 									group: 'com.h3.prj.imenu.util.Formatter.itemGroup'
- 								}, 
  								groupHeaderFactory: '.groupHeader' 
  							}"> 
 							<columns>

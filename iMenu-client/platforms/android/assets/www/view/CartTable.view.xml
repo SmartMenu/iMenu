@@ -12,11 +12,6 @@
 						<Table id="cartTable" mode="SingleSelectMaster" class="sapUiSizeCompact"
 							items="{
 								path: 'tracking>/current/cart',
-								sorter: {
-									path: 'tracking>id',
-									descending: false,
-									group: 'com.h3.prj.imenu.util.Formatter.itemGroup'
-								},
 								groupHeaderFactory: '.groupHeader'
 							}">
 							<columns>
@@ -46,11 +41,17 @@
 										<Label text="{tracking>item_name}" />
 										<HBox alignItems="Center">
 											<com:Button icon="sap-icon://less"
-												data:tracking_id="{tracking>id}" press="onItemLessButtonPressed" class="menuItemButton" visible="{= 0 ===${tracking>subtype}}"/>
+												data:tracking_id="{tracking>id}" press="onItemLessButtonPressed" class="menuItemButton" 
+												visible="{
+													path: 'tracking>',
+													formatter: 'com.h3.prj.imenu.util.Formatter.formatCartCountChangeVisible'}"/>
 											<Label text="{tracking>item_count}" textAlign="Center"
-												width="3em" visible="{= 0 ===${tracking>subtype}}"/>
+												width="3em" visible="{= 0 ===${tracking>subtype} || 4 ===${tracking>subtype} }"/>
 											<com:Button icon="sap-icon://add"
-												data:tracking_id="{tracking>id}" press="onItemMoreButtonPressed" class="menuItemButton" visible="{= 0 ===${tracking>subtype}}"/>
+												data:tracking_id="{tracking>id}" press="onItemMoreButtonPressed" class="menuItemButton" 
+												visible="{
+													path: 'tracking>',
+													formatter: 'com.h3.prj.imenu.util.Formatter.formatCartCountChangeVisible'}"/>
 										</HBox>
 										<HBox>
 											<Label
@@ -110,11 +111,6 @@
 						<Table id="orderTable" mode="SingleSelectMaster" class="sapUiSizeCompact"
 							items="{
  								path: 'tracking>/current/order', 
- 								sorter: { 
- 									path: 'tracking>id', 
- 									descending: false,
- 									group: 'com.h3.prj.imenu.util.Formatter.itemGroup'
- 								}, 
  								groupHeaderFactory: '.groupHeader' 
  							}"> 
 							<columns>

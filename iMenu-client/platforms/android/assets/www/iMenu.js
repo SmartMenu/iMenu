@@ -266,7 +266,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 					                items: items[].{\
 					                    cat_id: "cat-id",\
 					                	item_id: "item-id", \
-					                	item_name: item_name2, \
+					                	item_name: "item-name2", \
 					                	price: price, \
 					                	item_pic: "item-pic", \
 							subtype: "subtype", \
@@ -416,6 +416,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 		m.min_count = setter["min-count"];
 		m.max_count = setter["max-count"];
 		m.select_all = setter["select-all"];
+		m.subtype = setter["subtype"];
 		
 		if(setter.details){
 			var details = jmespath.search(setter, "details[?type=='detail']");
@@ -423,15 +424,16 @@ com.h3.prj.imenu.iMenuInitializer = {
 				                            item_id: "item-id", \
 			                           		item_name: "item-name", \
 					plu_no: "plu-no", \
+               		price: price, \
 					item_pic: "item-pic", \
 					disc_able: "disc-able", \
 					svchg_allow: "svchg-allow", \
-			                           		subtype: subtype, \
+					item_desc: "item-desc", \
+					item_desc1: "item-desc2", \
+               		subtype: subtype, \
 					cat_id: "cat-id", \
 					cat_name: "cat-name", \
-					cat_name2: "cat-name2", \
-			                           		desc: "item-name", \
-			                                desc2: "item-name2"\
+					cat_name2: "cat-name2" \
 			                            }');
 			
 			var childSetters = jmespath.search(setter, "details[?type=='setter']");
@@ -452,22 +454,24 @@ com.h3.prj.imenu.iMenuInitializer = {
 		m.min_count = setter["min-count"];
 		m.max_count = setter["max-count"];
 		m.select_all = setter["select-all"];
+		m.subtype = setter["subtype"];
 		
 		if(setter.details){
 			var details = jmespath.search(setter, "details[?type=='detail']");
 			m.details = jmespath.search(details, '[].{\
 				                            item_id: "item-id", \
-			                           		item_name: "item_name2", \
+			                           		item_name: "item-name2", \
 					plu_no: "plu-no", \
+               		price: price, \
 					item_pic: "item-pic", \
 					disc_able: "disc-able", \
 					svchg_allow: "svchg-allow", \
-			                           		subtype: subtype, \
+					item_desc: "item-desc", \
+					item_desc1: "item-desc2", \
+               		subtype: subtype, \
 					cat_id: "cat-id", \
 					cat_name: "cat-name", \
-					cat_name2: "cat-name2", \
-			                           		desc: "item-name", \
-			                                desc2: "item_name2"\
+					cat_name2: "cat-name2" \
 			                            }');
 			
 			var childsetters = jmespath.search(setter, "details[?type=='setter']");

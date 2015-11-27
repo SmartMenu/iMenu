@@ -108,6 +108,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		if (modifiers) {
 			modifiers.forEach(function(m) {
 				var id = that.nextItemId();
+				item.parent_type = 2;
 				m.id = id;
 				m.is_modifier = 1;
 				m.item_count = item.item_count;
@@ -119,9 +120,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					sub_price = 0;
 				}
 				m.item_price = sub_price;
-				m["modifier-value"] = sub_price;
+				m["modifier-value"] = sub_price * m.item_count;
 				m.subtype = 2;
-				item["modifier-value"] = item["modifier-value"] + sub_price;
+				item["modifier-value"] = item["modifier-value"] + m["modifier-value"];
 				trackingData.cart.push(m);
 			});
 		}
@@ -145,14 +146,20 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		}
 		var parent_disc_able = item.disc_able;
 		var parent_tax_able = null;
+		var parent_count = item.item_count;
+		if (parent_count == null) {
+			parent_count = 1;
+		}
 		var that = this;
 		trackingData.cart.push(item);
 		if (setters) {
 			setters.forEach(function(m) {
+				item.parent_type = 4;
 				var id = that.nextItemId();
 				m.id = id;
 				m.is_modifier = 0;
-				m.item_count = item.item_count;
+				m.parent_count = parent_count;
+				m.item_count = m.count * parent_count;
 				m.item_cat_id = item.item_cat_id;
 				m["level-no"] = 1;
 				if (parent_disc_able != null) {
@@ -166,10 +173,12 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					sub_price = 0;
 				}
 				m.item_price = sub_price;
-				m["modifier-value"] = sub_price;
+				m["modifier-value"] = sub_price * m.item_count;
 				m.subtype = 4;
 				trackingData.cart.push(m);
-				item["modifier-value"] = item["modifier-value"] + sub_price;
+				var setterItemStr = JSON.stringify(m);
+				console.log(setterItemStr);
+				item["modifier-value"] = item["modifier-value"] + m["modifier-value"];
 			});
 		}
 		if (!trackingData.categories) {
@@ -584,10 +593,13 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			setterGroup.setModel(setterGroupModel,"group");
 			setterContainer.addContent(setterGroup);
 			setterGroupData.details.forEach(function(setterItemData) {
+
+				var setterItemStr = JSON.stringify(setterItemData);
+				console.log(setterItemStr);
 				setterItemData.count = 1;
 				setterItemData.item_required = item_required;
 				setterItemData.item_selected = item_selected;
-				if(setterItemData.price = null) {
+				if(setterItemData.price == null) {
 					setterItemData.price = 0;
 				}
 				var setterItem = sap.ui.xmlview("com.h3.prj.imenu.view.SetterItem");
@@ -761,7 +773,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		var item_count = view.getModel().getData().count;
 		var item_price = itemData.price;
 		var cat_id = itemData.cat_id;
-		var subtype = 0;
+		var subtype = itemData.subtype;
 		
 		var setterData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nSetter").getData()[item_id];
 		if (setterData) {

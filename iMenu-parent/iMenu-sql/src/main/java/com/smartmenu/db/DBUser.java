@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,8 @@ import com.smartmenu.entity.UserRightEnum;
 
 @Component
 public class DBUser{
+	private static Logger log = Logger.getLogger(DBUser.class);
+	
 	@Autowired
 	private DBCommonUtil dbCommonUtil;
 	public static int PASS_CHECK=0;
@@ -38,7 +41,7 @@ public class DBUser{
 	//get valid user info on the condition
 	private User getUserInfo(String condition){
 		String sql="SELECT [user_id], [password], [group_id], [name1], [name2], [effective_date], [expiry_date], [enable] FROM [dbo].[user] " + condition ;
-		
+		log.info("GetUser: " + sql);
 		List<Object> lsUsers = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 			@Override
 			public List<Object> parseResult(ResultSet rs) throws SQLException {
@@ -69,6 +72,7 @@ public class DBUser{
 		
 	public String[] getRights(String shopId, String groupId){
 		String sql="select [function] from [dbo].[user_rights] where id_type=2 and rights1=1 and id='"+groupId+"' and shop_id='"+shopId+"'";
+		log.info("GetUserRight:" + sql);
 		List<Object> ls=dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override

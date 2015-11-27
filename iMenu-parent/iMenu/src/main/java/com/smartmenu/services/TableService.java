@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.smartmenu.controllers.OrderController;
 import com.smartmenu.db.DBTable;
 import com.smartmenu.entity.TableInfo;
 import com.smartmenu.utils.ReturnMsgCode;
@@ -16,7 +18,7 @@ import com.smartmenu.utils.ReturnMsgCode;
 public class TableService {
 	@Autowired
 	private DBTable dbTable;
-	
+	private static Logger log = Logger.getLogger(TableService.class);
 	
 	public JSONObject dealTableSymbolReq(String shopId){
 		TableInfo[] tables = dbTable.getTables(shopId);
@@ -74,7 +76,7 @@ public class TableService {
 					if(table.getOpenTime() == null)
 						jsonTb.put("open-time", "");
 					else{
-						System.out.println(table.getOpenTime().toString());
+						log.info(table.getOpenTime().toString());
 						jsonTb.put("open-time", df.format(table.getOpenTime()));
 					}
 					jsonTb.put("open-chair", table.getOpenChairs());

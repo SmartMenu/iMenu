@@ -6,15 +6,17 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.smartmenu.common.PrintProperty;
+import com.smartmenu.controllers.OrderController;
 import com.smartmenu.entity.Order;
 
 @Service
 public class PrinterService {
-	
+	private static Logger log = Logger.getLogger(PrinterService.class);
 	@Autowired
 	private PrintProperty printProperty;
 	
@@ -48,7 +50,7 @@ public class PrinterService {
 			String filePath = printProperty.getFolder()
 					+ sdf1.format(new Date()) + "_" + printProperty.getSeq()
 					+ ".txt";
-			System.out.println("PrintFile: " + filePath);
+			log.info("PrintFile: " + filePath);
 			File file = new File(filePath);
 			FileWriter fw = null;
 			try {
@@ -58,7 +60,7 @@ public class PrinterService {
 				fw.write(content.toString());
 				return true;
 			} catch (IOException e) {
-				System.out.println("ERROR: write print check file failed");
+				log.info("ERROR: write print check file failed");
 				e.printStackTrace();
 			} finally {
 				if (fw != null)

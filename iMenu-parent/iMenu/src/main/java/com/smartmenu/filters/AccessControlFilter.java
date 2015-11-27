@@ -55,12 +55,21 @@ public class AccessControlFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		long currTime=System.currentTimeMillis();
 		if(!this.checkLicenseFlag || currTime<this.firstUseTime || currTime>this.endUseTime){
-			JSONObject json = new JSONObject();
-			json.put("status", 1);
-			json.put("msg", ReturnMsgCode.LICENSE_INVALID);
-			String callbak=request.getParameter("callback");
-			response.getWriter().write(callbak+"("+json.toString()+")");
-			return;
+			//重新检查license
+			SmartCheck checker = SmartCheck.getInstanse();
+			this.checkLicenseFlag = checker.checkLicense();
+			this.firstUseTime = checker.getFirstUseTime();
+			this.endUseTime = checker.getEndtime();
+			this.maxClients = checker.getConnector();
+			
+			if(!this.checkLicenseFlag || currTime<this.firstUseTime || currTime>this.endUseTime){
+				JSONObject json = new JSONObject();
+				json.put("status", 1);
+				json.put("msg", ReturnMsgCode.LICENSE_INVALID);
+				String callbak=request.getParameter("callback");
+				response.getWriter().write(callbak+"("+json.toString()+")");
+				return;
+			}
 		}
 		HttpServletRequest httpRequest = (HttpServletRequest)request;  
         String url = httpRequest.getRequestURI();  

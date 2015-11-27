@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ import com.smartmenu.services.TableService;
 
 @Controller
 public class TableController {
-	
+	private static Logger log = Logger.getLogger(TableController.class);
 	@Autowired
 	private TableService tableService;
 
@@ -27,9 +28,9 @@ public class TableController {
     String getTableSymbol(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid,
     					@RequestParam String callback) throws IOException
     {
-		System.out.println("/getTableSymbol: call table handler deal the request");
+		log.info("/getTableSymbol: call table handler deal the request");
 		JSONObject json = tableService.dealTableSymbolReq(shopid);
-		System.out.println("/getTableSymbol: handle finished");
+		log.info("/getTableSymbol: handle finished");
 		return callback+"("+json.toString()+")";
     }
 	
@@ -39,9 +40,9 @@ public class TableController {
     					@RequestParam String callback) throws IOException
     {
 		
-		System.out.println("/getTables: call table handler deal the request");
+		log.info("/getTables: call table handler deal the request");
 		JSONObject json = tableService.dealTableReq(shopid);
-		System.out.println("/getTables: handle finished");
+		log.info("/getTables: handle finished");
 		return callback+"("+json.toString()+")";
     }
 	

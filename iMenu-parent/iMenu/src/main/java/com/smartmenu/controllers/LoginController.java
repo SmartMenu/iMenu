@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -23,15 +24,17 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 	
+	private static Logger log = Logger.getLogger(LoginController.class);  
+	
 	@RequestMapping(value = "/action/loginByUserPwd", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String doLoginByUserPwd(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, @RequestParam String userid, @RequestParam String password, 
     		@RequestParam String callback) throws IOException
     {
-		System.out.println("/login(user&password): call login handler");
+		log.info("/login(user&password): call login handler");
 		JSONObject jsonResult;
 		jsonResult = userService.checkUserAndRight(shopid, userid, password, UserRightEnum.LOGIN);
-		System.out.println("/login(user&password): finished hanlding");
+		log.info("/login(user&password): finished hanlding");
 		return callback+"("+jsonResult.toString()+")";
     }
 
@@ -40,10 +43,10 @@ public class LoginController {
     String doLoginByUser(HttpServletResponse resp, @RequestParam String shopid, @RequestParam String userid, 
     		@RequestParam String callback) throws IOException
     {
-		System.out.println("/login(user): call login handler");
+		log.info("/login(user): call login handler");
 		JSONObject jsonResult;
 		jsonResult = userService.checkUserAndRight(shopid, userid, UserRightEnum.LOGIN);
-		System.out.println("/login(user): finished hanlding");
+		log.info("/login(user): finished hanlding");
 		return callback+"("+jsonResult.toString()+")";
     }
 
@@ -52,10 +55,10 @@ public class LoginController {
     String doLoginByCard(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, @RequestParam String cardno, 
     		@RequestParam String callback) throws IOException
     {
-		System.out.println("/login(card): call login handler");
+		log.info("/login(card): call login handler");
 		JSONObject jsonResult;
 		jsonResult = userService.checkCardAndRight(shopid, cardno, UserRightEnum.LOGIN);
-		System.out.println("/login(card): finished hanlding");
+		log.info("/login(card): finished hanlding");
 		return callback+"("+jsonResult.toString()+")";
     }
 	
@@ -66,7 +69,7 @@ public class LoginController {
     		@RequestParam String password, 
             @RequestParam String callback) throws IOException
     {
-		System.out.println("/check"+ variable +": call handler");
+		log.info("/check"+ variable +": call handler");
 		JSONObject json;
 		UserRightEnum userRight = getUserRight(variable);
 		if( userRight!= null )
@@ -76,7 +79,7 @@ public class LoginController {
 			json.put("status", 1);
 			json.put("msg", "UNKNOWN_RIGHT");
 		}
-		System.out.println("/login: finished hanlding");
+		log.info("/login: finished hanlding");
 		return callback+"("+json.toString()+")";
     }
 
@@ -86,7 +89,7 @@ public class LoginController {
     		@RequestParam String userid,  
             @RequestParam String callback) throws IOException
     {
-		System.out.println("/check"+ variable +": call handler");
+		log.info("/check"+ variable +": call handler");
 		JSONObject json;
 		UserRightEnum userRight = getUserRight(variable);
 		if( userRight!= null )
@@ -96,7 +99,7 @@ public class LoginController {
 			json.put("status", 1);
 			json.put("msg", "UNKNOWN_RIGHT");
 		}
-		System.out.println("/login: finished hanlding");
+		log.info("/login: finished hanlding");
 		return callback+"("+json.toString()+")";
     }
 	
@@ -106,7 +109,7 @@ public class LoginController {
     		@RequestParam String cardno,  
             @RequestParam String callback) throws IOException
     {
-		System.out.println("/check"+ variable +": call handler");
+		log.info("/check"+ variable +": call handler");
 		JSONObject json;
 		UserRightEnum userRight = getUserRight(variable);
 		if( userRight!= null )
@@ -116,7 +119,7 @@ public class LoginController {
 			json.put("status", 1);
 			json.put("msg", "UNKNOWN_RIGHT");
 		}
-		System.out.println("/login: finished hanlding");
+		log.info("/login: finished hanlding");
 		return callback+"("+json.toString()+")";
     }
 	

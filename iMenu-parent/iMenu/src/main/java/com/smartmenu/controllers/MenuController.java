@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ import com.smartmenu.services.MenuService;
 
 @Controller
 public class MenuController {
-	
+	private static Logger log = Logger.getLogger(MenuController.class); 
 
 	@Autowired
 	private MenuService menuService;
@@ -27,9 +28,9 @@ public class MenuController {
     public @ResponseBody
     String doGetMenu2(HttpServletResponse resp, @RequestParam String callback, @RequestParam String mac, @RequestParam String shopid, @RequestParam String posid) throws IOException
     {
-		System.out.println("/getMenu: call menu service deal the request");
+		log.info("/getMenu: call menu service deal the request");
 		JSONObject json = menuService.getMenu(shopid, posid, mac);
-		System.out.println("/getMenu: deal with request completed");
+		log.info("/getMenu: deal with request completed");
 		return callback+"("+json.toString()+")";
     }
 	
@@ -38,9 +39,9 @@ public class MenuController {
 	String doGetSoldoutInfo(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid,
 								@RequestParam String callback) throws IOException
     {
-		System.out.println("/getSoldoutInfo: call menu service deal the request");
+		log.info("/getSoldoutInfo: call menu service deal the request");
 		JSONObject json = menuService.getItemSoldoutInfo(shopid);
-		System.out.println("/getSoldoutInfo: deal with request completed");
+		log.info("/getSoldoutInfo: deal with request completed");
 		return callback+"("+json.toString()+")";
     }
 	

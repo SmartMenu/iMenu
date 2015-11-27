@@ -3,9 +3,11 @@ package com.smartmenu.services;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.smartmenu.controllers.OrderController;
 import com.smartmenu.db.DBSetting;
 import com.smartmenu.entity.DeleteReason;
 import com.smartmenu.entity.Discount;
@@ -17,6 +19,7 @@ import com.smartmenu.utils.ReturnMsgCode;
 public class SettingService {
 	@Autowired
 	private DBSetting dbSetting;
+	private static Logger log = Logger.getLogger(SettingService.class);
 	//get the delete reasons
 	public JSONObject dealReqDeleteReasons(){
 		JSONObject json = new JSONObject();

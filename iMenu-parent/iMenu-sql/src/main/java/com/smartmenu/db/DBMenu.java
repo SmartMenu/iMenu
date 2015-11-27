@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,8 @@ import com.smartmenu.entity.LookupHeader;
 
 @Component
 public class DBMenu{
+	private static Logger log = Logger.getLogger(DBMenu.class);
+	
 	@Autowired
 	private DBCommonUtil dbCommonUtil;
 	
@@ -26,13 +29,13 @@ public class DBMenu{
 		String sql="select item_id, item_name, item_name2, aa.plu_no, aa.unit, aa.cat_id, aa.discountable, aa.service_allow, price, set_price, image_file, e.desc1 as cat_name, e.desc2 as cat_name2, aa.is_modifier, aa.modifier, aa.item_set, d.caption1, d.caption2 " +
 					"from (select a.item_code as item_id, a.pos_desc1 as item_name, a.pos_desc2 as item_name2, a.plu_no as plu_no, a.unit, a.cat_id, b.price, b.set_price, a.discountable, a.service_allow, a.is_modifier, a.modifier1 as modifier, a.item_set as item_set " +
 					"from [dbo].[item] a, [dbo].[item_price] b " + 
-					"where a.item_code=b.item_code and b.shop_id='"+shopId+"' and b.price_no=1) aa " +
+					"where a.item_code=b.item_code and (b.shop_id='"+shopId+"' or b.shop_id='' ) and b.price_no=1) aa " +
 					"left join dbo.item_caption d " +
 					"on d.item_code=aa.item_id "
 					+ "left join [dbo].[category] e "
 					+ "on e.cat_id=aa.cat_id ";
 		
-		System.out.println("GetItems:"+sql);
+		log.info("GetItems:"+sql);
 		List<Object> ls = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 			@Override
 			public List<Object> parseResult(ResultSet rs) throws SQLException {
@@ -80,7 +83,7 @@ public class DBMenu{
 					" from dbo.lookup_header a, dbo.lookup_details b, dbo.device_map c" +
 					" where c.shop_id='"+shopId+"' and c.device_id='"+deviceId+"' and c.pos_id='"+posId+
 					"' and b.lookup_id=c.imenu_lookupid and a.id_type=1 and b.item_type=1 and a.lookup_id=b.code order by seq;";
-		System.out.println("GetLookup: " + sql);
+		log.info("GetLookup: " + sql);
 //		String sql="select a.code as lookup_id, a.name1 as name, a.name2 as name2, a.seq from dbo.lookup_details a " +
 //				" where a.shop_id='"+shopId+"' and a.id_type=1 and a.item_type=1 and a.lookup_id='0000' order by seq asc;";
 		List<Object> ls=dbCommonUtil.query(sql, new ParseResultSetInterface(){
@@ -114,7 +117,7 @@ public class DBMenu{
 		String sql="select lookup_id, code as item_id, seq " +
 					" from dbo.lookup_details b " +
 					" where b.shop_id='"+shopId+"' and b.id_type=1 and b.item_type=0 order by lookup_id, seq";
-		System.out.println("GetLookupAndItemMapping: " + sql);
+		log.info("GetLookupAndItemMapping: " + sql);
 		List<Object> ls=dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override
@@ -151,7 +154,7 @@ public class DBMenu{
 	
 	public Map<String, String[]> getItemDescription(String shopId){
 		String sql="select item_code, description as desc from dbo.item_desc where shop_id='"+shopId+"' and lang=?";
-		System.out.println("GetItemDescription: " + sql);
+		log.info("GetItemDescription: " + sql);
 		List<Object> result = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override
@@ -176,7 +179,7 @@ public class DBMenu{
 	public ItemState[] getItemStates(String shopId){
 		String sql="select item_code as item_id, soldout_bal, soldout_flag from dbo.item_state "
 				+ " where shop_id='"+shopId+"';";
-		System.out.println("GetItemStates: " + sql);
+		log.info("GetItemStates: " + sql);
 		List<Object> result = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override
@@ -206,7 +209,7 @@ public class DBMenu{
 	public LookupHeader[] getModifierLookup(String shopId){
 		String sql="select lookup_id, name1, name2, compulsory, min_count, max_count"
 				+ " from dbo.lookup_header where shop_id='"+shopId+"' and lookup_type=2;";
-		System.out.println("GetModifierLookup: " + sql);
+		log.info("GetModifierLookup: " + sql);
 		List<Object> ls=dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override
@@ -235,7 +238,7 @@ public class DBMenu{
 	public LookupHeader[] getSetterLookup(String shopId){
 		String sql="select lookup_id, name1, name2, compulsory, min_count, max_count, select_all"
 				+ " from dbo.lookup_header where shop_id='"+shopId+"' and lookup_type=3;";
-		System.out.println("GetSetterLookup: " + sql);
+		log.info("GetSetterLookup: " + sql);
 		List<Object> ls=dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override
@@ -270,7 +273,7 @@ public class DBMenu{
 	public LookupDetail[] getLookupDetail(String shopId){
 		String sql="select a.lookup_id, b.lookup_type, a.item_type, a.code, a.seq from dbo.lookup_details a, dbo.lookup_header b " +
 					" where a.shop_id='" + shopId + "' and a.lookup_id=b.lookup_id and a.id_type=1 order by a.lookup_id, a.seq;";
-		System.out.println("GetLookupDetail: "+ sql);
+		log.info("GetLookupDetail: "+ sql);
 		List<Object> ls=dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override

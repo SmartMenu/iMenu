@@ -8,9 +8,11 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.smartmenu.controllers.OrderController;
 import com.smartmenu.db.DBOrder;
 import com.smartmenu.db.DBSetting;
 import com.smartmenu.db.DBTable;
@@ -23,7 +25,7 @@ import com.smartmenu.utils.ReturnMsgCode;
 
 @Service
 public class OrderService {
-	
+	private static Logger log = Logger.getLogger(OrderService.class);
 	@Autowired
 	private DBOrder dbOrder;
 	@Autowired 
@@ -54,19 +56,19 @@ public class OrderService {
 				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getTranNo());
 				boolean bl = printer.printListForKitchen(newOrder);
 				if(bl){
-					System.out.println("SUCCESS");
+					log.info("SUCCESS");
 					status=0;
 					msg = ReturnMsgCode.SUCCESS;
 					json.put("tran_no", newOrder.getTranNo());
 				}else{
-					System.out.println("Printer list for kitchen failed.");
+					log.info("Printer list for kitchen failed.");
 					status = 1;
 					msg = ReturnMsgCode.PRINT_ERROR;
 				}
 				
 			}else{
 				status=1;
-				System.out.println(result);
+				log.info(result);
 				msg = ReturnMsgCode.DATA_ERROR;
 			}
 			
@@ -146,19 +148,19 @@ public class OrderService {
 				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getTranNo());
 				boolean bl = printer.printListForKitchen(newOrder);
 				if(bl){
-					System.out.println("SUCCESS");
+					log.info("SUCCESS");
 					status=0;
 					msg = ReturnMsgCode.SUCCESS;
 					json.put("tran_no", newOrder.getTranNo());
 				}else{
-					System.out.println("Printer list for kitchen failed.");
+					log.info("Printer list for kitchen failed.");
 					status = 1;
 					msg = ReturnMsgCode.PRINT_ERROR;
 				}
 				
 			}else{
 				status=1;
-				System.out.println(result);
+				log.info(result);
 				msg = ReturnMsgCode.DATA_ERROR;
 			}
 			
@@ -187,18 +189,18 @@ public class OrderService {
 				Order newOrder = dbOrder.getOrder(order.getShopId(), order.getTranNo());
 				boolean bl = printer.printListForKitchen(newOrder);
 				if(bl){
-					System.out.println("SUCCESS");
+					log.info("SUCCESS");
 					status=0;
 					msg = ReturnMsgCode.SUCCESS;
 				}else{
-					System.out.println("Printer list for kitchen failed.");
+					log.info("Printer list for kitchen failed.");
 					status = 1;
 					msg = ReturnMsgCode.PRINT_ERROR;
 				}
 				
 			}else{
 				status=1;
-				System.out.println(result);
+				log.info(result);
 				msg = ReturnMsgCode.DATA_ERROR;
 			}
 			
@@ -222,20 +224,20 @@ public class OrderService {
 		String shopId = jOrder.getString("shop-id");
 		if(shopId==null||shopId.trim().length()==0)
 		{
-			System.out.println("shop id can't be null");
+			log.info("shop id can't be null");
 			status=1;
 		}else
 			order.setShopId(shopId);
 		String posId=jOrder.getString("pos-id");
 		if(posId==null||posId.trim().length()==0)
 		{
-			System.out.println("pos id can't be null");
+			log.info("pos id can't be null");
 			status=1;
 		}else
 			order.setPosId(posId);
 		String tableId = jOrder.getString("table-id");
 		if(tableId==null||tableId.trim().length()==0){
-			System.out.println("table id can't be null");
+			log.info("table id can't be null");
 			status=1;
 		}else
 			order.setTableId(tableId);
@@ -286,7 +288,7 @@ public class OrderService {
 			order.setSvchg(null);
 		String svchgAmount=jOrder.getString("service-charge-amount");
 		if(svchgAmount==null||svchgAmount.trim().length()==0){
-			System.out.println("service charge amount can be null.");
+			log.info("service charge amount can be null.");
 			status=1;
 		}else{
 			order.setSvchgAmount(new BigDecimal(svchgAmount));
@@ -305,7 +307,7 @@ public class OrderService {
 			order.setTax(null);
 		String taxAmount=jOrder.getString("tax-amount");
 		if(taxAmount==null||taxAmount.trim().length()==0){
-			System.out.println("Tax amount can't be null.");
+			log.info("Tax amount can't be null.");
 			status=1;
 		}else{
 			order.setTaxAmount(new BigDecimal(taxAmount));
@@ -328,7 +330,7 @@ public class OrderService {
 			order.setDiscount(null);
 		String discAmount=jOrder.getString("discount-amount");
 		if(discAmount==null||discAmount.trim().length()==0){
-			System.out.println("Discount amount can't be null.");
+			log.info("Discount amount can't be null.");
 			status=1;
 		}else{
 			order.setDiscAmount(new BigDecimal(discAmount));
@@ -336,19 +338,19 @@ public class OrderService {
 		//"subtotal-amount":,"total-amount":,"user-id":""
 		String subTotal=jOrder.getString("subtotal-amount");
 		if(subTotal==null||subTotal.trim().length()==0){
-			System.out.println("Sub total amount can't be null.");
+			log.info("Sub total amount can't be null.");
 			status=1;
 		}else
 			order.setSubtotalAmount(new BigDecimal(subTotal));
 		String totalAmount=jOrder.getString("total-amount");
 		if(totalAmount==null||totalAmount.trim().length()==0){
-			System.out.println("Sub total amount can't be null.");
+			log.info("Sub total amount can't be null.");
 			status=1;
 		}else
 			order.setTotalAmount(new BigDecimal(totalAmount));
 		String userId=jOrder.getString("user-id");
 		if(userId==null||userId.trim().length()==0){
-			System.out.println("User id can't be null.");
+			log.info("User id can't be null.");
 			status=1;
 		}else
 			order.setUserId(userId);
@@ -365,7 +367,7 @@ public class OrderService {
 	    }
 		
 		if(status==1){
-			System.out.println("lack of information");
+			log.info("lack of information");
 			return null;
 		}else			
 			return order;
@@ -391,7 +393,7 @@ public class OrderService {
 			OrderDetail orderDetail = new OrderDetail();
 			String itemId=json.getString("item-id");
 			if(itemId==null||itemId.trim().length()==0){
-				System.out.println("Item id can't be null.");
+				log.info("Item id can't be null.");
 				status=1;
 			}else
 				orderDetail.setItemId(itemId);
@@ -403,6 +405,7 @@ public class OrderService {
 			orderDetail.setLinkRow(json.getInt("link-row"));
 			orderDetail.setModifierValue(new BigDecimal(json.getString("modifier-value")));
 			orderDetail.setTotalAmount(new BigDecimal(json.getString("total-amount")));
+			
 			if(json.containsKey("level-no"))
 				orderDetail.setLevelNo(json.getInt("level-no"));
 			else
@@ -497,7 +500,7 @@ public class OrderService {
 			//pay-amount:,cat-id:,desc:,desc2:,unit:,take-away:
 			String payAmount=json.getString("pay-amount");
 			if(payAmount==null||payAmount.trim().length()==0){
-				System.out.println("pay amount can be null.");
+				log.info("pay amount can be null.");
 				status=1;
 			}else
 				orderDetail.setPayAmount(new BigDecimal(payAmount));

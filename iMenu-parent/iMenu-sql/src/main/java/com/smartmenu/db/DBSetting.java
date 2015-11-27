@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,8 @@ import com.smartmenu.entity.Tax;
 
 @Component
 public class DBSetting {
+	private static Logger log = Logger.getLogger(DBSetting.class);
+	
 	@Autowired
 	private DBCommonUtil dbCommonUtil;
 	
@@ -111,7 +114,7 @@ public class DBSetting {
 		String sql = "SELECT a.tax_id, a.value, a.desc1, a.desc2, a.type FROM dbo.tax a, dbo.section b, dbo.[table] c"
 				+ "  where c.shop_id='" +shopId + "' and c.table_id='" + tableId + "' "
 						+ "and c.section_id = b.section_id and b.tax_id = a.tax_id and a.enabled=1;";
-		System.out.println("GetTaxInfo: " + sql.toString());
+		log.info("GetTaxInfo: " + sql.toString());
 		List<Object> ls = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 			@Override
 			public List<Object> parseResult(ResultSet rs) throws SQLException {
@@ -174,4 +177,6 @@ public class DBSetting {
 		else
 			return ls.toArray(new Discount[]{});
 	}
+	
+
 }

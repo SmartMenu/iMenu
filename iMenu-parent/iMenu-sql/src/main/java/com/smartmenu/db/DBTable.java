@@ -5,12 +5,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.smartmenu.entity.TableInfo;
 @Component
 public class DBTable{
+	private static Logger log = Logger.getLogger(DBTable.class);
+	
 	@Autowired
 	private DBCommonUtil dbCommonUtil;
 	//check whether the table is valid
@@ -34,7 +37,7 @@ public class DBTable{
 				+ " where DATEDIFF(DD, status_time, GETDATE())=0 ) b"
 				+ " on a.table_id = b.table_id and a.shop_id = b.shop_id;";
 		
-		System.out.println("GetTableSQL:"+sql.toString());
+		log.info("GetTableSQL:"+sql.toString());
 		List<Object> lsResult = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override

@@ -1,6 +1,5 @@
 package com.smartmenu.db;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +13,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +27,8 @@ import com.smartmenu.entity.Tax;
 
 @Component
 public class DBOrder{
+	
+	private static Logger log = Logger.getLogger(DBOrder.class);
 	
 	@Autowired
 	private DataSource dataSource;
@@ -44,7 +46,7 @@ public class DBOrder{
 		
 		//String sql="select id, seq, prefix, suffix, [length] from [dbo].[tranno] with (HOLDLOCK, TABLOCK) " +
 		//			" where shop_id='"+shopId+"' and (id='IMENUCHECKNO' or id='IMENUSALESTRANNO' or id='IMENUSLIPNO');";
-		System.out.println("generateTranCheckAndSlipNo: " + sql);
+		log.info("generateTranCheckAndSlipNo: " + sql);
 		String tranNo;
 		String checkNo;
 		String slipNo;
@@ -75,7 +77,7 @@ public class DBOrder{
 						}
 						no=prefix+no;
 					}else{
-						System.out.println(id + " sequence no is longer than expected.");
+						log.info(id + " sequence no is longer than expected.");
 						continue;
 					}
 					if(!map.containsKey(id)){
@@ -107,7 +109,7 @@ public class DBOrder{
 	private boolean updateTranNoSettings(Connection conn){
 //		String sql="update [dbo].[tranno] set seq=seq+1 "+
 //				" where shop_id='"+shopId+"' and (id='IMENUCHECKNO' or id='IMENUSALESTRANNO');";
-		System.out.println("UpdateTranNoSetting: "+ tranNoUpdate);
+		log.info("UpdateTranNoSetting: "+ tranNoUpdate);
 		int count = dbCommonUtil.execute(conn, tranNoUpdate);
 		tranNoUpdate=null;
 		if(count>0)
@@ -165,10 +167,10 @@ public class DBOrder{
 				order.setCurCode(getCurCodeForShop(order.getShopId()));
 				Map<String,String> mapOrderProperty = this.buildOrderProperty(order);
 				String orderSql = this.buildInsertSql("[dbo].[sales_header]", mapOrderProperty);
-				System.out.println("ADD NEW ORDER SQL: " + orderSql);
+				log.info("ADD NEW ORDER SQL: " + orderSql);
 			    int count = dbCommonUtil.execute(conn, orderSql);
 			    if(count==-1){
-				   System.out.println("ERROR: Insert order failed.");
+				   log.info("ERROR: Insert order failed.");
 				   conn.rollback();
 				   resultMsg="ADD_ORDER_FAILED";
 			    }else{
@@ -183,17 +185,17 @@ public class DBOrder{
 				   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, cat_id=b.cat_id " +
 							 " from dbo.item b where b.item_code = code and shop_id='"+order.getShopId() +
 							 "' and tran_no='" + tranNo + "';");
-				   System.out.println("INSERT DETAILS: "+detailsSql.toString());
+				   log.info("INSERT DETAILS: "+detailsSql.toString());
 				   int detail_count=dbCommonUtil.execute(conn, detailsSql.toString());
 				   if(detail_count==-1){
-					   System.out.println("ERROR: Insert order details failed.");
+					   log.info("ERROR: Insert order details failed.");
 					   conn.rollback();
 					   resultMsg="ADD_ORDER_DETAIL_FAILED";
 				   }else{
 						// update table status
 						int result = modifyTableStatus(conn, order);
 						if (result == 0) {
-							System.out.println("Modify table status success.");
+							log.info("Modify table status success.");
 							conn.commit(); // /
 							resultMsg = "SUCCESS";
 						} else if (result == -1) {
@@ -254,10 +256,10 @@ public class DBOrder{
 					+ "capture_systype=1, capture_systime=GETDATE(), capture_reproc_req=1, capture_reproc_status=0 ";
 			
 			updateSql += " where tran_no='"+order.getTranNo()+"' and shop_id='"+order.getShopId()+"'";
-			System.out.println("Update order: " + updateSql);
+			log.info("Update order: " + updateSql);
 			int count=dbCommonUtil.execute(conn, updateSql);
 			if(count==-1){
-				System.out.println("Insert order failed.");
+				log.info("Insert order failed.");
 				conn.rollback();
 				resultMsg="UPDATE_ORDER_FAILED";
 			}else{
@@ -274,14 +276,14 @@ public class DBOrder{
 						 " from dbo.item b where b.item_code = code and shop_id='"+order.getShopId() +
 						 "' and tran_no='" + order.getTranNo() + "' and sales_details.dept_id is null " +
 						 " and sales_details.class_id is null;");
-			   System.out.println("INSERT DETAILS: "+detailsSql.toString());
+			   log.info("INSERT DETAILS: "+detailsSql.toString());
 			   int detail_count=dbCommonUtil.execute(conn, detailsSql.toString());
 			   if(detail_count==-1){
-				   System.out.println("Insert new order details failed.");
+				   log.info("Insert new order details failed.");
 				   conn.rollback();
 				   resultMsg="ADD_ORDER_DETAIL_FAILED";
 			   }else{
-				   System.out.println("update order details success.");
+				   log.info("update order details success.");
 				   conn.commit();
 				   resultMsg="SUCCESS";
 			   }
@@ -549,7 +551,7 @@ public class DBOrder{
 		}
 		String sql="insert into " + dbTableName + " ("+propertyPart.substring(0, propertyPart.length()-1)+") " +
 					" values ("+valuePart.substring(0, valuePart.length()-1)+");";
-		System.out.println("Insert sql: " + sql);
+		log.info("Insert sql: " + sql);
 		return sql;
 	}
 	//
@@ -559,7 +561,7 @@ public class DBOrder{
 		String sql="select top 1 " + orderProperty +
 				   " from dbo.sales_header " +
 				   " where shop_id='"+shopId+"' and table_no='"+tableId+"' and settled=0 and void_status=0 order by tran_date desc;";
-		System.out.println("GetExistOrder: " + sql);
+		log.info("GetExistOrder: " + sql);
 		Order[] orders = queryOrders(sql);
 		
 		if(orders==null || orders.length==0)
@@ -570,7 +572,7 @@ public class DBOrder{
 	}
 	public Order getOrder(String shopId, String tranNo){
 		String sql="select " + orderProperty + " from dbo.sales_header where tran_no='"+tranNo+"' and shop_id='"+shopId+"'";
-		System.out.println("Get Order by TranNO: " + sql);
+		log.info("Get Order by TranNO: " + sql);
 		Order[] orders = queryOrders(sql);
 		
 		if(orders==null || orders.length==0)
@@ -580,7 +582,7 @@ public class DBOrder{
 	}
 	public Order getOrder(Connection conn, String shopId, String tranNo){
 		String sql="select " + orderProperty + " from dbo.sales_header where tran_no='"+tranNo+"' and shop_id='"+shopId+"'";
-		System.out.println("Get Order by TranNO: " + sql);
+		log.info("Get Order by TranNO: " + sql);
 		Order[] orders = queryOrders(conn, sql);
 		
 		if(orders==null || orders.length==0)
@@ -591,7 +593,7 @@ public class DBOrder{
 	
 	
 	private Order[] queryOrders(String sql){
-		//System.out.println("Query Orders SQL: " + sql);
+		//log.info("Query Orders SQL: " + sql);
 		List<Object> lsResult = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override
@@ -630,7 +632,7 @@ public class DBOrder{
 	} 
 	
 	private Order[] queryOrders(Connection conn, String sql){
-		//System.out.println("Query Orders SQL: " + sql);
+		//log.info("Query Orders SQL: " + sql);
 		List<Object> lsResult = dbCommonUtil.query(conn, sql, new ParseResultSetInterface(){
 
 			@Override
@@ -677,7 +679,7 @@ public class DBOrder{
 					" left join dbo.category b " +
 					" on a.cat_id = b.cat_id " + 
 					" where a.shop_id='"+shopId+"' and a.tran_no='"+tranNo+"' and a.ivoid_status<>1 order by a.seqno;";
-		System.out.println("Exist order details: " + sql);
+		log.info("Exist order details: " + sql);
 		List<Object> lsResult = dbCommonUtil.query(sql, new ParseResultSetInterface(){
 
 			@Override
@@ -766,23 +768,23 @@ public class DBOrder{
 			conn.setAutoCommit(false);
 			String sql = "update dbo.sales_header set cover=" + newCoverNumber + 
 					    " where shop_id='" + shopId + "' and tran_no='" + tranNo + "' and tran_type=0";
-			System.out.println("Modify Cover in sales_header SQL: " + sql);
+			log.info("Modify Cover in sales_header SQL: " + sql);
 			int result = dbCommonUtil.execute(conn, sql);
 			String sql2 = "update dbo.table_status set cover=" + newCoverNumber + 
 					" where shop_id='" + shopId + "' and tran_no='" + tranNo + "'";
-			System.out.println("Modify Cover in table_status SQL: " + sql2);
+			log.info("Modify Cover in table_status SQL: " + sql2);
 			int result2 = dbCommonUtil.execute(conn, sql2);
 			if(result==1 && result2==1){
-				System.out.println("Update successfully.");
+				log.info("Update successfully.");
 				conn.commit();
 				resultMsg += "SUCCESS";
 			}else{
 				if(result!=1){
-					System.out.println("dbo.sales_header update failed.");
+					log.info("dbo.sales_header update failed.");
 					resultMsg += "UPDATE_SALES_HEADER_FAILED";
 				}
 				if(result2!=1){
-					System.out.println("dbo.table_status update failed.");
+					log.info("dbo.table_status update failed.");
 					resultMsg += "UPDATE_TABLE_STATUS_FAILED";
 				}
 				conn.rollback();
@@ -825,7 +827,7 @@ public class DBOrder{
 					+ " and shop_id='" + shopId + "'"
 					+ " and operation_status<>0 "
 					+ " and DATEDIFF(DD, status_time, GETDATE())=0";
-			System.out.println("Query Table Status: " + querySql);
+			log.info("Query Table Status: " + querySql);
 			boolean blExist = dbCommonUtil.checkExist(conn, querySql);
 			if(blExist){
 				resultMsg = "TABLE_OCCUPIED";
@@ -836,7 +838,7 @@ public class DBOrder{
 						+ " and shop_id='" + shopId + "';";
 						//+ " and operation_status=0 "
 						//+ " and DATEDIFF(DD, status_time, GETDATE())=0;";
-				System.out.println("Delete Table Information: " + deleteSql);
+				log.info("Delete Table Information: " + deleteSql);
 				dbCommonUtil.execute(conn, deleteSql);
 				// 2. update the record of old table to new table
 				String updateSql = "update dbo.table_status set table_id='"	+ newTableNo + "', "
@@ -847,17 +849,17 @@ public class DBOrder{
 						+ " and shop_id='" + shopId + "'"
 						+ " and DATEDIFF(DD, status_time, GETDATE())=0 "
 						+ " and operation_status<>0";
-				System.out.println("Change Table: " + updateSql);
+				log.info("Change Table: " + updateSql);
 				int result = dbCommonUtil.execute(conn, updateSql);
 				String updateSql_header = "update dbo.sales_header set table_no='" + newTableNo + "' "
 						+ " where tran_no='" + orderNo + "' " 
 						+ " and shop_id='" + shopId + "' ;";
-				System.out.println("Update Sales Header: " + updateSql_header);
+				log.info("Update Sales Header: " + updateSql_header);
 				int result1 = dbCommonUtil.execute(conn, updateSql_header);
 				String updateSql_detail = "update dbo.sales_details set source_table='" + newTableNo + "' "
 						+ " where shop_id='" + shopId + "' "
 						+ " and tran_no='" + orderNo + "'";
-				System.out.println("Update Sales Details: " + updateSql_detail);
+				log.info("Update Sales Details: " + updateSql_detail);
 				int result2 = dbCommonUtil.execute(conn, updateSql_detail);
 				if (result == 1 && result1 == 1 && result2 >= 1) {
 					System.out
@@ -866,11 +868,11 @@ public class DBOrder{
 					
 				} else {
 					if (result != 1)
-						System.out.println("modify table_status failed.");
+						log.info("modify table_status failed.");
 					if (result1 != 1)
-						System.out.println("modify sales_header failed.");
+						log.info("modify sales_header failed.");
 					if (result2 < 1)
-						System.out.println("modify sales_details failed");
+						log.info("modify sales_details failed");
 
 					resultMsg += "FAIL";
 					
@@ -953,10 +955,10 @@ public class DBOrder{
 				updateSql += ", void_reason_desc2=N'" + SQLEncode.encode(order.getReasonDesc2()) + "' ";
 
 			updateSql += " where tran_no='"+order.getTranNo()+"' and shop_id='"+order.getShopId()+"'";
-			System.out.println("Update order: " + updateSql);
+			log.info("Update order: " + updateSql);
 			int count=dbCommonUtil.execute(conn, updateSql);
 			if(count==-1){
-				System.out.println("Insert order failed.");
+				log.info("Insert order failed.");
 				conn.rollback();
 				return "UPDATE_ORDER_FAILED";
 			}
@@ -977,10 +979,10 @@ public class DBOrder{
 		                     + " and seqno="+orderDetail.getSeqNo()+";";
 			  updateDetailSql.append(tmp); 
 		    }
-		    System.out.println("Update Details: " + updateDetailSql.toString());
+		    log.info("Update Details: " + updateDetailSql.toString());
 		    int result = dbCommonUtil.execute(conn, updateDetailSql.toString());
 		    if(result == -1){
-			    System.out.println("Update Details Failed");
+			    log.info("Update Details Failed");
 			    conn.rollback();
 			     return "UPDATE_DETAILS_FAILED";
 		    }
@@ -1009,15 +1011,15 @@ public class DBOrder{
 					 "' and pos_id='" + order.getPosId() + "' and tran_no='" + order.getTranNo() + "' "
 					 + " and sales_details.dept_id is null " +
 					 " and sales_details.class_id is null;");
-		    System.out.println("INSERT DETAILED DETAILS: "+insertDeleteDetails.toString());
+		    log.info("INSERT DETAILED DETAILS: "+insertDeleteDetails.toString());
 		    int detail_count = dbCommonUtil.execute(conn, insertDeleteDetails.toString());
 		    if(detail_count == -1){
-			   System.out.println("Insert 'delete items' info failed.");
+			   log.info("Insert 'delete items' info failed.");
 			   conn.rollback();
 			   return "INSERT_DETAIL_FAILED";
 		    }
 		   
-		    System.out.println("Delete items success.");
+		    log.info("Delete items success.");
 		    conn.commit();
 		    return "SUCCESS";
 		}catch (SQLException e){

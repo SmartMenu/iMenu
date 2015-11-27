@@ -19,7 +19,12 @@ import java.util.Calendar;
 
 import javax.crypto.Cipher;
 
+import org.apache.log4j.Logger;
+
+import com.smartmenu.controllers.OrderController;
+
 public class SmartCheck {
+	private static Logger log = Logger.getLogger(SmartCheck.class);
 	private static SmartCheck checker = new SmartCheck();
 	private String fTime="y65042PAEegha";
 	
@@ -143,42 +148,47 @@ public class SmartCheck {
 	//check license, 
 	public boolean checkLicense(){
 		Key key = readKey();
+		if(key == null){
+			log.info("License[ERROR]: public.key file is missed.");
+			return false;
+		}
 		byte[] input = readData();
-		if(key == null || input == null){
-			System.out.println("License[ERROR]: public.key file is missed.");
+		if(input == null){
+			log.info("License[ERROR]: shop.lic file is missed.");
 			return false;
 		}
 		String[] data = publicDecrypt(key, input);
 		if(data == null){
-			System.out.println("License[ERROR]: the license file shop.lic can't be decrypted.");
+			log.info("License[ERROR]: the license file shop.lic can't be decrypted.");
 			return false;
 		}
 		String oldLicenseID = this.getLicenseID();
 		if(oldLicenseID==null){
-			System.out.println("License[INFO]: License ID is "+data[0]+"(for the first use).");
+			log.info("License[INFO]: License ID is "+data[0]+"(for the first use).");
 			this.takedownFirstUse(System.currentTimeMillis(),data[0]);
 		}else if(!oldLicenseID.equals(data[0])){
-			System.out.println("License[INFO]: License ID is " + data[0] + "(new, the old is "+oldLicenseID+").");
+			log.info("License[INFO]: License ID is " + data[0] + "(new, the old is "+oldLicenseID+").");
 			this.takedownFirstUse(System.currentTimeMillis(),data[0]);
 		}else{
-			System.out.println("License[INFO]: License ID is " + data[0]);
+			log.info("License[INFO]: License ID is " + data[0]);
 		}
 //		if(oldLicenseID==null||!oldLicenseID.equals(data[0])){
-//			System.out.println("License[INFO]: a new license file.");
+//			log.info("License[INFO]: a new license file.");
 //			this.takedownFirstUse(System.currentTimeMillis(),data[0]);
 //		}
 		if(!data[1].equals("null")){
 			String localMac = getLocalMac();
 			if(!localMac.equalsIgnoreCase(data[1])){
-				System.out.println("License[INFO]: License Mac Address("+data[1]+") can't match the server mac address("+localMac+"). ");
+				log.info("License[INFO]: License Mac Address("+data[1]+") can't match the server mac address("+localMac+"). ");
 				return false;
 			}
 		}
+		log.info("License[INFO]: the Shop is " + data[2]);
 		this.connector = Integer.parseInt(data[3]); 
-		System.out.println("License[INFO]: max connection " + this.connector);
+		log.info("License[INFO]: max connection " + this.connector);
 		long firstTime = getFirstUseTime();
 		if(firstTime == -1){
-			System.out.println("License[ERROR]: System config file is missed.");
+			log.info("License[ERROR]: System config file is missed.");
 			return false;
 		}
 		Calendar caEnd = Calendar.getInstance();
@@ -191,10 +201,10 @@ public class SmartCheck {
 		if(currentTime<firstTime|| currentTime>caEnd.getTimeInMillis()){
 			Calendar caBegin = Calendar.getInstance();
 			caBegin.setTimeInMillis(currentTime);
-			System.out.println("(fail, current date is )"+sm.format(caBegin.getTime()));
+			log.info("(fail, current date is )"+sm.format(caBegin.getTime()));
 			return false;
 		}
-		System.out.println("(pass).");
+		log.info("(pass).");
 		return true;
 	}
 	private String getLocalMac() {
@@ -219,7 +229,7 @@ public class SmartCheck {
 			return sb.toString().toUpperCase();
 		}catch (Exception ex){
 			//get mac address error
-			System.out.println("GET MAC ADDRESS ERROR");
+			log.info("GET MAC ADDRESS ERROR");
 		}
 		
 		return null;
@@ -228,26 +238,32 @@ public class SmartCheck {
 	private Key readKey(){
 		URL path = SmartCheck.class.getResource("/public.key");
 		File keyFile = new File(path.getFile());
+		log.debug(keyFile.getAbsolutePath());
+		if(keyFile.exists())
+			log.debug("public.key exists" );
 		try {
-			FileInputStream fiskey = new FileInputStream(keyFile.getAbsolutePath());
+			FileInputStream fiskey = new FileInputStream(keyFile);
 			ObjectInputStream oiskey=new ObjectInputStream(fiskey);  
 	        Key key=(Key)oiskey.readObject();  
 	        oiskey.close();  
 	        fiskey.close();  
 	        return key; 
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			log.info(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.info(e.getMessage());
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			log.info(e.getMessage());
 		}  
-	    System.out.println("读取Key文件失败.");
+	    log.info("读取Key文件失败.");
         return null;
 	}
 	private byte[] readData(){ 
 		URL path = SmartCheck.class.getResource("/shop.lic");
 		File fLicense = new File(path.getFile());
+		log.debug("License Path: " + fLicense.getAbsolutePath());
+		if(fLicense.exists())
+			log.debug("License file exists");
 		try {
 			FileInputStream fisDat = new FileInputStream(fLicense.getAbsolutePath());
 
@@ -264,9 +280,9 @@ public class SmartCheck {
 			fisDat.close();
 			return result;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.info(e.getMessage());
 		}
-		System.out.println("读取License文件失败.");
+		log.info("读取License文件失败.");
 		return null;
           
     } 
@@ -318,14 +334,14 @@ public class SmartCheck {
 	        if(formatFlag == 0)
 	        	return result;
 	        else{
-	        	System.out.println("License解析失败。");
+	        	log.info("License解析失败。");
 	        	return null;
 	        }
 
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		System.out.println("License解析失败。");
+		log.info("License解析失败。");
 		return null;
 	}
 	

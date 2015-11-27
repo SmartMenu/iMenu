@@ -8,9 +8,11 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.smartmenu.controllers.OrderController;
 import com.smartmenu.db.DBMenu;
 import com.smartmenu.entity.Item;
 import com.smartmenu.entity.ItemState;
@@ -31,7 +33,7 @@ import com.smartmenu.utils.ReturnMsgCode;
 public class MenuService {
 	@Autowired
 	private DBMenu dbMenu;
-	
+	private static Logger log = Logger.getLogger(MenuService.class);
 	public JSONObject getMenu(String shopId, String posId, String deviceId){
 		JSONObject json = new JSONObject();
 		JSONArray jaData = new JSONArray();
@@ -152,7 +154,7 @@ public class MenuService {
 						if(bi instanceof SimpleItem){
 							si = (SimpleItem) bi;
 						}else{
-							System.out.println("ERROR: menu unstanding error");
+							log.info("ERROR: menu unstanding error");
 							continue;
 						}
 					}else{

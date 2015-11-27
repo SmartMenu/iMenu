@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -18,16 +19,16 @@ import com.smartmenu.services.SettingService;
 
 @Controller
 public class SettingController {
-	
+	private static Logger log = Logger.getLogger(OrderController.class);
 	@Autowired
 	private SettingService settingService;
 	
 	@RequestMapping(value = "/action/getDeleteReason", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public @ResponseBody
     String getDeleteReason(HttpServletResponse resp, @RequestParam String mac, @RequestParam String callback) throws IOException {
-		System.out.println("/getDeleteReason: call setting handler deal the request");
+		log.info("/getDeleteReason: call setting handler deal the request");
 		JSONObject json = settingService.dealReqDeleteReasons();
-		System.out.println("/getDeleteReason: handle finished");
+		log.info("/getDeleteReason: handle finished");
 		return callback+"("+json.toString()+")";
     }
 	
@@ -35,9 +36,9 @@ public class SettingController {
     public @ResponseBody
     String getShopAndPos(HttpServletResponse resp, @RequestParam String mac, @RequestParam String callback) throws IOException
     {
-		System.out.println("/getShopAndPos: call setting handler deal the request");
+		log.info("/getShopAndPos: call setting handler deal the request");
 		JSONObject json = settingService.getShopAndPos(mac);
-		System.out.println("/getShopAndPos: handle finished");
+		log.info("/getShopAndPos: handle finished");
 		return callback+"("+json.toString()+")";
     }
 	
@@ -46,9 +47,9 @@ public class SettingController {
     String getServiceCharge(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, 
     		@RequestParam String tableid, @RequestParam String callback) throws IOException
     {
-		System.out.println("/getServiceCharge: call setting handler deal the request");
+		log.info("/getServiceCharge: call setting handler deal the request");
 		JSONObject json = settingService.dealServiceChargeReq(tableid, shopid);
-		System.out.println("/getServiceCharge: handle finished");
+		log.info("/getServiceCharge: handle finished");
 		return callback+"("+json.toString()+")";
     }
 	
@@ -57,9 +58,9 @@ public class SettingController {
     String getTaxInfo(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, 
     		@RequestParam String tableid, @RequestParam String callback) throws IOException
     {
-		System.out.println("/getTaxInfo: call setting handler deal the request");
+		log.info("/getTaxInfo: call setting handler deal the request");
 		JSONObject json = settingService.dealTaxReq(tableid, shopid);
-		System.out.println("/getTaxInfo: handle finished");
+		log.info("/getTaxInfo: handle finished");
 		return callback+"("+json.toString()+")";
     }
 	
@@ -68,9 +69,9 @@ public class SettingController {
     String getDiscounts(HttpServletResponse resp, @RequestParam String mac, @RequestParam String shopid, 
     		 @RequestParam String callback) throws IOException
     {
-		System.out.println("/getDiscounts: call setting handler deal the request");
+		log.info("/getDiscounts: call setting handler deal the request");
 		JSONObject json = settingService.dealDiscounts(shopid);
-		System.out.println("/getDiscounts: handle finished");
+		log.info("/getDiscounts: handle finished");
 		return callback+"("+json.toString()+")";
     }
 	

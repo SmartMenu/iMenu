@@ -346,7 +346,7 @@ public class DBOrder{
 		map.put("subtotal_amount", order.getSubtotalAmount().toPlainString());
 		map.put("balance_amount", order.getTotalAmount().toPlainString());
 		map.put("total_amount", order.getTotalAmount().toPlainString());
-		map.put("table_code", order.getTableId());
+		map.put("table_code", "'"+order.getTableId()+"'");
 		map.put("create_date", "GETDATE()");
 		map.put("create_by", "N'"+SQLEncode.encode(order.getUserId())+"'");
 		map.put("modify_date", "GETDATE()");

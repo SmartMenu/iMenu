@@ -115,6 +115,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				m.item_cat_id = item.item_cat_id;
 				m["discount-able"] = 1;
 				m["tax-able"] = 1;
+				m["level-no"] = 1;
 				var sub_price = m.price;
 				if (sub_price == null) {
 					sub_price = 0;
@@ -481,9 +482,6 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = item.is_modifier;
 				detail["link-row"] = pre_seq;
-				if (item["level-no"] != null) {
-					detail["level-no"] = item["level-no"];
-				}
 				detail.subtype = item.subtype;
 				if (item["discount-able"] != null) {
 					detail["discount-able"] = item["discount-able"];

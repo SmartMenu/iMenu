@@ -428,8 +428,8 @@ com.h3.prj.imenu.iMenuInitializer = {
 					item_pic: "item-pic", \
 					disc_able: "disc-able", \
 					svchg_allow: "svchg-allow", \
-					item_desc: "item-desc", \
-					item_desc1: "item-desc2", \
+					desc: "item-name", \
+					desc2: "item-name2", \
                		subtype: subtype, \
 					cat_id: "cat-id", \
 					cat_name: "cat-name", \
@@ -466,8 +466,8 @@ com.h3.prj.imenu.iMenuInitializer = {
 					item_pic: "item-pic", \
 					disc_able: "disc-able", \
 					svchg_allow: "svchg-allow", \
-					item_desc: "item-desc", \
-					item_desc1: "item-desc2", \
+					desc: "item-name", \
+					desc2: "item-name2", \
                		subtype: subtype, \
 					cat_id: "cat-id", \
 					cat_name: "cat-name", \

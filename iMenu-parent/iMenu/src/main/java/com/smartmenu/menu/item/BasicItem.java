@@ -1,17 +1,18 @@
 package com.smartmenu.menu.item;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import net.sf.json.JSONObject;
 
 import com.smartmenu.entity.Item;
 
-public class BasicItem {
+public class BasicItem implements Serializable{
 	private String itemId;
 	private String itemName;
 	private String itemName2;
 	private String pluNo;
-	private int seq;
+	private int seq=1;
 	private String itemDesc;
 	private String itemDesc2;
 	private String itemPic;

@@ -1,12 +1,22 @@
 package com.smartmenu.menu.setter;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
+
 public class SetterContainer extends Setter {
+	
+	private static Logger log = Logger.getLogger(SetterContainer.class);
+	
 	private boolean defaultSelectAll;
 	private int compulsory;
 	private int minCount;
@@ -82,4 +92,34 @@ public class SetterContainer extends Setter {
 		return json;
 	}
 	
+	public SetterContainer deepClone() {
+		ObjectInputStream oi=null;
+		SetterContainer sc=null;
+		try{
+			
+			ByteArrayOutputStream bo=new ByteArrayOutputStream();
+			ObjectOutputStream oo=new ObjectOutputStream(bo);
+			oo.writeObject(this);//从流里读出来
+			oo.close();
+			ByteArrayInputStream bi=new ByteArrayInputStream(bo.toByteArray());
+		    oi=new ObjectInputStream(bi);
+			sc = (SetterContainer)oi.readObject();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			log.error("Setter Container deep clone failed(ClassNotFoundException).");
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.error("Setter Container deep clone failed(IOException).");
+		} finally{
+			if(oi!=null)
+				try {
+					oi.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		return sc;
+	}
+
 }

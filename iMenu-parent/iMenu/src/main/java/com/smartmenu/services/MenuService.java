@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.smartmenu.controllers.OrderController;
 import com.smartmenu.db.DBMenu;
 import com.smartmenu.entity.Item;
 import com.smartmenu.entity.ItemState;
@@ -23,8 +22,10 @@ import com.smartmenu.menu.Lookup;
 import com.smartmenu.menu.item.BasicItem;
 import com.smartmenu.menu.item.SetItem;
 import com.smartmenu.menu.item.SimpleItem;
+import com.smartmenu.menu.modifier.Modifier;
 import com.smartmenu.menu.modifier.ModifierContainer;
 import com.smartmenu.menu.modifier.ModifierDetail;
+import com.smartmenu.menu.setter.Setter;
 import com.smartmenu.menu.setter.SetterContainer;
 import com.smartmenu.menu.setter.SetterDetail;
 import com.smartmenu.utils.ReturnMsgCode;
@@ -123,12 +124,21 @@ public class MenuService {
 		LookupDetail[] lookupDetails = dbMenu.getLookupDetail(shopId);
 		if(lookupDetails == null)
 			return null;
+		Map<String, Map<String, Integer>> mapSeq = new HashMap<String, Map<String, Integer>>();
 		for(LookupDetail lookupDetail: lookupDetails){
 			String lookupId = lookupDetail.getLookupId();
 			int lookupType = lookupDetail.getLookupType();
 			int itemType = lookupDetail.getItemType();
 			String code = lookupDetail.getCode();
 			//int seq = lookupDetail.getSeq();
+			Map<String, Integer> subMap;
+			if(mapSeq.containsKey(lookupId)){
+				subMap = mapSeq.get(lookupId);
+			}else{
+				subMap = new HashMap<String, Integer>();
+				mapSeq.put(lookupId, subMap);
+			}
+			subMap.put(code, lookupDetail.getSeq());
 			if(lookupType == LookupDetail.MODIFIER_FLAG_FOR_LOOKUPTYPE && mapModifier.containsKey(lookupId)){
 				ModifierContainer m = mapModifier.get(lookupId);
 				if(itemType==LookupDetail.ITEM_FLAG_FOR_ITEMTYPE && mapItem.containsKey(code)){
@@ -172,6 +182,9 @@ public class MenuService {
 				}else if(itemType==LookupDetail.GROUP_FLAG_FOR_ITEMTYPE && mapSetter.containsKey(code)){
 					SetterContainer subSc = mapSetter.get(code);
 					sc.addSetter(subSc);
+				}else if(itemType==LookupDetail.GROUP_FLAG_FOR_ITEMTYPE && mapModifier.containsKey(code)){
+					ModifierContainer subMc = mapModifier.get(code);
+					sc.addSetter(subMc);
 				}
 			}else if(lookupType == LookupDetail.NORMAL_FLAG_FOR_LOOKUPTYPE && mapShownLookup.containsKey(lookupId)){
 				Lookup lookup;
@@ -211,27 +224,44 @@ public class MenuService {
 					lookup.addItem(bi);
 				}
 			}
-			
-			
 		}
+		//
 		for(String itemId: newMapBasicItem.keySet()){
 			BasicItem bi = newMapBasicItem.get(itemId);
 			if(bi instanceof SimpleItem){
 				SimpleItem si = (SimpleItem)bi;
 				if(si.getModifier()!=null){
 					String modifierId = si.getModifier().getId();
-					if(mapModifier.containsKey(modifierId))
-						si.setModifier(mapModifier.get(modifierId));
+					if(mapModifier.containsKey(modifierId)){
+						ModifierContainer oldMC = mapModifier.get(modifierId);
+						ModifierContainer newMC = oldMC.deepClone();
+						if(newMC == null)
+							si.setModifier(mapModifier.get(modifierId));
+						else{
+							this.setModifierSeqByLoop(si.getItemId(), newMC, mapSeq);
+							si.setModifier(newMC);
+						}
+					}
 					else
 						si.setModifier(null);
 				}
 			}
 			if(bi instanceof SetItem){
 				SetItem si = (SetItem)bi;
+				//if(si.getItemId().equalsIgnoreCase("0S1"))
+				//	System.out.println("Stop");
 				if(si.getSetter()!=null){
 					String setterId = si.getSetter().getId();
-					if(mapSetter.containsKey(setterId))
-						si.setSetter(mapSetter.get(setterId));
+					if(mapSetter.containsKey(setterId)){
+						SetterContainer oldSC = mapSetter.get(setterId);
+						SetterContainer newSC = oldSC.deepClone();
+						if(newSC == null)	
+							si.setSetter(mapSetter.get(setterId));
+						else{
+							this.setSetterSeqByLoop(si.getItemId(), newSC, mapSeq);
+							si.setSetter(newSC);
+						}
+					}
 					else
 						si.setSetter(null);
 				}
@@ -249,6 +279,42 @@ public class MenuService {
 		}
 
 		return lsResult;
+	}
+// 循环设置modifier的seq
+	private void setModifierSeqByLoop(String header, Modifier altM, Map<String,Map<String, Integer>> mapSeq){
+		Map<String, Integer> map=mapSeq.get(header);
+		if(map!=null&&map.containsKey(altM.getId())){
+			int seq = map.get(altM.getId());
+			altM.setSeq(seq);
+		}
+		if(altM instanceof ModifierDetail){
+			return;
+		}else if(altM instanceof ModifierContainer){
+			ModifierContainer mc = (ModifierContainer)altM;
+			List<Modifier> ls = mc.getLsModifiers();
+			for(Modifier subM: ls){
+				setModifierSeqByLoop(altM.getId(), subM, mapSeq);
+			}
+		}
+	}
+//循环管设置setter的detail	
+	private void setSetterSeqByLoop(String header, Setter altS, Map<String, Map<String, Integer>> mapSeq){
+		Map<String, Integer> map=mapSeq.get(header);
+		if(map!=null&&map.containsKey(altS.getId())){
+			int seq = map.get(altS.getId());
+			altS.setSeq(seq);
+		}
+		if(altS instanceof SetterDetail){
+			return;
+		}else if(altS instanceof Modifier){
+			setModifierSeqByLoop(header, (Modifier)altS, mapSeq);
+		}else if(altS instanceof SetterContainer){
+			SetterContainer sc = (SetterContainer)altS;
+			List<Setter> ls = sc.getLsSetters();
+			for(Setter subS : ls){
+				setSetterSeqByLoop(altS.getId(), subS, mapSeq);
+			}
+		}
 	}
 	
 	public JSONObject getItemSoldoutInfo(String shopId){

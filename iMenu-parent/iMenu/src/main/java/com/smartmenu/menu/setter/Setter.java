@@ -1,12 +1,16 @@
 package com.smartmenu.menu.setter;
 
+import java.io.IOException;
+import java.io.Serializable;
+
 import net.sf.json.JSONObject;
 
-public abstract class Setter {
+public abstract class Setter implements Serializable{
+
 	private String id;
 	private String name;
 	private String name2;
-	private int seq;
+	private int seq=1;
 	
 	public Setter(){}
 		
@@ -38,4 +42,5 @@ public abstract class Setter {
 	}
 
 	public abstract JSONObject toJson();
+	
 }

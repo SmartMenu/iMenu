@@ -1,6 +1,13 @@
 package com.smartmenu.menu.modifier;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
+
+import com.smartmenu.menu.setter.Setter;
 
 import net.sf.json.JSONObject;
 
@@ -24,7 +31,8 @@ public class ModifierDetail extends Modifier{
 		json.put("item-name2", getName2());
 		json.put("price", price);
 		json.put("subtype", 2);
-		//json.put("seq", getSeq());
+		json.put("seq", getSeq());
 		return json;
 	}
+
 }

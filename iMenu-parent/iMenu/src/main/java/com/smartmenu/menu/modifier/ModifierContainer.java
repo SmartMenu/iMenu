@@ -1,12 +1,21 @@
 package com.smartmenu.menu.modifier;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
+
 public class ModifierContainer extends Modifier{
+	
+	private static Logger log = Logger.getLogger(ModifierContainer.class);
 	
 	private int compulsory;
 	private int minCount;
@@ -56,6 +65,7 @@ public class ModifierContainer extends Modifier{
 		lsModifiers.add(modifier);
 	}
 	
+	
 	@Override
 	public JSONObject toJson() {
 		JSONObject json = new JSONObject();
@@ -66,7 +76,7 @@ public class ModifierContainer extends Modifier{
 		json.put("compulsory", getCompulsory());
 		json.put("min-count", getMinCount());
 		json.put("max-count", getMaxCount());
-		//json.put("seq", getSeq());
+		json.put("seq", getSeq());
 		JSONArray ja = new JSONArray();
 		if(lsModifiers!=null){
 			for(Modifier modifier: lsModifiers){
@@ -75,5 +85,35 @@ public class ModifierContainer extends Modifier{
 		}
 		json.put("details", ja);
 		return json;
+	}
+
+	public ModifierContainer deepClone() {
+		ModifierContainer mc=null;
+		ObjectInputStream oi=null;
+		try{
+			
+			ByteArrayOutputStream bo=new ByteArrayOutputStream();
+			ObjectOutputStream oo=new ObjectOutputStream(bo);
+			oo.writeObject(this);//从流里读出来
+			oo.close();
+			ByteArrayInputStream bi=new ByteArrayInputStream(bo.toByteArray());
+		    oi=new ObjectInputStream(bi);
+			mc = (ModifierContainer)oi.readObject();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			log.error("Modifier Container deep clone failed(ClassNotFoundException)");
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.error("Modifier Container deep clone failed(IOException)");
+		} finally{
+			if(oi!=null)
+				try {
+					oi.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		return mc;
 	}
 }

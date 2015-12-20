@@ -243,7 +243,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			cmd = "/makeNewOrder";
 		}
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
-			jQuery.getJSON(appData.server_url + "/action" + cmd + "?mac=" + appData.device_mac + "&&callback=?", {
+			jQuery.post(appData.server_url + "/action" + cmd + "?mac=" + appData.device_mac + "&&callback=?", {
 				data: orderData
 			}, function(json) {
 				if (json.status == 1) {
@@ -388,13 +388,10 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail["pay-amount"] = com.h3.prj.imenu.util.Formatter.formatItemPayAmount(item, svcChargeData[currentData.desk]);
 			detail.unit = "份";
 			detail["take-away"] = 0;
-			console.log("item: "  + detail.desc 
-					+ ", subtype: " + item.subtype 
-					+ ", is_modifier: " + item.is_modifier 
-					+ ", price: " + item.price
-					+ ", modifier-value: " + item["modifier-value"]);
+			var itemString = JSON.stringify(item);
+			console.log("item-before: "  + itemString);
 			if (2 == item.subtype || 4 == item.subtype) {
-				detail["cat-id"] = "";
+				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = item.is_modifier;
 				detail["link-row"] = pre_seq;
@@ -472,13 +469,10 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			detail["pay-amount"] = com.h3.prj.imenu.util.Formatter.formatItemPayAmount(item, svcChargeData[currentData.desk]);
 			detail.unit = "份";
 			detail["take-away"] = 0;
-			console.log("item: "  + detail.desc 
-					+ ", subtype: " + item.subtype 
-					+ ", is_modifier: " + item.is_modifier 
-					+ ", price: " + item.price
-					+ ", modifier-value: " + item["modifier-value"]);
+			var itemString = JSON.stringify(item);
+			console.log("item-before: "  + itemString);
 			if (2 == item.subtype || 4 == item.subtype) {
-				detail["cat-id"] = "";
+				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
 				detail["is-modifier"] = item.is_modifier;
 				detail["link-row"] = pre_seq;

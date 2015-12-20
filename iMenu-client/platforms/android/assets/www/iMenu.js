@@ -474,8 +474,8 @@ com.h3.prj.imenu.iMenuInitializer = {
 					cat_name2: "cat-name2" \
 			                            }');
 			
-			var childsetters = jmespath.search(setter, "details[?type=='setter']");
-			childsetters.forEach(function(cm){
+			var childSetters = jmespath.search(setter, "details[?type=='setter']");
+			childSetters.forEach(function(cm){
 				that.flatSetters_zh_TW(cm, flattenedSetters);
 			});
 		}

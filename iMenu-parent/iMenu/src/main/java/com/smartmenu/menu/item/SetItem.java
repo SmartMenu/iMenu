@@ -2,6 +2,7 @@ package com.smartmenu.menu.item;
 
 import net.sf.json.JSONObject;
 
+import com.smartmenu.entity.Category;
 import com.smartmenu.entity.Item;
 import com.smartmenu.menu.setter.Setter;
 import com.smartmenu.menu.setter.SetterContainer;

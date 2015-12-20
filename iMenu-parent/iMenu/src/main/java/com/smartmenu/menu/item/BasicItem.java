@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import net.sf.json.JSONObject;
 
+import com.smartmenu.entity.Category;
 import com.smartmenu.entity.Item;
 
 public class BasicItem implements Serializable{
@@ -21,6 +22,7 @@ public class BasicItem implements Serializable{
 	private String unit;
 	private int discountable;
 	private int svchgAble;
+	private Category category=null;
 	
 	public BasicItem(){	
 	}
@@ -39,6 +41,12 @@ public class BasicItem implements Serializable{
 		unit = item.getUnit();
 		discountable = item.getDiscountable();
 		svchgAble = item.getSvchgAble();
+		if(item.getCategory()!=null){
+			this.category = new Category();
+			this.category.setcId(item.getCategory().getcId());
+			this.category.setcName(item.getCategory().getcName());
+			this.category.setcName2(item.getCategory().getcName2());
+		}
 	}
 	
 	public String getItemId() {
@@ -124,6 +132,14 @@ public class BasicItem implements Serializable{
 		this.svchgAble = svchgAble;
 	}
 
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
 	public JSONObject toJson(){
 		JSONObject json = new JSONObject();
 		json.put("item-id", itemId);
@@ -137,6 +153,16 @@ public class BasicItem implements Serializable{
 		json.put("item-desc", this.itemDesc==null?"":itemDesc);
 		json.put("item-desc2", this.itemDesc2==null?"":itemDesc2);
 		json.put("subtype", 0);
+		if(category == null){
+			json.put("cat-id", " ");
+			json.put("cat-name", " ");
+			json.put("cat-name2", " ");
+		}
+		else{
+			json.put("cat-id", category.getcId());
+			json.put("cat-name", category.getcName());
+			json.put("cat-name2", category.getcName2());
+		}
 		return json;
 	}
 	

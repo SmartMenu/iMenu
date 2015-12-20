@@ -541,7 +541,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			var setterData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nSetter").getData()[item_id];
 			if (setterData) {
 				dialogName = label_setter + item_name;
-				this.prepareSetterDlg(setterData, dialogName);
+				this.prepareSetterDlg(setterData, modifierData, dialogName);
 			} else if (modifierData) {
 				dialogName = label_modifier + item_name;
 				this.prepareModifierDlg(modifierData, dialogName);
@@ -564,7 +564,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		return itemType;
 	},
 
-	prepareSetterDlg: function(setterData, dialogName) {
+	prepareSetterDlg: function(setterData, modifierData, dialogName) {
 		var setterView = sap.ui.xmlview("com.h3.prj.imenu.view.Setter");
 		setterView.setModel(sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n"), "l10n");
 		
@@ -574,13 +574,49 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		});
 		setterScrollContainer.addContent(setterContainer);
 		var selectedSetterItems = [];
+
+		if (modifierData) {
+			modifierData.forEach(function(modifierGroupData) {
+				var item_required = false;
+				var item_selected = false;
+				var item_change_size = false;
+				modifierGroupData.labelMsg = com.h3.prj.imenu.util.Formatter.modifierGroupLabel(modifierGroupData);
+				var modifierGroup = sap.ui.xmlview("com.h3.prj.imenu.view.SetterGroup");
+				var modifierGroupModel = new sap.ui.model.json.JSONModel(modifierGroupData);
+				modifierGroup.setModel(modifierGroupModel,"group");
+				setterContainer.addContent(modifierGroup);
+				
+				if ( modifierGroupData.details ) {
+					modifierGroupData.details.forEach(function(modifierItemData) {
+
+						var modifierItemStr = JSON.stringify(modifierItemData);
+						console.log(modifierItemStr);
+						modifierItemData.count = 1;
+						modifierItemData.item_required = item_required;
+						modifierItemData.item_selected = item_selected;
+						modifierItemData.item_change_size = item_change_size;
+						if(modifierItemData.price == null) {
+							modifierItemData.price = 0;
+						}
+						var modifierItem = sap.ui.xmlview("com.h3.prj.imenu.view.SetterItem");
+						var modifierItemModel = new sap.ui.model.json.JSONModel(modifierItemData);
+						modifierItem.setModel(modifierItemModel,"item");
+						modifierItem.data("selectedSetterItems", selectedSetterItems);
+						setterContainer.addContent(modifierItem);
+					});
+				}
+			});
+		}
+		
 		setterData.forEach(function(setterGroupData) {
 			var item_required = false;
 			var item_selected = false;
+			var item_change_size = true;
 			var select_all = setterGroupData.select_all;
 			if(select_all == 1){
 				item_required = true;
 				item_selected = true;
+				item_change_size = false;
 			}
 			setterGroupData.labelMsg = com.h3.prj.imenu.util.Formatter.setterGroupLabel(setterGroupData);
 			var setterGroup = sap.ui.xmlview("com.h3.prj.imenu.view.SetterGroup");
@@ -594,6 +630,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				setterItemData.count = 1;
 				setterItemData.item_required = item_required;
 				setterItemData.item_selected = item_selected;
+				setterItemData.item_change_size = item_change_size;
 				if(setterItemData.price == null) {
 					setterItemData.price = 0;
 				}

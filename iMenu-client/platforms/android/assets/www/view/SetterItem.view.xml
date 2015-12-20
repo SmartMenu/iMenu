@@ -6,10 +6,12 @@
 			<CheckBox selected="{= ${item>/item_required}}" editable="{=! ${item>/item_required}}" select="onSelectChange"/>
 			<Input editable="false" value="{item>/item_name}" textAlign="Left" width="100%" />
 			<Input type="Number" editable="false" value="{item>/price}" textAlign="Center" width="4rem" />
-			<Button icon="sap-icon://less" enabled="{=! ${item>/item_required}}" class="menuItemButton" press="onLessButtonPressed" />
+			<Button icon="sap-icon://less" visible="{= ${item>/item_change_size}}"
+			    enabled="{= ${item>/item_change_size}}" class="menuItemButton" press="onLessButtonPressed" />
 			<Input type="Number" editable="false" value="{item>/count}" width="4rem"
 				id="itemCount" textAlign="Center" />
-			<Button icon="sap-icon://add" enabled="{=! ${item>/item_required}}" class="menuItemButton" press="onAddButtonPressed" />
+			<Button icon="sap-icon://add" visible="{= ${item>/item_change_size}}"
+			    enabled="{= ${item>/item_change_size}}" class="menuItemButton" press="onAddButtonPressed" />
 		</Toolbar>
 	</HBox>
 </core:View>

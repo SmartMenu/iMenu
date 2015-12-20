@@ -293,17 +293,20 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item.item_cat = item_cat_nm;
 					var modifierItems = jmespath.search(modifierData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']");
 					var setterItems = jmespath.search(setterData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']");
-					if (modifierItems != null){
+
+					if (modifierItems != null && modifierItems[0] != null){
 						item.item_name = modifierItems[0].item_name;
-					} else if (setterItems != null){
+					} else if (setterItems != null && setterItems[0] != null){
 						item.item_name = setterItems[0].item_name;
 					}
 					item.sub_total = item.item_price * item.item_count;
 				}
+
 			});
 		}
 		var order = trackingData.order;
 		if (order) {
+			console.log("order size is: " + order.length);
 			order.forEach(function(item) {
 				if (2 != item.subtype && 4 != item.subtype) {
 					item_nm = item;
@@ -317,9 +320,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 					item.item_cat = item_cat_nm;
 					var modifierItems = jmespath.search(modifierData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']");
 					var setterItems = jmespath.search(setterData[item_nm.item_id], "[*].details[] | [?item_id=='" + item.item_id + "']");
-					if (modifierItems != null) {
+					if (modifierItems != null && modifierItems[0] != null) {
 						item.item_name = modifierItems[0].item_name;
-					} else if (setterItems != null) {
+					} else if (setterItems != null && setterItems[0] != null) {
 						item.item_name = setterItems[0].item_name;
 					}
 					item.sub_total = item.item_price * item.item_count;
@@ -536,12 +539,12 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		if(item_id){
 			var modifierData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nModifier").getData()[item_id];
 			var setterData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nSetter").getData()[item_id];
-			if (modifierData) {
-				dialogName = label_modifier + item_name;
-				this.prepareModifierDlg(modifierData, dialogName);
-			} else if (setterData) {
+			if (setterData) {
 				dialogName = label_setter + item_name;
 				this.prepareSetterDlg(setterData, dialogName);
+			} else if (modifierData) {
+				dialogName = label_modifier + item_name;
+				this.prepareModifierDlg(modifierData, dialogName);
 			} else {
 				this.doAddToCart(menuItemController);
 			}

@@ -234,13 +234,21 @@ com.h3.prj.imenu.iMenuInitializer = {
 							if(item.modifier){
 								var flattenedModifiers = [];
 								that.flatModifiers_en_US(item.modifier, flattenedModifiers);
-								menuItemIdToModifier_en_US_Data[item.item_id] = flattenedModifiers;
+								if (flattenedModifiers.length > 0) {
+									menuItemIdToModifier_en_US_Data[item.item_id] = flattenedModifiers;
+								}
 								delete item.modifier;
 							}
 							if(item.setter){
 								var flattenedSetters = [];
-								that.flatSetters_en_US(item.setter, flattenedSetters);
-								menuItemIdToSetter_en_US_Data[item.item_id] = flattenedSetters;
+								var flattenedModifiers = [];
+								that.flatSetters_en_US(item.setter, flattenedSetters, flattenedModifiers, menuItemIdToModifier_en_US_Data);
+								if (flattenedSetters.length > 0) {
+									menuItemIdToSetter_en_US_Data[item.item_id] = flattenedSetters;
+								}
+								if (flattenedModifiers.length > 0) {
+									menuItemIdToModifier_en_US_Data[item.item_id] = flattenedModifiers;
+								}
 								delete item.setter;
 							}
 						});
@@ -283,13 +291,21 @@ com.h3.prj.imenu.iMenuInitializer = {
 							if(item.modifier){
 								var flattenedModifiers = [];
 								that.flatModifiers_zh_TW(item.modifier, flattenedModifiers);
-								menuItemIdToModifier_zh_TW_Data[item.item_id] = flattenedModifiers;
+								if (flattenedModifiers.length > 0) {
+									menuItemIdToModifier_zh_TW_Data[item.item_id] = flattenedModifiers;
+								}
 								delete item.modifier;
 							};
 							if(item.setter){
 								var flattenedSetters = [];
-								that.flatSetters_zh_TW(item.setter, flattenedSetters);
-								menuItemIdToSetter_zh_TW_Data[item.item_id] = flattenedSetters;
+								var flattenedModifiers = [];
+								that.flatSetters_zh_TW(item.setter, flattenedSetters, flattenedModifiers);
+								if (flattenedSetters.length > 0) {
+									menuItemIdToSetter_zh_TW_Data[item.item_id] = flattenedSetters;
+								}
+								if (flattenedModifiers.length > 0) {
+									menuItemIdToModifier_zh_TW_Data[item.item_id] = flattenedModifiers;
+								}
 								delete item.setter;
 							};
 						});
@@ -351,6 +367,10 @@ com.h3.prj.imenu.iMenuInitializer = {
 	},
 	
 	flatModifiers_en_US: function(modifier, flattenedModifiers) {
+		
+		var itemString = JSON.stringify(modifier);
+		console.log("flatModifiers_en: "  + itemString);
+		
 		var that = com.h3.prj.imenu.iMenuInitializer;
 		var m = {};
 		m.modifier_id = modifier["modifier-id"];
@@ -379,6 +399,10 @@ com.h3.prj.imenu.iMenuInitializer = {
 	},
 	
 	flatModifiers_zh_TW: function(modifier, flattenedModifiers) {
+		
+		var itemString = JSON.stringify(modifier);
+		console.log("flatModifiers_zh: "  + itemString);
+		
 		var that = com.h3.prj.imenu.iMenuInitializer;
 		var m = {};
 		m.modifier_id = modifier["modifier-id"];
@@ -403,11 +427,14 @@ com.h3.prj.imenu.iMenuInitializer = {
 				that.flatModifiers_zh_TW(cm, flattenedModifiers);
 			});
 		}
-
 		flattenedModifiers.push(m);
 	},
 	
-	flatSetters_en_US: function(setter, flattenedSetters) {
+	flatSetters_en_US: function(setter, flattenedSetters, flattenedModifiers, menuItemIdToModifier_en_US_Data) {
+		
+		var itemString = JSON.stringify(setter);
+		console.log("flatSetters_en: "  + itemString);
+		
 		var that = com.h3.prj.imenu.iMenuInitializer;
 		var m = {};
 		m.lookup_id = setter["lookup-id"];
@@ -437,15 +464,36 @@ com.h3.prj.imenu.iMenuInitializer = {
 			                            }');
 			
 			var childSetters = jmespath.search(setter, "details[?type=='setter']");
-			childSetters.forEach(function(cm){
-				that.flatSetters_en_US(cm, flattenedSetters);
+			childSetters.forEach(function(cs){
+				that.flatSetters_en_US(cs, flattenedSetters, flattenedModifiers, menuItemIdToModifier_en_US_Data);
+			});
+			
+			var childModifiers = jmespath.search(setter, "details[?type=='modifier']");
+			childModifiers.forEach(function(cm){
+				that.flatModifiers_en_US(cm, flattenedModifiers);
+			});
+			
+			setter.details.forEach(function(subItem) {
+				if( subItem != null && subItem.type == "detail" && subItem.subtype == 4 && subItem.modifier ) {
+					console.log("==>Handling setter item modifier: " + subItem["item-name"]);
+					var that = com.h3.prj.imenu.iMenuInitializer;
+					var flattenedModifiers = [];
+					that.flatModifiers_en_US(subItem.modifier, flattenedModifiers);
+					if (flattenedModifiers.length > 0) {
+						menuItemIdToModifier_en_US_Data[subItem.item_id] = flattenedModifiers;
+					}
+					delete subItem.modifier;
+				}
 			});
 		}
-
 		flattenedSetters.push(m);
 	},
 	
-	flatSetters_zh_TW: function(setter, flattenedSetters) {
+	flatSetters_zh_TW: function(setter, flattenedSetters, flattenedModifiers, menuItemIdToModifier_zh_TW_Data) {
+		
+		var itemString = JSON.stringify(setter);
+		console.log("flatSetters_zh: "  + itemString);
+		
 		var that = com.h3.prj.imenu.iMenuInitializer;
 		var m = {};
 		m.lookup_id = setter["lookup-id"];
@@ -475,11 +523,28 @@ com.h3.prj.imenu.iMenuInitializer = {
 			                            }');
 			
 			var childSetters = jmespath.search(setter, "details[?type=='setter']");
-			childSetters.forEach(function(cm){
-				that.flatSetters_zh_TW(cm, flattenedSetters);
+			childSetters.forEach(function(cs){
+				that.flatSetters_zh_TW(cs, flattenedSetters, flattenedModifiers, menuItemIdToModifier_zh_TW_Data);
+			});
+			
+			var childModifiers = jmespath.search(setter, "details[?type=='modifier']");
+			childModifiers.forEach(function(cm){
+				that.flatModifiers_zh_TW(cm, flattenedModifiers);
+			});
+			
+			setter.details.forEach(function(subItem) {
+				if( subItem != null && subItem.type == "detail" && subItem.subtype == 4 && subItem.modifier ) {
+					console.log("==>Handling setter item modifier: " + subItem["item-name"]);
+					var that = com.h3.prj.imenu.iMenuInitializer;
+					var flattenedModifiers = [];
+					that.flatModifiers_zh_TW(subItem.modifier, flattenedModifiers);
+					if (flattenedModifiers.length > 0) {
+						menuItemIdToModifier_zh_TW_Data[subItem.item_id] = flattenedModifiers;
+					}
+					delete subItem.modifier;
+				}
 			});
 		}
-		
 		flattenedSetters.push(m);
 	},
 

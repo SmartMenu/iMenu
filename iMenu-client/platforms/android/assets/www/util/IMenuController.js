@@ -595,6 +595,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 						modifierItemData.item_required = item_required;
 						modifierItemData.item_selected = item_selected;
 						modifierItemData.item_change_size = item_change_size;
+						modifierItemData.item_has_modifier = false;
 						if(modifierItemData.price == null) {
 							modifierItemData.price = 0;
 						}
@@ -627,10 +628,19 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 
 				var setterItemStr = JSON.stringify(setterItemData);
 				console.log(setterItemStr);
+				
+				var item_has_modifier = false;
+				var modifierData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nModifier").getData()[setterItemData.item_id];
+				
+				if (modifierData) {
+					item_has_modifier = true;
+				}
+				
 				setterItemData.count = 1;
 				setterItemData.item_required = item_required;
 				setterItemData.item_selected = item_selected;
 				setterItemData.item_change_size = item_change_size;
+				setterItemData.item_has_modifier = item_has_modifier;
 				if(setterItemData.price == null) {
 					setterItemData.price = 0;
 				}

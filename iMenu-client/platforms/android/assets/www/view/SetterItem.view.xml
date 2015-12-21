@@ -5,6 +5,8 @@
 		<Toolbar width="100%">
 			<CheckBox selected="{= ${item>/item_required}}" editable="{=! ${item>/item_required}}" select="onSelectChange"/>
 			<Input editable="false" value="{item>/item_name}" textAlign="Left" width="100%" />
+			<Button text="{l10n>/setter_item_modifier_button}" visible="{= ${item>/item_has_modifier}}"
+			    class="menuItemButton" press="onModifierButtonPressed" />
 			<Input type="Number" editable="false" value="{item>/price}" textAlign="Center" width="4rem" />
 			<Button icon="sap-icon://less" visible="{= ${item>/item_change_size}}"
 			    enabled="{= ${item>/item_change_size}}" class="menuItemButton" press="onLessButtonPressed" />

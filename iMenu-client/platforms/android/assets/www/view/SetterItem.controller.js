@@ -28,6 +28,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.SetterItem",
 	onModifierButtonPressed: function(event) {
 		var itemData = this.getView().getModel("item").getData();
 		var selectedSetterItems = this.getView().data("selectedSetterItems");
+		this.performMenuItemAccept(this,itemData);
 	},
 
 	onSelectChange: function(event) {

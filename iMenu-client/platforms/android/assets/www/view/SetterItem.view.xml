@@ -1,7 +1,7 @@
 <core:View width="100%" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.ui.layout.form"
 	controllerName="com.h3.prj.imenu.view.SetterItem" xmlns:html="http://www.w3.org/1999/xhtml">
-	<HBox>
+	<VBox>
 		<Toolbar width="100%">
 			<CheckBox selected="{= ${item>/item_required}}" editable="{=! ${item>/item_required}}" select="onSelectChange"/>
 			<Input editable="false" value="{item>/item_name}" textAlign="Left" width="100%" />
@@ -15,5 +15,11 @@
 			<Button icon="sap-icon://add" visible="{= ${item>/item_change_size}}"
 			    enabled="{= ${item>/item_change_size}}" class="menuItemButton" press="onAddButtonPressed" />
 		</Toolbar>
-	</HBox>
+		<Toolbar width="100%" height="{
+				path: 'item>/item_has_modifier',
+				formatter: 'com.h3.prj.imenu.util.Formatter.setterItemSubModifierHeight'}" >
+			<Input editable="false" value="{l10n>/sub_modifier_title}" textAlign="Left" />
+			<Input editable="false" value="{item>/sub_modifier_selected_string}" textAlign="Left" width="100%" />
+		</Toolbar>
+	</VBox>
 </core:View>

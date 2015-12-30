@@ -136,6 +136,14 @@ com.h3.prj.imenu.util.Formatter = {
 		};
 	},
 	
+	setterItemSubModifierHeight: function(item_has_modifier){
+		if ( item_has_modifier ){
+			return "100%";
+		}
+		
+		return "0";
+	},
+	
 	setterGroupLabel: function(setterGroup){
 		var lookup_name = setterGroup.lookup_name;
 		var select_all = setterGroup.select_all;

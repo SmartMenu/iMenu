@@ -99,9 +99,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 						                 open_chairs: openChairs,\
 						                 status: status,\
 						                 bill: openAmount\
-					                 }').sort(function(d1, d2){
-					                	 return d1.id - d2.id;
-					                 });
+					                 }');
 					desk_en_US_Model.setData(deskData_en_US);
 					var deskData_zh_TW = jmespath.search(json,
 					                 'data[].{\
@@ -113,9 +111,7 @@ com.h3.prj.imenu.iMenuInitializer = {
 						                 open_chairs: openChairs,\
 						                 status: status,\
 						                 bill: openAmount\
-					                 }').sort(function(d1, d2){
-					                	 return d1.id - d2.id;
-					                 });
+					                 }');
 					desk_zh_TW_Model.setData(deskData_zh_TW);
 					switch (localStorage.getItem("com.h3.prj.imenu.language")) {
 						case "繁":

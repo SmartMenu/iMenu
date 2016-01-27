@@ -31,9 +31,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 		var deskData = this.getOwnerComponent().getModel("desk").getData();
 		var deskPress = this.onDeskPress;
 		var grid = this.getView().byId("deskGrid");
-		deskData.sort(function(d1, d2) {
-			return d1.id - d2.id;
-		}).forEach(function(d) {
+		deskData.forEach(function(d) {
 			var styleClass = null;
 			switch (d.status) {
 				case 0:
@@ -249,9 +247,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 					                 'data[].{\
 						                 id: tableId,\
 						                 status: status\
-					                 }').sort(function(d1, d2){
-					                	 return d1.id - d2.id;
-					                 });
+					                 }');
 					var deskStatus = {};
 					deskData.forEach(function(desk){
 						deskStatus[desk.id] = desk.status;

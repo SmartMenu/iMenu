@@ -35,7 +35,8 @@ public class DBTable{
 				+ " left join ("
 				+ " select * from dbo.table_status "
 				+ " where DATEDIFF(DD, status_time, GETDATE())=0 ) b"
-				+ " on a.table_id = b.table_id and a.shop_id = b.shop_id;";
+				+ " on a.table_id = b.table_id and a.shop_id = b.shop_id"
+				+ " order by a.table_id;";
 		
 		log.info("GetTableSQL:"+sql.toString());
 		List<Object> lsResult = dbCommonUtil.query(sql, new ParseResultSetInterface(){

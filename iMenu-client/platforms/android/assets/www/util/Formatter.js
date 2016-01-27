@@ -136,6 +136,14 @@ com.h3.prj.imenu.util.Formatter = {
 		};
 	},
 	
+	setterItemSubModifierHeight: function(item_has_modifier){
+		if ( item_has_modifier ){
+			return "100%";
+		}
+		
+		return "0";
+	},
+	
 	setterGroupLabel: function(setterGroup){
 		var lookup_name = setterGroup.lookup_name;
 		var select_all = setterGroup.select_all;
@@ -143,12 +151,29 @@ com.h3.prj.imenu.util.Formatter = {
 		
 		var msg_required = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().setter_group_required;
 		var msg_optional = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().setter_group_optional;
+		var msg_prefix = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().setter_group_prefix;
 		
 		if(select_all != null && select_all == 1){
-			return msg_required;
+			return msg_prefix + msg_required;
 		};
 		
-		return lookup_name + " : " + msg_optional + "(" + min_count + ")";
+		return msg_prefix + lookup_name + " : " + msg_optional + "(" + min_count + ")";
+	},
+	
+	modifierGroupLabel: function(modifierGroup){
+		var modifier_name = modifierGroup.modifier_name;
+		var min_count = modifierGroup.min_count;
+		var max_count = modifierGroup.max_count;
+		
+		var msg_optional = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().setter_group_optional;
+		var msg_unlimited = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().modifier_group_unlimited;
+		var msg_prefix = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().modifier_group_prefix;
+		
+		if(max_count != null && max_count == 0){
+			return msg_prefix + modifier_name + " : " + msg_optional + "(" + msg_unlimited + ")";
+		};
+		
+		return msg_prefix + modifier_name + " : " + msg_optional + "(" + min_count + "-" + max_count + ")";
 	}
 
 };

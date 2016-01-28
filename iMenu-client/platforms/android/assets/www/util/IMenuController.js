@@ -485,6 +485,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
+				detail["discount-able"] = item.disc_able;
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
@@ -574,6 +575,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			} else {
 				detail["cat-id"] = item.cat_id;
 				detail["modifier-value"] = item["modifier-value"];
+				detail["discount-able"] = item.disc_able;
 				detail["is-modifier"] = 0;
 				detail["link-row"] = 0;
 				detail.subtype = 0;
@@ -1216,6 +1218,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		var item_price = itemData.price;
 		var cat_id = itemData.cat_id;
 		var subtype = itemData.subtype;
+		var disc_able = itemData.disc_able;
 		
 		var setterData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10nSetter").getData()[item_id];
 		if (setterData) {
@@ -1311,7 +1314,8 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				"item_cat_id": item_cat_id,
 				"item_count": item_count,
 				"subtype": subtype,
-				"item_price": item_price
+				"item_price": item_price,
+				"disc_able": disc_able
 			}, subSelections, selectedModifierItems, selectedSubModifierItems);
 		} else {
 			console.log("-> This is a modifier");
@@ -1321,7 +1325,8 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 				"item_cat_id": item_cat_id,
 				"item_count": item_count,
 				"subtype": subtype,
-				"item_price": item_price
+				"item_price": item_price,
+				"disc_able": disc_able
 			}, subSelections);
 		}
 

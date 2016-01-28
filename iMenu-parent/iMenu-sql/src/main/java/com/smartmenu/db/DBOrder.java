@@ -182,7 +182,7 @@ public class DBOrder{
 					   detailsSql.append(sqlTmp);
 				   }
 				   //append update dept_id and class_id from sales_details
-				   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, cat_id=b.cat_id " +
+				   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, cat_id=b.cat_id, nonsales=b.nonsales " +
 							 " from dbo.item b where b.item_code = code and shop_id='"+order.getShopId() +
 							 "' and tran_no='" + tranNo + "';");
 				   log.info("INSERT DETAILS: "+detailsSql.toString());
@@ -272,7 +272,7 @@ public class DBOrder{
 				   detailsSql.append(sqlTmp);
 			   }
 			 //append update dept_id and class_id from sales_details
-			   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id " +
+			   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, nonsales=b.nonsales " +
 						 " from dbo.item b where b.item_code = code and shop_id='"+order.getShopId() +
 						 "' and tran_no='" + order.getTranNo() + "' and sales_details.dept_id is null " +
 						 " and sales_details.class_id is null;");

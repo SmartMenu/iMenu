@@ -15,6 +15,7 @@ public class Item {
 	private BigDecimal itemSetPrice;
 	private String unit;
 	private int discountable;
+	private int taxable;
 	private int svchgAble;
 	
 	private int isModifier;
@@ -102,6 +103,12 @@ public class Item {
 		this.discountable = discountable;
 	}
 	
+	public int getTaxable() {
+		return taxable;
+	}
+	public void setTaxable(int taxable) {
+		this.taxable = taxable;
+	}
 	public int getSvchgAble() {
 		return svchgAble;
 	}

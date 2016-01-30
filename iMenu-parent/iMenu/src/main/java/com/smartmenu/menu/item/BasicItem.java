@@ -21,6 +21,7 @@ public class BasicItem implements Serializable{
 	private BigDecimal itemSetPrice;
 	private String unit;
 	private int discountable;
+	private int taxable;
 	private int svchgAble;
 	private Category category=null;
 	
@@ -40,6 +41,7 @@ public class BasicItem implements Serializable{
 		itemSetPrice = item.getItemSetPrice();
 		unit = item.getUnit();
 		discountable = item.getDiscountable();
+		taxable = item.getTaxable();
 		svchgAble = item.getSvchgAble();
 		if(item.getCategory()!=null){
 			this.category = new Category();
@@ -124,6 +126,14 @@ public class BasicItem implements Serializable{
 		this.discountable = discountable;
 	}
     
+	public int getTaxable() {
+		return taxable;
+	}
+
+	public void setTaxable(int taxable) {
+		this.taxable = taxable;
+	}
+
 	public int getSvchgAble() {
 		return svchgAble;
 	}
@@ -149,6 +159,7 @@ public class BasicItem implements Serializable{
 		json.put("price", itemPrice);
 		json.put("item-pic", itemPic==null?" ": itemPic);
 		json.put("disc-able", discountable);
+		json.put("tax-able", taxable);
 		json.put("svchg-allow", svchgAble);
 		json.put("item-desc", this.itemDesc==null?"":itemDesc);
 		json.put("item-desc2", this.itemDesc2==null?"":itemDesc2);

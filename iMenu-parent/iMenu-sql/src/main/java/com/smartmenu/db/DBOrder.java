@@ -181,8 +181,8 @@ public class DBOrder{
 					   String sqlTmp = this.buildInsertSql("[dbo].[sales_details]", detailProperty);
 					   detailsSql.append(sqlTmp);
 				   }
-				   //append update dept_id and class_id from sales_details
-				   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, cat_id=b.cat_id, nonsales=b.nonsales " +
+				   //append update dept_id and class_id,cat_id, nosales, taxable from sales_details
+				   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, cat_id=b.cat_id, nonsales=b.nonsales, taxable=b.taxable " +
 							 " from dbo.item b where b.item_code = code and shop_id='"+order.getShopId() +
 							 "' and tran_no='" + tranNo + "';");
 				   log.info("INSERT DETAILS: "+detailsSql.toString());
@@ -271,8 +271,8 @@ public class DBOrder{
 				   String sqlTmp = this.buildInsertSql("[dbo].[sales_details]", detailProperty);
 				   detailsSql.append(sqlTmp);
 			   }
-			 //append update dept_id and class_id from sales_details
-			   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, nonsales=b.nonsales " +
+			 //append update dept_id and class_id from sales_details  , cat_id=b.cat_id, nonsales=b.nonsales, taxable=b.taxable
+			   detailsSql.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, cat_id=b.cat_id, nonsales=b.nonsales, taxable=b.taxable " +
 						 " from dbo.item b where b.item_code = code and shop_id='"+order.getShopId() +
 						 "' and tran_no='" + order.getTranNo() + "' and sales_details.dept_id is null " +
 						 " and sales_details.class_id is null;");
@@ -745,7 +745,7 @@ public class DBOrder{
 	
 	private int modifyTableStatus(Connection conn, Order order){
 		String tableId=order.getTableId();
-		String sql = "select * from [dbo].[table_status] where shop_id='" + order.getShopId() + "' and table_id='"+tableId+"' and (operation_status=130 or operation_status=131);";
+		String sql = "select * from [dbo].[table_status] where shop_id='" + order.getShopId() + "' and table_id='"+tableId+"' and (operation_status=2 or operation_status=130 or operation_status=131);";
 		boolean flag=dbCommonUtil.checkExist(conn, sql);
 		if(flag)
 			return -1;
@@ -1005,8 +1005,8 @@ public class DBOrder{
 			   String sqlTmp = this.buildInsertSql("[dbo].[sales_details]", detailProperty);
 			   insertDeleteDetails.append(sqlTmp);
 		    }
-		    //append update dept_id and class_id from sales_details
-		    insertDeleteDetails.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id " +
+		    //append update dept_id and class_id from sales_details , cat_id=b.cat_id, nonsales=b.nonsales, taxable=b.taxable 
+		    insertDeleteDetails.append("update dbo.sales_details set dept_id = b.dept_id, class_id = b.class_id, cat_id=b.cat_id, nonsales=b.nonsales, taxable=b.taxable  " +
 					 " from dbo.item b where b.item_code = code and shop_id='"+order.getShopId() + 
 					 "' and pos_id='" + order.getPosId() + "' and tran_no='" + order.getTranNo() + "' "
 					 + " and sales_details.dept_id is null " +

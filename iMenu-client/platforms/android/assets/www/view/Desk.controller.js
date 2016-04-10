@@ -248,6 +248,7 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 					var deskData = jmespath.search(json, 
 					                 'data[].{\
 						                 id: tableId,\
+			                 open_chairs: openChairs,\
 						                 status: status\
 					                 }');
 					var deskStatus = {};

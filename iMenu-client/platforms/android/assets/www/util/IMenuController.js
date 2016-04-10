@@ -5,6 +5,8 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 	selectionDlg: null,
 	selectionView: null,
 	
+	selectorDlg: null,
+	
 	subSelectionDlg: null,
 	subSelectionView: null,	
 
@@ -43,6 +45,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		deskData = trackingData.swap[deskNo];
 		current.desk = deskNo;
 		current.deskStatus = deskData.status;
+		current.custCount = deskData.open_chairs;
 		current.itemId = deskData.itemId;
 		if (deskData.orderId) {
 			current.orderId = deskData.orderId;
@@ -220,7 +223,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 							subM.cat_id = item.item_cat_id;
 							subM["discount-able"] = 1;
 							subM["tax-able"] = 1;
-							subM["level-no"] = 1;
+							subM["level-no"] = 2;
 							var subM_price = subM.price;
 							if (subM_price == null) {
 								subM_price = 0;
@@ -423,6 +426,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		orderData.order = {};
 		orderData.order["shop-id"] = appData.shop_id;
 		orderData.order["pos-id"] = appData.device_id;
+		orderData.order["cover"] = currentData.custCount;
 		orderData.order["table-id"] = currentData.desk;
 		orderData.order["service-charge"] = svcChargeData[currentData.desk];
 		orderData.order["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatSvcCharge(currentData.cart);
@@ -511,6 +515,7 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 		orderData.order["shop-id"] = appData.shop_id;
 		orderData.order["pos-id"] = appData.device_id;
 		orderData.order["table-id"] = currentData.desk;
+		orderData.order["cover"] = currentData.custCount;
 		orderData.order["order-no"] = currentData.orderId;
 		orderData.order["service-charge"] = svcChargeData[currentData.desk];
 		orderData.order["service-charge-amount"] = com.h3.prj.imenu.util.Formatter.formatSvcCharge(currentData.cart);

@@ -181,6 +181,67 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.MenuBrowser"
 		this.orderDlg.open();
 	},
 
+	onCustCountButtonPressed: function(event) {
+		var selectorView = sap.ui.xmlview("com.h3.prj.imenu.view.CustCountSelector");
+		var selectorContainer = selectorView.byId("selectorContainer");
+		var dlg = null;
+		if (!com.h3.prj.imenu.util.IMenuController.selectorDlg){
+			dlg = new sap.m.Dialog("selectorDlg", {
+				contentHeight: "100%",
+				contentWidth: "100%",
+				showHeader: false,
+				content: [
+					selectorContainer
+				]
+			});
+			var l10n = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n");
+			dlg.setModel(l10n, "l10n");
+			var closeButton = new sap.m.Button({
+				text: "{l10n>/cart/close}",
+				type: "Reject",
+				press: function() {
+					dlg.close();
+				}
+			});
+			dlg.addButton(closeButton);
+			com.h3.prj.imenu.util.IMenuController.selectorDlg = dlg;
+		}else{
+			dlg = com.h3.prj.imenu.util.IMenuController.selectorDlg;
+			dlg.removeAllContent();
+			dlg.addContent(selectorContainer);
+		}
+		var numberGrid = new sap.ui.layout.Grid({
+			defaultSpan: "L2 M2 S2"
+		});
+		var trackingModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking");
+		var currentData = trackingModel.getData().current;
+		var currentCount = currentData.custCount;
+		
+		var numberList = [1,2,3,4,5,6,
+		                  7,8,9,10,11,12,
+		                  13,14,15,16,17,18];
+		
+		numberList.forEach(function(number) {
+			var btn = new sap.m.ToggleButton({
+				text: number,
+				width: "100%",
+				pressed: (number == currentCount),
+				press: function(event) {
+					var btn = event.getSource();
+					var number = btn.getText();
+					console.log(number);
+					currentData.custCount = number;
+					trackingModel.updateBindings(true);
+					dlg.close();
+				}
+			});
+			btn.addStyleClass("menuItemButton");
+			numberGrid.addContent(btn);
+		});
+		selectorContainer.addContent(numberGrid);
+		dlg.open();
+	},
+
 	createOrderDlgContent: function(orderDlg) {
 		var controls = [];
 		var cartTableView = sap.ui.xmlview("com.h3.prj.imenu.view.CartTable");

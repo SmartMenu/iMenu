@@ -12,7 +12,7 @@
 				</Label>
 				<VBox id="leftBox">
 					<layoutData>
-						<l:GridData span="L5 M5 S5" />
+						<l:GridData span="L6 M6 S6" />
 					</layoutData>
 					<l:Grid>
 						<l:content>
@@ -20,6 +20,12 @@
 								<layoutData>
 									<l:GridData span="L12 M12 S12" />
 								</layoutData>
+								<HBox justifyContent="Center">
+									<Image src="img/logo.png" width="100%" densityAware="false" />
+								</HBox>
+								<HBox>
+									<Label text="" />
+								</HBox>
 								<HBox id="usernamePanel">
 									<Label class="loginLabel" text="{l10n>/login/id}" width="10em" />
 									<VBox width="100%">
@@ -44,16 +50,13 @@
 								</HBox>
 
 								<HBox>
-									<Label text="" width="0.5em" />
-									<VBox width="8em">
+									<Label class="loginLabel" text="" width="10em" />
+									<VBox width="100%">
 										<Button id="ResetButton" class="keyboard confirmBtn" text="{l10n>/login/reset}" 
 											enabled="{= ${app>/state}!=='NEW'}"
-											press="onResetButtonPressed" width="100%"/>
+											press="onResetButtonPressed" width="50%">
+										</Button>
 									</VBox>
-									<Label text="" width="1em" />
-									<VBox width="8em">
-									</VBox>
-									<Label text="" width="0.5em" />
 								</HBox>
 
 							</VBox>
@@ -62,24 +65,13 @@
 				</VBox>
 				<VBox id="rightBox">
 					<layoutData>
-						<l:GridData span="L7 M7 S7"/>
+						<l:GridData span="L6 M6 S6" />
 					</layoutData>
-					<l:Grid id="keyboardChar" defaultSpan="L2 M2 S2">
-						<l:content>
-							<Button class="keyboard" text="A" press="onInputButtonPressed" />
-							<Button class="keyboard" text="B" press="onInputButtonPressed" />
-							<Button class="keyboard" text="C" press="onInputButtonPressed" />
-							<Button class="keyboard" text="D" press="onInputButtonPressed" />
-							<Button class="keyboard" text="E" press="onInputButtonPressed" />
-							<Button class="keyboard" text="F" press="onInputButtonPressed" />
-						</l:content>
-					</l:Grid>
-					<l:Grid id="keyboardNum" defaultSpan="L3 M3 S3">
+					<l:Grid id="keyboardNum" defaultSpan="L4 M4 S4">
 						<l:content>
 							<Button class="keyboard" text="7" press="onInputButtonPressed" />
 							<Button class="keyboard" text="8" press="onInputButtonPressed" />
 							<Button class="keyboard" text="9" press="onInputButtonPressed" />
-							<Button class="keyboard" text="0" press="onInputButtonPressed" />
 							<Button class="keyboard" text="4" press="onInputButtonPressed">
 								<layoutData>
 									<l:GridData linebreakL="true" linebreakM="true"
@@ -88,8 +80,6 @@
 							</Button>
 							<Button class="keyboard" text="5" press="onInputButtonPressed" />
 							<Button class="keyboard" text="6" press="onInputButtonPressed" />
-							<Button class="keyboard confirmBtn" icon="sap-icon://arrow-left"
-								press="onDeleteButtonPressed" />
 							<Button class="keyboard" text="1" press="onInputButtonPressed">
 								<layoutData>
 									<l:GridData linebreakL="true" linebreakM="true"
@@ -97,10 +87,34 @@
 								</layoutData>
 							</Button>
 							<Button class="keyboard" text="2" press="onInputButtonPressed" />
-							<Button class="keyboard" text="3" press="onInputButtonPressed" />									
-							<Button id="OKButton" class="keyboard confirmBtn" icon="sap-icon://accept"
-									enabled="{= ${app>/state}!=='NEW'}" 
-									press="onOKButtonPressed"/>
+							<Button class="keyboard" text="3" press="onInputButtonPressed" />
+							<Button class="keyboard" text="0" press="onInputButtonPressed">
+								<layoutData>
+									<l:GridData linebreakL="true" linebreakM="true"
+										linebreakS="true" />
+								</layoutData>
+							</Button>
+							<Button class="keyboard" icon="sap-icon://arrow-left"
+								press="onDeleteButtonPressed" />
+							<Button id="OKButton" class="keyboard confirmBtn" text="{l10n>/login/submit}"
+								enabled="{= ${app>/state}!=='NEW'}" 
+								press="onOKButtonPressed" />
+						</l:content>
+					</l:Grid>
+					<l:Grid id="keyboardChar" defaultSpan="L4 M4 S4">
+						<l:content>
+							<Button class="keyboard" text="A" press="onInputButtonPressed" />
+							<Button class="keyboard" text="B" press="onInputButtonPressed" />
+							<Button class="keyboard" text="C" press="onInputButtonPressed" />
+							<Button class="keyboard" text="D" press="onInputButtonPressed">
+								<layoutData>
+									<l:GridData linebreakL="true" linebreakM="true"
+										linebreakS="true" />
+								</layoutData>
+							</Button>
+							<Button class="keyboard" text="E" press="onInputButtonPressed" />
+							<Button class="keyboard" text="F" press="onInputButtonPressed" />
+
 						</l:content>
 					</l:Grid>
 				</VBox>

@@ -216,6 +216,9 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Login", {
 											}
 											currentData.categories[o.item_cat_id] = currentData.categories[o.item_cat_id] + 1;
 										});
+										if(!currentData.custCount){
+											currentData.custCount = 0;
+										}
 									}else{
 										currentData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().current;
 										var swapData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().swap;
@@ -226,6 +229,9 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Login", {
 										currentData.order = [];
 										currentData.categories = {};
 										currentData.cart = [];
+										if(!currentData.custCount){
+											currentData.custCount = 0;
+										}
 									}
 									that.preShowCart();
 									sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").updateBindings(true);

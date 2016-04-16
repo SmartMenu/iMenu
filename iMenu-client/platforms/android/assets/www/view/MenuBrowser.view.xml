@@ -26,28 +26,22 @@
 		</content>
 		<footer>
 			<Toolbar>
-				<Label
-					text="{
-					path: 'l10n>/settings/device_id',
-					formatter: 'com.h3.prj.imenu.util.Formatter.appendColon'
-				}" />
-				<Label text="{app>/device_id}"></Label>
-				<Label text="{l10n>/deskNo}" />
-				<Label text="{tracking>/current/desk}" />
+				<Label text="{= ${l10n>/devID} + ${app>/device_id} }" />
+				<Label text="{= ${l10n>/deskNo} + ${tracking>/current/desk} }" />
 				<ToolbarSpacer />
+				<Button id="custCountButton" icon="sap-icon://group" press="onCustCountButtonPressed"
+					text="{tracking>/current/custCount}"
+					width="8em"/>
 				<Button id="submittedOrderButton" icon="sap-icon://loan" press="onSubmittedOrderButtonPressed"
 					text="{
 					path: 'tracking>/current',
 					formatter: 'com.h3.prj.imenu.util.Formatter.formatOverallTotal'
-				}"
-					width="12em"/>
+				}" width="11em"/>
 				<Button id="pendingOrderButton" icon="sap-icon://cart" press="onPendingOrderButtonPressed"
 					text="{
 					path: 'tracking>/current/cart',
 					formatter: 'com.h3.prj.imenu.util.Formatter.formatTotal'
-				}"
-					width="12em"/>
-				
+				}" width="11em"/>
 			</Toolbar>
 		</footer>
 	</Page>

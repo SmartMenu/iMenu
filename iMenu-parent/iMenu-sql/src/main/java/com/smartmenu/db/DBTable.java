@@ -28,7 +28,7 @@ public class DBTable{
 				+ " case when b.operation_status is null then 0 else b.operation_status end as status, "
 				+ " b.create_date, "
 				+ " case when b.total_amount is null then 0 else b.total_amount end as total_amount "
-				+ " from (select x.table_id as table_id, x.max_cover as max_cover, x.section_id as section_id, x.shop_id as shop_id"
+				+ " from (select x.table_id as table_id, x.max_cover as max_cover, x.section_id as section_id, x.shop_id as shop_id, x.seqno, len(x.table_id) table_id_len "
 				+ "       from dbo.[table] x, dbo.table_map_details y where x.table_id = y.table_id and x.shop_id = y.shop_id and x.shop_id='"+shopId+"') a "
 				+ " join dbo.section c"
 				+ " on a.section_id = c.section_id  and a.shop_id = c.shop_id"
@@ -36,7 +36,7 @@ public class DBTable{
 				+ " select * from dbo.table_status "
 				+ " where DATEDIFF(DD, status_time, GETDATE())=0 ) b"
 				+ " on a.table_id = b.table_id and a.shop_id = b.shop_id"
-				+ " order by a.table_id;";
+				+ " order by a.seqno, a.table_id_len, a.table_id;";
 		
 		log.info("GetTableSQL:"+sql.toString());
 		List<Object> lsResult = dbCommonUtil.query(sql, new ParseResultSetInterface(){

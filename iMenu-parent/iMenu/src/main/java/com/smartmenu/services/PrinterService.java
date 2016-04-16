@@ -32,14 +32,19 @@ public class PrinterService {
 	private boolean generatePrintFile(Order order, String fn_code) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		StringBuffer content = new StringBuffer();
+		
 		content.append(fn_code + ","); // FN_CODE
 		content.append(order.getShopId() + ",");// SHOP_ID
 		content.append(order.getPosId() + ",");// POS_ID
 		content.append(order.getTableId() + ",");// TABLE_NO
-		content.append(order.getTranNo() + ",");// TRAN_NO
-		content.append(order.getCheckNo() + ",");// CHECK_NO
-		content.append(sdf.format(order.getTranDate()) + ",");// TRAN_DATE
-		content.append(sdf.format(order.getCheckDate()) + ",");// CHECK_DATE
+		
+		if(fn_code.equals("01")){
+			content.append(order.getTranNo() + ",");// TRAN_NO
+			content.append(order.getCheckNo() + ",");// CHECK_NO
+			content.append(sdf.format(order.getTranDate()) + ",");// TRAN_DATE
+			content.append(sdf.format(order.getCheckDate()) + ",");// CHECK_DATE
+		}
+
 		content.append(order.getUserId());// USER_ID
 
 		if (printProperty == null || printProperty.getFolder() == null) {

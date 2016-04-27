@@ -112,6 +112,14 @@ com.h3.prj.imenu.iMenuInitializer = {
 						                 status: status,\
 						                 bill: openAmount\
 					                 }');
+					
+					var deskInfo = {};
+					deskData_en_US.forEach(function(desk){
+						deskInfo[desk.id] = desk;
+					});
+
+					com.h3.prj.imenu.util.IMenuController.deskInfo = deskInfo;
+					
 					desk_zh_TW_Model.setData(deskData_zh_TW);
 					switch (localStorage.getItem("com.h3.prj.imenu.language")) {
 						case "繁":

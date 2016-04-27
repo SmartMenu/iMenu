@@ -8,7 +8,9 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 	selectorDlg: null,
 	
 	subSelectionDlg: null,
-	subSelectionView: null,	
+	subSelectionView: null,
+	
+	tableInfo: null,
 
 	getEventBus: function() {
 		return this.getOwnerComponent().getEventBus();
@@ -42,10 +44,21 @@ sap.ui.core.mvc.Controller.extend("com.h3.prj.imenu.util.IMenuController", {
 			}
 		}
 
+		var deskInfoData = com.h3.prj.imenu.util.IMenuController.deskInfo;
+		var deskInfoStr = JSON.stringify(com.h3.prj.imenu.util.IMenuController.deskInfo);
+		console.log(deskInfoStr);
+		console.log(deskNo);
+		if(deskInfoData[deskNo]){
+			console.log(JSON.stringify(deskInfoData[deskNo]));
+			current.custCount = deskInfoData[deskNo].open_chairs;
+		}
+
 		deskData = trackingData.swap[deskNo];
 		current.desk = deskNo;
 		current.deskStatus = deskData.status;
-		current.custCount = deskData.open_chairs;
+		if(!current.custCount){
+			current.custCount = 0;
+		}
 		current.itemId = deskData.itemId;
 		if (deskData.orderId) {
 			current.orderId = deskData.orderId;

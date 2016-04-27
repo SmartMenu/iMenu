@@ -252,9 +252,15 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 						                 status: status\
 					                 }');
 					var deskStatus = {};
+					var deskInfo = {};
 					deskData.forEach(function(desk){
 						deskStatus[desk.id] = desk.status;
+						deskInfo[desk.id] = desk;
 					});
+					
+					com.h3.prj.imenu.util.IMenuController.deskInfo = deskInfo;
+					
+					sap.ui.getCore().setModel(deskInfo, "com.h3.prj.imenu.model.deskInfo");
 					deskData = that.getOwnerComponent().getModel("desk").getData();
 					deskData.forEach(function(desk){
 						desk.status = deskStatus[desk.id];

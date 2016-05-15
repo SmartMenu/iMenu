@@ -239,12 +239,15 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.Desk", {
 		var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
 		var appData = appInfoModel.getData();
 		if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
+			console.log("-getTables in desk page.");
 			jQuery.getJSON(appData.server_url + "/action" + "/getTables?mac=" + appData.device_mac +
 			               "&&shopid=" + appData.shop_id + "&&callback=?", function(json){
 				if (json.status == 1) {
+					console.log("-getTables in desk page, failed");
 					sap.m.MessageToast.show(json.msg);
 					return;
 				} else {
+					console.log("-getTables in desk page, success");
 					var deskData = jmespath.search(json, 
 					                 'data[].{\
 						                 id: tableId,\

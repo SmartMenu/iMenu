@@ -233,6 +233,33 @@ com.h3.prj.imenu.util.IMenuController.extend("com.h3.prj.imenu.view.MenuBrowser"
 					console.log(number);
 					currentData.custCount = number;
 					trackingModel.updateBindings(true);
+					//Update cover if order id exists
+					var trackingData = sap.ui.getCore().getModel("com.h3.prj.imenu.model.tracking").getData().current;
+					if (trackingData.orderId) {
+						console.log("orderid exist");
+						var appInfoModel = sap.ui.getCore().getModel("com.h3.prj.imenu.model.appinfo");
+						var appData = appInfoModel.getData();
+						var that = this;
+						if (appData.device_mac && appData.server_url && appData.device_id && appData.shop_id) {
+							console.log("start to update cover");
+							jQuery.getJSON(appData.server_url + "/action" + "/changeCover?mac=" + appData.device_mac + 
+							               "&&shopid=" + appData.shop_id + 
+							               "&&posid=" + appData.device_id + 
+							               "&&orderno=" + trackingData.orderId + 
+							               "&&cover=" + number +
+							               "&&callback=?", function(json) {
+								if (json.status == 1) {
+									var msg = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().cover_update_failed;
+									console.log(msg);
+									sap.m.MessageToast.show(msg);
+								} else {
+									var msg = sap.ui.getCore().getModel("com.h3.prj.imenu.model.l10n").getData().cover_update_success;
+									console.log(msg);
+									sap.m.MessageToast.show(msg);
+								}
+							});
+						}
+					} 
 					dlg.close();
 				}
 			});
